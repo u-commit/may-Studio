@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import './App.css';
+import HomePage from '@components/HomePage/HomePage';
+import Info from './components/Info/Info';
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
     <>
-      <div>May-Studio</div>
-      gsdg sddsf sddsf g ds
+      <HomePage />
+      <Info />
     </>
   );
 }

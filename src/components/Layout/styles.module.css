@@ -1,0 +1,9 @@
+.wrapLayout {
+  display: flex;
+  justify-content: center;
+}
+
+.container {
+  width: 100%;
+  height: 100vh;
+}/*# sourceMappingURL=styles.module.css.map */

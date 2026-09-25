@@ -1,0 +1,28 @@
+@import '@styles/mixin.scss';
+@import '@styles/variable.scss';
+
+.container {
+  @include flex_box_custom(center, center, 0px);
+
+  background-image: url(../..//assets/images/Banner.webp);
+
+  background-size: cover;
+  aspect-ratio: 1600 / 625;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.content {
+  @include flex_box_custom(center, center, 10px);
+  flex-direction: column;
+}
+.title {
+  font-size: 42px;
+  color: $four_color;
+  font-weight: 400;
+  margin: 15px 0;
+}
+.des {
+  color: $thr_color;
+  font-weight: 400;
+  margin-bottom: 25px;
+}
