@@ -1,6 +1,6 @@
 import truckIcon from '@icons/svgs/truckIcon.svg';
-import boxIcon from '@icons/svgs/truckIcon.svg';
-import chatIcon from '@icons/svgs/truckIcon.svg';
+import boxIcon from '@icons/svgs/boxIcon.svg';
+import chatIcon from '@icons/svgs/chatIcon.svg';
 import debitcartIcon from '@icons/svgs/debitcartIcon.svg';
 
 export const dataInfo = [
