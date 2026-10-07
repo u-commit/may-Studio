@@ -1,21 +1,37 @@
 import Banner from '@components/Banner/Banner';
 import MyHeader from '@components/Header/Header';
-import styles from './styles.module.scss';
+import SalesHomePage from '@components/salesHomePage/salesHomePage';
 import AdvanceHeading from '@components/AdvanceHeading/AdvanceHeading';
 import Info from '@components/Info/Info';
 import HeadingListProduct from '../HeadingListProduct/HeadingListProduct';
+import { useEffect, useState } from 'react';
+import { getProduct } from '@/apis/productsService';
+import PopularProduct from '../PopularProduct/PopularProduct';
 function HomePage() {
-  const { container } = styles;
+  const [listProducts, setListProducts] = useState([]);
+
+  useEffect(() => {
+    const query = {
+      sortType: 0,
+      page: 1,
+      limit: 10,
+    };
+
+    getProduct(query).then((res) => {
+      setListProducts(res.contents);
+    });
+  }, []);
   return (
-    <div>
-      <div className={container}>
-        <MyHeader />
-        <Banner />
-        <Info />
-        <AdvanceHeading />
-        <HeadingListProduct />
-      </div>
-    </div>
+    <>
+      <MyHeader />
+      <Banner />
+      <Info />
+      <AdvanceHeading />
+      <HeadingListProduct data={listProducts.slice(0, 2)} />
+      <PopularProduct data={listProducts.slice(2, listProducts.length - 1)} />
+      <SalesHomePage />
+      <div style={{ height: '200px' }}></div>
+    </>
   );
 }
 
