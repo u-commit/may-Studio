@@ -1,3 +1,36 @@
 .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0;
   margin-top: 100px;
-}/*# sourceMappingURL=styles.module.css.map */
+}
+
+.title {
+  font-size: 35px;
+  font-weight: 400;
+  color: #555;
+  text-align: center;
+}
+
+.des {
+  width: 461px;
+  font-size: 16px;
+  color: #555;
+  line-height: 30px;
+  text-align: center;
+}
+
+.boxbtn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.boximg {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}

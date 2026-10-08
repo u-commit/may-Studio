@@ -12,9 +12,9 @@
     height: 100%;
     object-fit: cover;
   }
-  &:hover .showImgWhenHover {
+  &:hover .showImgWhenHover,
+  &:hover .showFncWhenHover {
     opacity: 1;
-    transition: opacity 500ms ease;
   }
   .showImgWhenHover {
     opacity: 0;
@@ -23,26 +23,33 @@
     left: 0;
     right: 0;
     bottom: 0;
+    z-index: 1;
+    transition: opacity 500ms ease;
   }
 
   &:hover .showFncWhenHover {
-    opacity: 1;
-    right: 20px;
-    transition:
-      opacity 500ms,
-      right 300ms;
+    transform: translateX(0);
+    pointer-events: auto;
   }
   .showFncWhenHover {
     position: absolute;
     opacity: 0;
     bottom: 20px;
     right: 20px;
+    z-index: 2;
     background-color: white;
+    transform: translateX(10px);
+    pointer-events: none;
+    transition:
+      opacity 300ms ease,
+      transform 300ms ease;
   }
   .boxIcon {
     width: 40px;
     height: 40px;
     @include flex_box_custom(center, center, 0px);
+    cursor: pointer;
+    transition: background-color 300ms ease;
 
     img {
       width: 17px;
@@ -50,7 +57,6 @@
     }
     &:hover {
       background-color: rgb(222, 222, 222);
-      transition: background-color 500ms;
     }
   }
 }

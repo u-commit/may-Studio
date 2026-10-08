@@ -1,6 +1,6 @@
 import Banner from '@components/Banner/Banner';
 import MyHeader from '@components/Header/Header';
-import SalesHomePage from '@components/salesHomePage/salesHomePage';
+import SalesHomePage from '@components/SalesHomePage/salesHomePage.jsx';
 import AdvanceHeading from '@components/AdvanceHeading/AdvanceHeading';
 import Info from '@components/Info/Info';
 import HeadingListProduct from '../HeadingListProduct/HeadingListProduct';

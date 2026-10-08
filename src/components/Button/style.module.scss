@@ -6,10 +6,21 @@
   color: $white_color;
   font-size: 14px;
   font-weight: 300;
-
+  transition:
+    background-color 300ms ease,
+    color 300ms ease,
+    border-color 300ms ease,
+    box-shadow 300ms ease,
+    transform 300ms ease;
   cursor: pointer;
+
   &:hover {
-    transition: background-color 300ms;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgb(0 0 0 / 18%);
+  }
+
+  &:active {
+    transform: translateY(0);
   }
 }
 

@@ -1,26 +1,44 @@
-import styles from './styles.module.scss';
-import item1 from '../../assets/images/Item.jpg';
-import item2 from '../../assets/images/Item2.1.jpg';
+import styles from './styles.module.css';
+import item1 from '../../assets/images/Item.png';
+import item3 from '../../assets/images/image3.png';
 import Button from '@components/Button/Button';
+import useTranslateXImage from './TranslateXImage.js';
+import { useRef } from 'react';
 function SalesHomePage() {
-  const { container } = styles;
+  const { container, title, des, boxbtn, boximg } = styles;
+  const sectionRef = useRef(null);
+  const { translateXPosition } = useTranslateXImage(sectionRef);
+
   return (
-    <div className={container}>
-      <div>
+    <div className={container} ref={sectionRef}>
+      <div
+        className={boximg}
+        style={{
+          transform: `translateX(${translateXPosition}px)`,
+          transition: 'transform 0.6s ease',
+        }}
+      >
         <img src={item1} alt='Item 1' />
       </div>
       <div>
-        <h2>Sales of The Year</h2>
-        <p>
-          Gói trọn sự nhẹ nhàng và thanh lịch trong từng đường may. Khám phá
-          ngay những thiết kế yêu thích với mức giá ưu đãi đặc biệt.
+        <h2 className={title}>Sale Of The Year</h2>
+        <p className={des}>
+          Timeless designs crafted with elegance. Discover your unique style
+          every day.
         </p>
-        <div>
-          <Button content={'Shop Now '} />
+
+        <div className={boxbtn}>
+          <Button content={'Read more'} isPrimary={false} />
         </div>
       </div>
-      <div>
-        <img src={item2} alt='Item 1' />
+      <div
+        className={boximg}
+        style={{
+          transform: `translateX(-${translateXPosition}px)`,
+          transition: 'transform 0.6s ease',
+        }}
+      >
+        <img src={item3} alt='Item 2' />
       </div>
     </div>
   );
