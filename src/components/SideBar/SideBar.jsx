@@ -3,6 +3,7 @@ import { SideBarContext } from '@/contexts/SideBarProvide';
 import styles from './styles.module.scss';
 import classNames from 'classnames';
 import { IoClose } from 'react-icons/io5';
+import LogIn from '../ContentSideBar/Login/Login';
 function SideBar() {
   const { container, overlay, sideBar, slideSideBar, boxIcon } = styles;
   const { isOpen, setIsOpen } = useContext(SideBarContext);
@@ -28,7 +29,7 @@ function SideBar() {
             <IoClose />
           </div>
         )}
-        sideBar
+        <LogIn />
       </div>
     </div>
   );
