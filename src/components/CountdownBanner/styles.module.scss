@@ -1,7 +1,7 @@
 @import '@styles/mixin.scss';
 @import '@styles/variable.scss';
 .container {
-  background-image: url('https://xstore.b-cdn.net/elementor2/marseille04/wp-content/uploads/sites/2/2022/12/photo-of-man-wearing-white-hoodie-5474310.jpeg');
+  background-image: url('../../assets/images/BannerCountdownTimer.jpg');
   height: 409px;
   width: calc(100% / 2);
   background-repeat: no-repeat;
@@ -11,7 +11,7 @@
   @include flex_box_custom(center, center, 10px);
 }
 .title {
-  color: $four_color;
+  color: #fff;
   font-size: 28px;
   margin-bottom: 5px;
   text-align: center;

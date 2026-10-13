@@ -2,13 +2,11 @@ import styles from './styles.module.css';
 import item1 from '../../assets/images/Item.png';
 import item3 from '../../assets/images/image3.png';
 import Button from '@components/Button/Button';
-import useTranslateXImage from './TranslateXImage.js';
-import { useRef } from 'react';
+import useTranslateXImage from '@/hoocks/useTranslateXImage';
+
 function SalesHomePage() {
   const { container, title, des, boxbtn, boximg } = styles;
-  const sectionRef = useRef(null);
-  const { translateXPosition } = useTranslateXImage(sectionRef);
-
+  const { sectionRef, translateXPosition } = useTranslateXImage();
   return (
     <div className={container} ref={sectionRef}>
       <div

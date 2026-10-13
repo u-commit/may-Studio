@@ -2,8 +2,7 @@
 @import '@styles/variable.scss';
 .container {
   @include flex_box_custom(center, center, 0px);
-  position: absolute;
-  top: 0;
+
   left: 0;
   right: 0;
 }
@@ -14,10 +13,25 @@
   justify-content: space-between;
   height: 83px;
 }
+.topheader {
+  position: absolute;
+  top: 0;
+}
+.fixHeader {
+  position: fixed;
+  top: -83px;
 
+  z-index: 999;
+  background-color: #ffffffe5;
+  transform: translateY(83px);
+  transition: transform 0.8s ease;
+  box-shadow: 2px 0px 12px 0px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(10px);
+}
 .containerBoxIcon {
   @include flex_box_custom(center, center, 10px);
 }
+
 .containerBox {
   @include flex_box_custom(center, center, 20px);
 }
@@ -32,25 +46,25 @@
   height: 26px;
 }
 .menu {
+  position: relative;
+  display: inline-block;
   cursor: pointer;
-  padding-top: 9px;
+  padding: 9px 0 6px;
   font-size: 15px;
   color: $primary-color;
 }
 .menu::after {
   content: '';
-  display: block;
-  height: 3px;
-  background-color: $primary-color;
-  transform-origin: right;
-  margin-top: 5px;
-  transform: scale(0);
-  opacity: 0;
-  transition:
-    transform 300ms,
-    opacity 500ms;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  background-color: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 250ms ease;
 }
 .menu:hover::after {
-  opacity: 1;
-  transform: scale(1);
+  transform: scaleX(1);
 }

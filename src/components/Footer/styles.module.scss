@@ -1,0 +1,18 @@
+@import '@styles/mixin.scss';
+@import '@styles/variable.scss';
+.container {
+  @include flex_box_custom(center, center, 15px);
+  flex-direction: column;
+  background-color: #363636;
+  margin-top: 50px;
+  color: $white_color;
+  padding: 50px 0;
+  .boxNav {
+    @include flex_box_custom(center, center, 20px);
+    font-size: 18px;
+    :hover {
+      opacity: 0.6;
+      cursor: pointer;
+    }
+  }
+}

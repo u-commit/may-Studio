@@ -1,20 +1,27 @@
 .container {
-  display: flex;
-  justify-content: space-between;
+  width: min(1250px, calc(100% - 48px));
+  margin: 100px auto 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr) minmax(0, 1fr);
   align-items: center;
-  gap: 0;
-  margin-top: 100px;
+  gap: clamp(16px, 3vw, 40px);
+  overflow: hidden;
+}
+
+.container > div:nth-child(2) {
+  min-width: 0;
 }
 
 .title {
-  font-size: 35px;
+  font-size: clamp(24px, 3vw, 35px);
   font-weight: 400;
   color: #555;
   text-align: center;
 }
 
 .des {
-  width: 461px;
+  width: 100%;
+  max-width: 461px;
   font-size: 16px;
   color: #555;
   line-height: 30px;
@@ -29,8 +36,14 @@
 }
 
 .boximg {
-  display: flex;
-  justify-content: center;
-  align-items: center;
   width: 100%;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+}
+
+.boximg img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }

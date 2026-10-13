@@ -1,5 +1,5 @@
-@import '@styles/variable.module.scss';
-@import '@styles/mixin.module.scss';
+@import '@styles/variable.scss';
+@import '@styles/mixin.scss';
 
 .container {
   @include flex_box_custom(space-between, center, 0px);

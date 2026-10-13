@@ -6,7 +6,7 @@ function Banner() {
     <div className={container}>
       <div className={content}>
         <h1 className={title}>MÂY-STUDIO</h1>
-        <div className={des}>Elevate Your Everyday Style</div>
+        <div className={des}>Your Style, Your Story, Your Statement</div>
 
         <Button content={'Go to shop'} />
       </div>

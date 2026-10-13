@@ -4,5 +4,5 @@
 }
 
 .container {
-  width: 1250px;
+  width: min(1250px, calc(100% - 48px));
 }/*# sourceMappingURL=styles.module.css.map */
