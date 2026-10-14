@@ -5,6 +5,8 @@ import classNames from 'classnames';
 import { IoClose } from 'react-icons/io5';
 import LogIn from '../ContentSideBar/Login/Login';
 import Compare from '../ContentSideBar/Compare/Compare';
+import WhisList from '../ContentSideBar/WhishList/WhishList';
+import Cart from '../ContentSideBar/Cart/Cart';
 function SideBar() {
   const { container, overlay, sideBar, slideSideBar, boxIcon } = styles;
   const { isOpen, setIsOpen, type } = useContext(SideBarContext);
@@ -17,11 +19,10 @@ function SideBar() {
         return <LogIn />;
       case 'compare':
         return <Compare />;
-        z;
       case 'wishlist':
-        return 'wishlist';
+        return <WhisList />;
       case 'cart':
-        return 'cart';
+        return <Cart />;
       default:
         break;
     }

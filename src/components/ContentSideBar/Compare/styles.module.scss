@@ -2,5 +2,14 @@
 @import '@styles/variable.scss';
 
 .container {
-  padding: 30px 20px 0 20px;
+  @include flex_box_custom(space-between, unset, 20px);
+  flex-direction: column;
+  padding: 30px 20px;
+  height: 90%;
+  .boxContent {
+  }
+
+  .boxIcon {
+    @include flex_box_custom(center, center, 10px);
+  }
 }

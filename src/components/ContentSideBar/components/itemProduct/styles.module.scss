@@ -19,16 +19,27 @@
     transition: all 0.3s ease;
   }
   .boxConTent {
-    @include flex_box_custom(center, flex-start, 10px);
+    @include flex_box_custom(center, flex-start, 0px);
     flex-direction: column;
 
     .title {
       font-size: 20px;
       color: $primary_color;
     }
+    .size {
+      font-size: 12px;
+      color: $thr_color;
+      margin-top: 5px;
+      margin-bottom: 10px;
+    }
 
     .price {
-      font-size: 12px;
+      font-size: 16px;
+      color: $thr_color;
+      margin-bottom: 7px;
+    }
+    .sku {
+      font-size: 16px;
       color: $thr_color;
     }
   }
