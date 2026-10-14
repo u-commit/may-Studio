@@ -3,9 +3,9 @@ import { dataBoxicon, dataMenu } from './constants';
 import Menu from './Menu/Menu';
 import styles from './styles.module.scss';
 import logo from '@icons/images/logo.png';
-import reloadIcon from '@icons/svgs/reloadIcon.svg';
-import cartIcon from '@icons/svgs/cartIcon.svg';
-import heartIcon from '@icons/svgs/heartIcon.svg';
+import { TfiReload } from 'react-icons/tfi';
+import { CiHeart } from 'react-icons/ci';
+import { PiShoppingCartThin } from 'react-icons/pi';
 import useScrollHandling from '../../hoocks/useScrollHanding';
 import { useContext, useEffect, useState } from 'react';
 import classNames from 'classnames';
@@ -22,8 +22,11 @@ function MyHeader() {
   } = styles;
   const { scrollPosition } = useScrollHandling();
   const [fixedPosition, setFixedPosition] = useState(false);
-  const { isOpen, setIsOpen } = useContext(SideBarContext);
-  console.log(isOpen);
+  const { setIsOpen, setType } = useContext(SideBarContext);
+  const handleOpenSideBar = (type) => {
+    setIsOpen(true);
+    setType(type);
+  };
   useEffect(() => {
     // if (scrollPosition > 100) {
     //   setFixedPosition(true);
@@ -47,13 +50,7 @@ function MyHeader() {
           </div>
           <div className={containerMenu}>
             {dataMenu.slice(0, 3).map((item) => {
-              return (
-                <Menu
-                  content={item.content}
-                  href={item.href}
-                  setIsOpen={setIsOpen}
-                />
-              );
+              return <Menu content={item.content} href={item.href} />;
             })}
           </div>
         </div>
@@ -67,19 +64,28 @@ function MyHeader() {
         <div className={containerBox}>
           <div className={containerMenu}>
             {dataMenu.slice(3, dataMenu.length).map((item) => {
-              return (
-                <Menu
-                  content={item.content}
-                  href={item.href}
-                  setIsOpen={setIsOpen}
-                />
-              );
+              return <Menu content={item.content} href={item.href} />;
             })}
           </div>
           <div className={containerBoxIcon}>
-            <img width='26' height='26' src={reloadIcon} alt='reload' />
-            <img width='26' height='26' src={heartIcon} alt='heart' />
-            <img width='26' height='26' src={cartIcon} alt='' />
+            <TfiReload
+              style={{
+                fontSize: '20px',
+              }}
+              onClick={() => handleOpenSideBar('compare')}
+            />
+            <CiHeart
+              style={{
+                fontSize: '25px',
+              }}
+              onClick={() => handleOpenSideBar('wishlist')}
+            />
+            <PiShoppingCartThin
+              style={{
+                fontSize: '25px',
+              }}
+              onClick={() => handleOpenSideBar('cart')}
+            />
           </div>
         </div>
       </div>
