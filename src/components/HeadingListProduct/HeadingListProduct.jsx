@@ -2,8 +2,11 @@ import MainLayout from '@components/Layout/Layout';
 import styles from './styles.module.scss';
 import CountdownBanner from '@components/CountdownBanner/CountdownBanner';
 import ProductItem from '@components/ProductItem/ProductItem';
-function HeadingListProduct({ data }) {
+
+function HeadingListProduct({ data, showCountdown }) {
   const { container, containerItem } = styles;
+
+  if (!showCountdown) return null;
 
   return (
     <MainLayout>
@@ -13,8 +16,8 @@ function HeadingListProduct({ data }) {
           {data.map((item) => (
             <ProductItem
               key={item.id}
-              src={item.images[0]}
-              prevSrc={item.images[1]}
+              src={item.images?.[0]}
+              prevSrc={item.images?.[1]}
               name={item.name}
               price={item.price}
               details={item}

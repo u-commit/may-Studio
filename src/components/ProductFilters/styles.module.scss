@@ -1,0 +1,16 @@
+.filters {
+  max-width: 1180px;
+  margin: 28px auto 18px;
+  padding: 0 20px;
+  font-family: Inter, Arial, sans-serif;
+}
+
+.categoryBrowser { display: flex; align-items: center; flex-wrap: wrap; gap: 7px; color: #728075; font-size: 11px; }
+.categoryBrowser > span { margin-right: 3px; font-weight: 600; }
+.categoryChip,.categoryActive { min-height: 29px; border: 1px solid #e1e6df; border-radius: 20px; padding: 0 12px; background: #fff; color: #647267; font-size: 10px; transition: .2s ease; }
+.categoryChip:hover { border-color: #91a78c; color: #4c654d; }
+.categoryActive { border-color: #526e54; background: #526e54; color: #fff; }
+
+@media (max-width: 600px) {
+  .filters { margin: 22px auto 13px; padding: 0 14px; }
+}

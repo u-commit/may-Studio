@@ -10,7 +10,9 @@ import useScrollHandling from '../../hoocks/useScrollHanding';
 import { useContext, useEffect, useState } from 'react';
 import classNames from 'classnames';
 import { SideBarContext } from '../../contexts/SideBarProvide';
-function MyHeader() {
+import SearchOverlay from './SearchOverlay/SearchOverlay';
+
+function MyHeader({ products = [], categories = [], search = '', category = 'all', onSearch }) {
   const {
     containerBoxIcon,
     containerMenu,
@@ -22,6 +24,7 @@ function MyHeader() {
   } = styles;
   const { scrollPosition } = useScrollHandling();
   const [fixedPosition, setFixedPosition] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
   const { setIsOpen, setType } = useContext(SideBarContext);
   const handleOpenSideBar = (type) => {
     setIsOpen(true);
@@ -36,6 +39,7 @@ function MyHeader() {
     setFixedPosition(scrollPosition > 100);
   }, [scrollPosition]);
   return (
+    <>
     <div
       className={classNames(container, topheader, {
         [fixHeader]: fixedPosition,
@@ -64,7 +68,7 @@ function MyHeader() {
         <div className={containerBox}>
           <div className={containerMenu}>
             {dataMenu.slice(3, dataMenu.length).map((item) => {
-              return <Menu content={item.content} href={item.href} />;
+              return <Menu content={item.content} href={item.href} onSearchClick={() => setSearchOpen(true)} />;
             })}
           </div>
           <div className={containerBoxIcon}>
@@ -90,6 +94,19 @@ function MyHeader() {
         </div>
       </div>
     </div>
+    <SearchOverlay
+      open={searchOpen}
+      products={products}
+      categories={categories}
+      currentSearch={search}
+      currentCategory={category}
+      onClose={() => setSearchOpen(false)}
+      onSearch={(query, selectedCategory) => {
+        onSearch?.(query, selectedCategory);
+        setSearchOpen(false);
+      }}
+    />
+    </>
   );
 }
 

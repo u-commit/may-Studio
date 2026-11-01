@@ -1,0 +1,4 @@
+.productForm { box-shadow: 0 5px 18px rgba(37, 54, 41, .035); }
+.wideField { grid-column: 1 / -1; }
+.imagePreviews { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.imagePreviews img { width: 62px; height: 62px; border: 1px solid #e5eae4; border-radius: 6px; object-fit: cover; }

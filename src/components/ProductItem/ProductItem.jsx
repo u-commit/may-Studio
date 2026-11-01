@@ -4,10 +4,9 @@ import cartIcon from '@icons/svgs/cartIcon.svg';
 import heartIcon from '@icons/svgs/heartIcon.svg';
 function ProductItem({ src, PrevSrc, prevSrc, name, price }) {
   const previewSrc = PrevSrc ?? prevSrc;
-  const { boxImg, showImgWhenHover, showFncWhenHover, boxIcon, title, Price } =
-    styles;
+  const { productCard, boxImg, showImgWhenHover, showFncWhenHover, boxIcon, title, Price } = styles;
   return (
-    <div>
+    <div className={productCard}>
       <div className={boxImg}>
         <img src={src} alt='' />
         {previewSrc && (

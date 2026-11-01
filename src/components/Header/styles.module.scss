@@ -71,3 +71,15 @@
 .menu:hover::after {
   transform: scaleX(1);
 }
+.accountMenu { padding: 0; }
+.accountMenu::after { display: none; }
+.accountAvatar {
+  width: 58px;
+  height: 58px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #edf3eb;
+  color: #58745a;
+}
+.accountAvatar svg { width: 22px; height: 22px; stroke-width: 2; }

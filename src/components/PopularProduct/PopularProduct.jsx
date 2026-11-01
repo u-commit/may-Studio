@@ -1,11 +1,15 @@
 import styles from './styles.module.scss';
 import MainLayout from '@components/Layout/Layout';
 import ProductItem from '@components/ProductItem/ProductItem';
-function PopularProduct({ data }) {
-  const { container } = styles;
+function PopularProduct({ data, searchMode = false }) {
+  const containerClass = [
+    styles.container,
+    searchMode && styles.searchResults,
+    searchMode && data.length > 0 && data.length < 4 && styles.searchResultsFew,
+  ].filter(Boolean).join(' ');
   return (
     <MainLayout>
-      <div className={container}>
+      <div id={searchMode ? 'product-list' : undefined} className={containerClass}>
         {data.map((item) => (
           <ProductItem
             key={item.id}
