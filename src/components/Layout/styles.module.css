@@ -1,8 +1,11 @@
 .wrapLayout {
+  width: 100%;
+  min-width: 0;
   display: flex;
   justify-content: center;
 }
 
 .container {
-  width: min(1250px, calc(100% - 48px));
+  width: min(1250px, 100%);
+  min-width: 0;
 }/*# sourceMappingURL=styles.module.css.map */

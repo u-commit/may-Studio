@@ -1,0 +1,47 @@
+@import '@styles/mixin.scss';
+@import '@styles/variable.scss';
+
+.metricCard {
+  @include flex_box_custom(center, flex-start, 8px);
+  min-height: 124px;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid $line;
+  border-radius: 9px;
+  padding: 15px;
+  background: #fff;
+  text-align: left;
+}
+.metricGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+.metricCard {
+  @include flex_box_custom(center, flex-start, 8px);
+  min-height: 124px;
+  flex-direction: column;
+  border: 1px solid $line;
+  border-radius: 9px;
+  padding: 15px;
+  background: $white_color;
+  text-align: left;
+}
+button.metricCard {
+  width: 100%;
+  color: $ink;
+}
+.metricCard span {
+  color: $four_color;
+  font-size: 15px;
+  font-weight: 500;
+}
+.metricCard strong {
+  color: #324236;
+  font-weight: 500;
+  font-size: 24px;
+}
+.metricCard small {
+  color: $four_color;
+  font-size: 12px;
+}

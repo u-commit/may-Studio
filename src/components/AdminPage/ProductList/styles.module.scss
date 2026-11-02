@@ -1,5 +1,259 @@
-.productList { min-width: 0; }
-.productCell { min-width: 220px; display: flex; align-items: center; gap: 9px; white-space: normal; }
-.productThumb { width: 46px; height: 52px; display: grid; place-items: center; flex: 0 0 46px; overflow: hidden; border-radius: 6px; background: #edf1ea; color: #8a9889; font-size: 8px; }
-.productThumb img { width: 100%; height: 100%; object-fit: cover; }
-.productCell p { max-width: 260px; margin: 4px 0 0; color: #89948a; font-size: 8px; line-height: 1.4; }
+@import '@styles/variable.scss';
+
+.productList {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid $line;
+  border-radius: 12px;
+  background: $white_color;
+  box-shadow: 0 8px 24px rgba(37, 54, 41, 0.04);
+}
+
+.cardHeading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 20px 16px;
+}
+
+.cardHeading h2 {
+  margin: 0;
+  color: #3d4a40;
+  font-size: 18px;
+  font-weight: 650;
+}
+
+.cardHeading p {
+  margin: 5px 0 0;
+  color: #849087;
+  font-size: 13px;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-top: 1px solid #eff2ee;
+  padding: 12px 20px;
+}
+
+.searchBox {
+  width: min(100%, 390px);
+  height: 42px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  border: 1px solid #e2e8e1;
+  border-radius: 7px;
+  padding: 0 12px;
+  color: #8d998e;
+}
+
+.searchBox:focus-within {
+  border-color: #9fb39b;
+  box-shadow: 0 0 0 3px #eff4ed;
+}
+
+.searchBox svg {
+  width: 16px;
+  flex: 0 0 auto;
+}
+
+.searchBox input {
+  width: 100%;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: $ink;
+  font-size: 13px;
+}
+
+.filterSelect {
+  min-width: 155px;
+  height: 42px;
+  border: 1px solid #e2e8e1;
+  border-radius: 7px;
+  padding: 0 12px;
+  background: $white_color;
+  color: #67746a;
+  font-size: 13px;
+}
+
+.tableScroll {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.table thead {
+  background: #f8f9f7;
+}
+
+.table th {
+  height: 42px;
+  padding: 0 12px;
+  color: #89958c;
+  font-size: 11px;
+  font-weight: 650;
+  letter-spacing: 0.45px;
+}
+
+.table td {
+  min-height: 72px;
+  border-top: 1px solid #eff2ee;
+  padding: 11px 12px;
+  color: #5e6b61;
+  font-size: 13px;
+}
+
+.table td:first-child,
+.table th:first-child {
+  padding-left: 20px;
+}
+
+.table td strong,
+.table td small {
+  display: block;
+}
+
+.table td strong {
+  color: #3f4c42;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.table td small {
+  margin-top: 5px;
+  color: #919b93;
+  font-size: 11px;
+}
+
+.productCell {
+  min-width: 250px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  white-space: normal;
+}
+
+.productThumb {
+  width: 52px;
+  height: 58px;
+  display: grid;
+  place-items: center;
+  flex: 0 0 52px;
+  overflow: hidden;
+  border-radius: 7px;
+  background: #edf1ea;
+  color: #8a9889;
+  font-size: 10px;
+}
+
+.productThumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.productCell p {
+  max-width: 280px;
+  display: -webkit-box;
+  overflow: hidden;
+  margin: 5px 0 0;
+  color: #89948a;
+  font-size: 11px;
+  line-height: 1.4;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.status {
+  display: inline-block;
+  border-radius: 20px;
+  padding: 5px 9px;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.statusActive {
+  background: #edf4eb;
+  color: #628365;
+}
+
+.statusWarning {
+  background: #fbf2e7;
+  color: #a27c47;
+}
+
+.statusInactive {
+  background: #f0f2f0;
+  color: #869088;
+}
+
+.rowActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 3px;
+}
+
+.rowButton {
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: #879188;
+}
+
+.rowButton:hover,
+.rowButton:focus-visible {
+  background: #eff4ed;
+  color: #577251;
+}
+
+.rowButton svg {
+  width: 15px;
+  height: 15px;
+}
+
+.emptyState {
+  height: 100px;
+  color: #879389 !important;
+  text-align: center;
+}
+
+@media (max-width: 700px) {
+  .cardHeading {
+    padding: 18px 14px 14px;
+  }
+
+  .toolbar {
+    align-items: stretch;
+    flex-direction: column;
+    padding: 12px 14px;
+  }
+
+  .searchBox,
+  .filterSelect {
+    width: 100%;
+  }
+
+  .table {
+    min-width: 820px;
+  }
+
+  .table td:first-child,
+  .table th:first-child {
+    padding-left: 14px;
+  }
+}

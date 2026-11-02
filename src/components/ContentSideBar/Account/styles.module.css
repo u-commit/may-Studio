@@ -1,0 +1,73 @@
+.account {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 38px 22px 24px;
+  text-align: center;
+  color: #3d4b40;
+}
+
+.avatar {
+  width: 58px;
+  height: 58px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #edf3eb;
+  color: #58745a;
+}
+
+.avatar svg {
+  width: 25px;
+  height: 25px;
+}
+
+.eyebrow {
+  margin: 18px 0 6px;
+  color: #80927c;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.account h2 {
+  margin: 0;
+  font: 500 21px Georgia, serif;
+}
+
+.identifier {
+  margin: 7px 0 0;
+  color: #88938a;
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
+.status {
+  margin-top: 15px;
+  border-radius: 18px;
+  padding: 5px 10px;
+  background: #edf4eb;
+  color: #668267;
+  font-size: 10px;
+}
+
+.signOutButton {
+  min-height: 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  margin-top: 25px;
+  border: 1px solid #eadfd9;
+  border-radius: 6px;
+  padding: 0 13px;
+  background: #fffaf8;
+  color: #9f6d5e;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.signOutButton svg {
+  width: 14px;
+  height: 14px;
+}/*# sourceMappingURL=styles.module.css.map */

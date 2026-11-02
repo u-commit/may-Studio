@@ -1,1 +1,131 @@
-.sidebar { position: sticky; top: 0; }
+.sidebar {
+  position: sticky;
+  top: 0;
+}
+.sidebar {
+  width: 235px;
+  flex: 0 0 235px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 24px 14px;
+  background: #222c25;
+  color: #dbe3dc;
+}
+.brand {
+  display: block;
+  margin-top: 4px;
+  color: #91a092;
+  font-size: 8px;
+  letter-spacing: 1.2px;
+}
+.navCaption {
+  padding: 0 9px 10px;
+  color: #829084;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 8px 34px;
+  font-size: 13px;
+  font-weight: 750;
+  letter-spacing: 1px;
+}
+.navCaption {
+  padding: 0 9px 10px;
+  color: #829084;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+.sidebar nav {
+  display: grid;
+  gap: 4px;
+}
+.navItem {
+  height: 41px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 0;
+  border-radius: 7px;
+  padding: 0 10px;
+  background: transparent;
+  color: #b5c0b7;
+  text-align: left;
+  font-size: 11px;
+}
+.navItem svg {
+  width: 16px;
+  height: 16px;
+}
+.navItem:hover,
+.navItemActive {
+  background: #36453a;
+  color: #fff;
+}
+.navItemActive {
+  box-shadow: inset 2px 0 #bdcfb4;
+}
+.sidebarFooter {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-top: auto;
+  border-top: 1px solid #3b463e;
+  padding: 15px 4px 0;
+}
+.sidebarFooter > span:last-child {
+  display: grid;
+  gap: 3px;
+}
+.sidebarFooter strong {
+  font-size: 11px;
+}
+.sidebarFooter small {
+  color: #9aa79c;
+  font-size: 9px;
+}
+.avatar {
+  width: 31px;
+  height: 31px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #e9dccc;
+  color: #715b4b;
+  font-size: 9px;
+  font-weight: 700;
+}
+
+@media (max-width: 700px) {
+  .sidebar {
+    width: 100%;
+    min-height: auto;
+    padding: 12px;
+  }
+
+  .brand {
+    padding: 0 4px 10px;
+  }
+
+  .navCaption,
+  .sidebarFooter {
+    display: none;
+  }
+
+  .sidebar nav {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .navItem {
+    justify-content: center;
+    gap: 4px;
+    padding: 0 4px;
+    font-size: 11px;
+  }
+}

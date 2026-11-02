@@ -1,0 +1,26 @@
+.container {
+  padding: 30px 20px 0px 20px;
+}
+.container .title {
+  font-style: 20px;
+  text-align: center;
+  margin-bottom: 40px;
+}
+.container .BoxRemeber {
+  margin-bottom: 30px;
+}
+.container .BoxRemeber input {
+  margin-right: 5px;
+}
+.container .BoxRemeber span {
+  font-size: 15px;
+}
+.container .lostpw {
+  margin-top: 15px;
+  text-align: center;
+  font-size: 15px;
+}
+.container .lostpw:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}/*# sourceMappingURL=styles.module.css.map */

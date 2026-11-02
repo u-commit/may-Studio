@@ -4,6 +4,7 @@
 .container {
   margin-bottom: 20px;
   .labelInput {
+    display: block;
     font-size: 14px;
     color: $four_color;
     margin-bottom: 5px;
@@ -28,5 +29,15 @@
       font-size: 12px;
       color: red;
     }
+  }
+}
+
+.compactContainer {
+  margin-bottom: 0;
+
+  .boxInput input {
+    height: 42px;
+    padding: 10px 12px;
+    border-radius: 6px;
   }
 }

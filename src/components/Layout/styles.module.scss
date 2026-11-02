@@ -1,7 +1,10 @@
 .wrapLayout {
+  width: 100%;
+  min-width: 0;
   display: flex;
   justify-content: center;
 }
 .container {
-  width: 1250px;
+  width: min(1250px, 100%);
+  min-width: 0;
 }

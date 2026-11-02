@@ -1,0 +1,31 @@
+@import '@styles/mixin.scss';
+@import '@styles/variable.scss';
+.pageHeading {
+  @include flex_box_custom(space-between, flex-end, 15px);
+  margin-bottom: 22px;
+}
+.eyebrow {
+  color: #80927c;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+.pageHeading h1 {
+  margin: 5px 0;
+  font-weight: 500;
+  font-size: 29px;
+}
+.pageHeading button.primaryButton {
+  width: auto;
+  min-width: 170px;
+  height: 44px;
+  border-radius: 7px;
+  padding: 0 16px;
+  font-size: 13px;
+  font-weight: 600;
+}
+.pageHeading p {
+  margin: 0;
+  color: $muted;
+  font-size: 13px;
+}
