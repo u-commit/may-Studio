@@ -1,7 +1,7 @@
 import styles from './styles.module.scss';
 import MainLayout from '@components/Layout/Layout';
 import ProductItem from '@components/ProductItem/ProductItem';
-function PopularProduct({ data, searchMode = false }) {
+function PopularProduct({ data, variantsByProductId, searchMode = false }) {
   const containerClass = [
     styles.container,
     searchMode && styles.searchResults,
@@ -9,7 +9,7 @@ function PopularProduct({ data, searchMode = false }) {
   ].filter(Boolean).join(' ');
   return (
     <MainLayout>
-      <div id={searchMode ? 'product-list' : undefined} className={containerClass}>
+      <div id='product-list' className={containerClass}>
         {data.map((item) => (
           <ProductItem
             key={item.id}
@@ -17,6 +17,7 @@ function PopularProduct({ data, searchMode = false }) {
             prevSrc={item.images[1]}
             name={item.name}
             price={item.price}
+            variants={variantsByProductId?.get(String(item.id)) ?? []}
             details={item}
           />
         ))}

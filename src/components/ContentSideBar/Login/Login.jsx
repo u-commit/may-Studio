@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '../../Button/Button';
 import InputCommon from '../../InputCommon/InputCommon';
@@ -16,20 +16,42 @@ function readLoginResponse(response, identifier) {
   const candidates = [];
   let current = response?.payload ?? response;
 
-  for (let depth = 0; current && typeof current === 'object' && depth < 5; depth += 1) {
+  for (
+    let depth = 0;
+    current && typeof current === 'object' && depth < 5;
+    depth += 1
+  ) {
     candidates.push(current);
     const nested = current.data ?? current.result ?? current.payload;
     if (!nested || nested === current) break;
     current = nested;
   }
 
-  const findValue = (selector) => candidates.map(selector).find((value) => value != null);
-  const token = findValue((value) => value.token ?? value.accessToken ?? value.access_token ?? value.jwt)
-    ?? response?.headerToken;
-  const apiUser = findValue((value) => value.user ?? value.account ?? value.customer ?? value.profile ?? value.userInfo);
-  const userRecord = apiUser && typeof apiUser === 'object'
-    ? apiUser
-    : candidates.find((value) => value.role != null || value.roleName != null || value.username != null || value.email != null) ?? {};
+  const findValue = (selector) =>
+    candidates.map(selector).find((value) => value != null);
+  const token =
+    findValue(
+      (value) =>
+        value.token ?? value.accessToken ?? value.access_token ?? value.jwt
+    ) ?? response?.headerToken;
+  const apiUser = findValue(
+    (value) =>
+      value.user ??
+      value.account ??
+      value.customer ??
+      value.profile ??
+      value.userInfo
+  );
+  const userRecord =
+    apiUser && typeof apiUser === 'object'
+      ? apiUser
+      : (candidates.find(
+          (value) =>
+            value.role != null ||
+            value.roleName != null ||
+            value.username != null ||
+            value.email != null
+        ) ?? {});
   const user = {
     ...userRecord,
     email: userRecord.email ?? userRecord.username ?? identifier,
@@ -45,7 +67,7 @@ function LogIn() {
   const [isRegister, setIsRegister] = useState(false);
   const { toast } = useContext(ToastContext);
   const { signIn } = useAuth();
-  const { setIsOpen } = useContext(SideBarContext);
+  const { isOpen, setIsOpen } = useContext(SideBarContext);
   const navigate = useNavigate();
 
   const formik = useFormik({
@@ -55,7 +77,9 @@ function LogIn() {
       cfmpassword: '',
     },
     validationSchema: Yup.object({
-      email: Yup.string().email('Email không hợp lệ').required('Vui lòng nhập email'),
+      email: Yup.string()
+        .email('Email không hợp lệ')
+        .required('Vui lòng nhập email'),
       password: Yup.string()
         .min(6, 'Mật khẩu cần ít nhất 6 ký tự')
         .required('Vui lòng nhập mật khẩu'),
@@ -68,15 +92,25 @@ function LogIn() {
     onSubmit: async (values) => {
       try {
         if (isRegister) {
-          if (values.email.trim().toLowerCase() === DEMO_ADMIN_CREDENTIALS.email) {
-            throw new Error('Email quản trị được dành riêng, vui lòng dùng email khác để đăng ký.');
+          if (
+            values.email.trim().toLowerCase() === DEMO_ADMIN_CREDENTIALS.email
+          ) {
+            throw new Error(
+              'Email quản trị được dành riêng, vui lòng dùng email khác để đăng ký.'
+            );
           }
           const response = await register({
             username: values.email.trim(),
             password: values.password,
           });
           const result = response?.data ?? response;
-          const account = result?.user ?? result?.customer ?? result?.account ?? result?.data?.user ?? result?.data ?? result;
+          const account =
+            result?.user ??
+            result?.customer ??
+            result?.account ??
+            result?.data?.user ??
+            result?.data ??
+            result;
           addRegisteredCustomer({
             ...(account && typeof account === 'object' ? account : {}),
             email: account?.email ?? values.email,
@@ -94,7 +128,11 @@ function LogIn() {
           }
           signIn({
             token: 'demo-admin-session',
-            user: { email: DEMO_ADMIN_CREDENTIALS.email, role: 'admin', name: 'Quản trị viên' },
+            user: {
+              email: DEMO_ADMIN_CREDENTIALS.email,
+              role: 'admin',
+              name: 'Quản trị viên',
+            },
           });
           setIsOpen(false);
           toast('Đăng nhập admin thành công.');
@@ -106,10 +144,15 @@ function LogIn() {
           username: values.email.trim(),
           password: values.password,
         });
-        const { token, user } = readLoginResponse(response, values.email.trim());
+        const { token, user } = readLoginResponse(
+          response,
+          values.email.trim()
+        );
 
         if (!token) {
-          throw new Error('API đăng nhập thành công nhưng không trả token. Kiểm tra phần Response của endpoint /login.');
+          throw new Error(
+            'API đăng nhập thành công nhưng không trả token. Kiểm tra phần Response của endpoint /login.'
+          );
         }
 
         if (String(user.role ?? user.roleName).toLowerCase() === 'admin') {
@@ -121,25 +164,45 @@ function LogIn() {
         toast('Đăng nhập thành công.');
         navigate('/user');
       } catch (error) {
-        toast(error.response?.data?.message ?? error.message ?? 'Không thể hoàn tất yêu cầu.');
+        toast(
+          error.response?.data?.message ??
+            error.message ??
+            'Không thể hoàn tất yêu cầu.'
+        );
       }
     },
   });
 
+  useEffect(() => {
+    if (isOpen) {
+      setIsRegister(false);
+      formik.resetForm();
+    }
+  }, [isOpen, formik.resetForm]);
+
   const handleToggle = () => {
-    setIsRegister((current) => !current);
-    formik.resetForm();
+    setIsRegister((prev) => !prev);
+    formik.resetForm({
+      values: {
+        email: '',
+        password: '',
+        cfmpassword: '',
+      },
+      errors: {},
+      touched: {},
+    });
   };
 
   return (
     <div className={container}>
       <div className={title}>{isRegister ? 'Đăng ký' : 'Đăng nhập'}</div>
-      <form onSubmit={formik.handleSubmit}>
+      <form onSubmit={formik.handleSubmit} autoComplete='new-password'>
         <InputCommon
           id='email'
           label='Email'
           type='email'
           isRequired
+          autoComplete='off'
           formik={formik}
         />
         <InputCommon
@@ -147,6 +210,7 @@ function LogIn() {
           label='Mật khẩu'
           type='password'
           isRequired
+          autoComplete='new-password'
           formik={formik}
         />
         {isRegister && (
@@ -166,7 +230,13 @@ function LogIn() {
         )}
         <div style={{ display: 'flex', justifyContent: 'center' }}>
           <Button
-            content={formik.isSubmitting ? 'Đang xử lý...' : isRegister ? 'Tạo tài khoản' : 'Đăng nhập'}
+            content={
+              formik.isSubmitting
+                ? 'Đang xử lý...'
+                : isRegister
+                  ? 'Tạo tài khoản'
+                  : 'Đăng nhập'
+            }
             type='submit'
             disabled={formik.isSubmitting}
           />
@@ -180,7 +250,9 @@ function LogIn() {
         >
           <Button
             content={
-              isRegister ? 'Đã có tài khoản? Đăng nhập' : 'Chưa có tài khoản? Đăng ký'
+              isRegister
+                ? 'Đã có tài khoản? Đăng nhập'
+                : 'Chưa có tài khoản? Đăng ký'
             }
             isPrimary={false}
             type='button'

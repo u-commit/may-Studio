@@ -9,23 +9,31 @@ function Account() {
   const { user, signOut } = useAuth();
   const { setIsOpen } = useContext(SideBarContext);
   const navigate = useNavigate();
-  const name = user?.name ?? user?.fullName ?? user?.username ?? user?.email ?? 'Khách hàng';
-  const identifier = user?.email ?? user?.username ?? '';
+  const name =
+    user?.name ??
+    user?.fullName ??
+    user?.username ??
+    user?.email ??
+    'Khách hàng';
+  const Identifier = user?.email ?? user?.username ?? '';
 
   function handleSignOut() {
     signOut();
     setIsOpen(false);
     navigate('/');
   }
-
+  const { account, avatar, eyebrow, identifier, status, signOutButton } =
+    styles;
   return (
-    <section className={styles.account}>
-      <div className={styles.avatar}><FiUser /></div>
-      <p className={styles.eyebrow}>TÀI KHOẢN KHÁCH HÀNG</p>
+    <section className={account}>
+      <div className={avatar}>
+        <FiUser />
+      </div>
+      <p className={eyebrow}>TÀI KHOẢN KHÁCH HÀNG</p>
       <h2>{name}</h2>
-      {identifier && <p className={styles.identifier}>{identifier}</p>}
-      <span className={styles.status}>Đang hoạt động</span>
-      <button className={styles.signOutButton} type="button" onClick={handleSignOut}>
+      {Identifier && <p className={identifier}>{Identifier}</p>}
+      <span className={status}>Đang hoạt động</span>
+      <button className={signOutButton} type='button' onClick={handleSignOut}>
         <FiLogOut /> Đăng xuất
       </button>
     </section>

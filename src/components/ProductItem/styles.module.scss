@@ -78,3 +78,76 @@
   color: $thr_color;
   font-weight: 400;
 }
+.priceBlock {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+.originalPrice {
+  color: #8b938b;
+  font-size: 12px;
+}
+.variantOptions {
+  display: grid;
+  gap: 8px;
+  margin-top: 10px;
+}
+.optionGroup {
+  display: grid;
+  gap: 5px;
+}
+.optionLabel,
+.variantMeta {
+  color: #69736b;
+  font-size: 11px;
+}
+.colorOptions,
+.sizeOptions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+.colorOption {
+  width: 20px;
+  height: 20px;
+  border: 1px solid #d9dfd8;
+  border-radius: 50%;
+  padding: 0;
+  background: var(--swatch-color, #d9dfd8);
+  cursor: pointer;
+}
+.colorOption.optionSelected {
+  outline: 1px solid #526e54;
+  outline-offset: 2px;
+}
+.sizeOption {
+  min-width: 29px;
+  min-height: 25px;
+  border: 1px solid #e1e6df;
+  border-radius: 3px;
+  padding: 2px 6px;
+  background: #fff;
+  color: #647267;
+  font-size: 10px;
+  cursor: pointer;
+}
+.sizeOption.optionSelected {
+  border-color: #526e54;
+  color: #435d45;
+  box-shadow: inset 0 0 0 1px #526e54;
+}
+.colorOption:focus-visible,
+.sizeOption:focus-visible {
+  outline: 2px solid #526e54;
+  outline-offset: 2px;
+}
+.variantMeta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 5px 10px;
+}
+.inStock { color: #526e54; }
+.outOfStock { color: #a45951; }

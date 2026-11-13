@@ -1,0 +1,90 @@
+@import '@styles/mixin.scss';
+
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  background: rgba(25, 34, 27, 0.48);
+}
+.dialog {
+  width: min(100%, 430px);
+  border: 1px solid #e2e8e1;
+  @include radius_common(12px);
+  padding: 22px;
+  background: #fff;
+  box-shadow: 0 22px 70px rgba(25, 34, 27, 0.22);
+}
+.alertIcon {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  @include radius_common(50%);
+  background: #fbefeb;
+  color: #a8645d;
+}
+.alertIcon svg {
+  width: 19px;
+  height: 19px;
+}
+.dialog h2 {
+  margin: 13px 0 6px;
+  color: #354238;
+  font-size: 18px;
+  font-weight: 600;
+}
+.dialog p {
+  margin: 0;
+  color: #7e8980;
+  font-size: 12px;
+  line-height: 1.5;
+}
+.variantList {
+  display: grid;
+  gap: 7px;
+  margin: 14px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.variantList li {
+  display: grid;
+  gap: 3px;
+  border: 1px solid #edf0ec;
+  @include radius_common(6px);
+  padding: 8px 10px;
+}
+.variantList strong {
+  color: #4c594f;
+  font-size: 11px;
+}
+.variantList span,
+.moreItems {
+  color: #89948a;
+  font-size: 10px;
+}
+.variantList .moreItems {
+  border: 0;
+  padding: 3px 0;
+}
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 20px;
+}
+.actionButton,
+.deleteButton {
+  width: auto !important;
+  min-width: 100px;
+  height: 38px !important;
+  border-radius: 6px !important;
+  padding: 0 11px !important;
+  font-size: 11px !important;
+}
+.deleteButton {
+  background: #9e5e57 !important;
+}

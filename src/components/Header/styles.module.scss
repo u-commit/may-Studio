@@ -2,31 +2,74 @@
 @import '@styles/variable.scss';
 .container {
   @include flex_box_custom(center, center, 0px);
-
+  width: 100%;
   left: 0;
   right: 0;
+  box-sizing: border-box;
 }
 .containerHeader {
-  width: 1250px;
-  display: flex;
+  width: min(1440px, 100%);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   align-items: center;
-  justify-content: space-between;
+  gap: 24px;
   height: 83px;
+  padding: 0 clamp(22px, 4vw, 64px);
+  box-sizing: border-box;
 }
 .topheader {
   position: absolute;
   top: 0;
+  z-index: 1000;
 }
 .fixHeader {
   position: fixed;
   top: -83px;
-
-  z-index: 999;
-  background-color: #ffffffe5;
+  background-color: rgba(255, 255, 255, 0.96);
   transform: translateY(83px);
-  transition: transform 0.8s ease;
-  box-shadow: 2px 0px 12px 0px rgba(0, 0, 0, 0.15);
-  backdrop-filter: blur(10px);
+  transition: transform 0.35s ease, background-color 0.35s ease;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.12);
+  backdrop-filter: blur(12px);
+}
+.heroHeader {
+  background: linear-gradient(
+    180deg,
+    rgba(8, 10, 9, 0.74) 0%,
+    rgba(8, 10, 9, 0.34) 65%,
+    rgba(8, 10, 9, 0) 100%
+  );
+}
+.containerHeader > div:first-child {
+  justify-self: start;
+}
+.containerHeader > div:nth-child(2) {
+  justify-self: center;
+}
+.containerHeader > div:last-child {
+  justify-self: end;
+}
+.brandLogo {
+  display: block;
+  width: 160px;
+  height: auto;
+  transition: filter 0.3s ease;
+}
+.heroHeader .brandLogo {
+  filter: brightness(0) invert(1);
+}
+.heroHeader .menu {
+  color: #fff;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.35);
+}
+.heroHeader .utilityIcons {
+  color: #fff;
+  filter: drop-shadow(0 1px 5px rgba(0, 0, 0, 0.3));
+}
+.heroHeader .boxIcon {
+  background: rgba(255, 255, 255, 0.94);
+}
+.heroHeader .boxIcon img {
+  filter: brightness(0);
 }
 .containerBoxIcon {
   @include flex_box_custom(center, center, 20px);
@@ -47,6 +90,12 @@
   background-color: $primary-color;
   width: 26px;
   height: 26px;
+}
+.boxIcon img {
+  display: block;
+  width: 17px;
+  height: 17px;
+  object-fit: contain;
 }
 .menu {
   position: relative;
@@ -83,3 +132,103 @@
   color: #58745a;
 }
 .accountAvatar svg { width: 22px; height: 22px; stroke-width: 2; }
+
+@media (max-width: 1100px) {
+  .containerHeader {
+    gap: 16px;
+    padding-inline: 24px;
+  }
+  .containerMenu {
+    gap: 20px;
+  }
+  .containerBox {
+    gap: 14px;
+  }
+  .containerBoxIcon {
+    gap: 14px;
+  }
+  .containerHeader > div:first-child .containerBoxIcon {
+    display: none;
+  }
+}
+
+@media (max-width: 760px) {
+  .containerHeader {
+    height: 108px;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-rows: 66px 42px;
+    padding-inline: 20px;
+  }
+  .containerHeader > div:first-child {
+    display: contents;
+  }
+  .containerHeader > div:first-child .containerBoxIcon {
+    display: none;
+  }
+  .containerHeader > div:first-child .containerMenu {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    justify-self: center;
+    gap: clamp(18px, 5vw, 36px);
+  }
+  .containerHeader > div:nth-child(2) {
+    grid-column: 1;
+    grid-row: 1;
+    justify-self: start;
+  }
+  .containerHeader > div:last-child {
+    grid-column: 2;
+    grid-row: 1;
+    min-width: 0;
+  }
+  .brandLogo {
+    width: 138px;
+  }
+  .containerMenu {
+    gap: 16px;
+  }
+  .containerBox {
+    gap: 12px;
+  }
+  .containerBoxIcon {
+    gap: 12px;
+  }
+  .utilityIcons {
+    gap: 12px;
+  }
+}
+
+@media (max-width: 520px) {
+  .containerHeader {
+    height: 102px;
+    grid-template-rows: 62px 40px;
+    padding-inline: 16px;
+  }
+  .brandLogo {
+    width: 118px;
+  }
+  .rightMenu {
+    gap: 12px;
+  }
+  .rightMenu > :first-child {
+    display: none;
+  }
+  .containerHeader > div:first-child .containerMenu {
+    gap: clamp(14px, 4vw, 22px);
+  }
+  .utilityIcons {
+    gap: 10px;
+  }
+  .utilityIcons > :first-child,
+  .utilityIcons > :nth-child(2) {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fixHeader,
+  .brandLogo,
+  .menu::after {
+    transition-duration: 0.01ms;
+  }
+}

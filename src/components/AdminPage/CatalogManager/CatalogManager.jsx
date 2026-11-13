@@ -78,7 +78,6 @@ function CatalogManager({
                 <h2>{label}</h2>
                 <p>{values.length} mục trong danh mục</p>
               </div>
-              <span className={count}>{values.length}</span>
             </div>
 
             <form
@@ -130,7 +129,9 @@ function CatalogManager({
                             compact
                             autoFocus
                             value={editValue}
-                            onChange={(event) => setEditValue(event.target.value)}
+                            onChange={(event) =>
+                              setEditValue(event.target.value)
+                            }
                           />
                           <Button
                             className={editButton}
@@ -209,7 +210,7 @@ function CatalogManager({
                           </p>
                         ) : productsError ? (
                           <p className={mutedText}>
-                            Không tải được sản phẩm từ API.
+                            Không tải được sản phẩm...
                           </p>
                         ) : relatedProducts.length === 0 ? (
                           <p className={mutedText}>
@@ -217,10 +218,7 @@ function CatalogManager({
                           </p>
                         ) : (
                           relatedProducts.map((product) => (
-                            <article
-                              className={productDetail}
-                              key={product.id}
-                            >
+                            <article className={productDetail} key={product.id}>
                               <div className={detailImage}>
                                 {product.images?.[0] ? (
                                   <img

@@ -5,10 +5,8 @@ function Banner() {
   return (
     <div className={container}>
       <div className={content}>
-        <h1 className={title}>MÂY-STUDIO</h1>
+        <h1 className={title}>Mây</h1>
         <div className={des}>Your Style, Your Story, Your Statement</div>
-
-        <Button content={'Go to shop'} />
       </div>
     </div>
   );

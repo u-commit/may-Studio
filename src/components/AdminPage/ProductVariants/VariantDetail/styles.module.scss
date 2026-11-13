@@ -1,0 +1,122 @@
+@import '@styles/mixin.scss';
+
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(25, 34, 27, 0.48);
+}
+.dialog {
+  width: min(100%, 650px);
+  border: 1px solid #e2e8e1;
+  @include radius_common(12px);
+  padding: 21px;
+  background: #fff;
+  box-shadow: 0 22px 70px rgba(25, 34, 27, 0.22);
+}
+.header {
+  @include flex_box_custom(space-between, flex-start, 14px);
+  margin-bottom: 17px;
+}
+.header > div > span {
+  color: #859283;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+.header h2 {
+  margin: 5px 0;
+  color: #354238;
+  font-size: 19px;
+  font-weight: 600;
+}
+.header p {
+  margin: 0;
+  color: #849087;
+  font-size: 11px;
+}
+.header > button {
+  width: 31px;
+  height: 31px;
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 0;
+  @include radius_common(6px);
+  background: #f3f5f2;
+  color: #667267;
+}
+.body {
+  display: grid;
+  grid-template-columns: 180px minmax(0, 1fr);
+  gap: 18px;
+}
+.image {
+  min-height: 220px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  @include radius_common(8px);
+  background: #edf1ea;
+  color: #879188;
+  font-size: 11px;
+}
+.image img {
+  width: 100%;
+  height: 100%;
+  max-height: 300px;
+  object-fit: cover;
+}
+.detailsList {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-content: start;
+  gap: 0 14px;
+  margin: 0;
+}
+.detailsList > div {
+  min-width: 0;
+  border-bottom: 1px solid #eff2ee;
+  padding: 9px 0;
+}
+.detailsList dt {
+  color: #879188;
+  font-size: 10px;
+}
+.detailsList dd {
+  overflow-wrap: anywhere;
+  margin: 4px 0 0;
+  color: #455248;
+  font-size: 12px;
+  font-weight: 550;
+}
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 9px;
+  margin-top: 19px;
+}
+.actionButton {
+  width: auto !important;
+  min-width: 95px;
+  height: 38px !important;
+  border-radius: 6px !important;
+  padding: 0 12px !important;
+  font-size: 11px !important;
+}
+@media (max-width: 540px) {
+  .dialog {
+    padding: 15px;
+  }
+  .body {
+    grid-template-columns: 1fr;
+  }
+  .image {
+    min-height: 180px;
+    max-height: 230px;
+  }
+}

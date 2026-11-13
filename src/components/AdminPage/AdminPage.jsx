@@ -10,8 +10,7 @@ import styles from './styles.module.scss';
 import PageHeading from './PageHeading/PageHeading';
 import OverviewDashboard from './OverviewDashboard/OverviewDashboard';
 import ProductsSection from './ProductsSection/ProductsSection';
-import MainLayout from '@components/Layout/Layout';
-import Button from '@components/Button/Button.jsx';
+import ProductVariants from './ProductVariants/ProductVariants';
 
 function AdminPage() {
   const [page, setPage] = useState('overview');
@@ -51,94 +50,98 @@ function AdminPage() {
   const pageTitle = {
     overview: 'Tổng quan',
     products: 'Sản phẩm',
+    variants: 'Biến thể',
     catalog: 'Danh mục',
     customers: 'Khách hàng',
   }[page];
 
-  const { adminShell, mainContent, pageContent, apiNotice, retryButton } =
-    styles;
+  const { adminShell, mainContent, pageContent } = styles;
 
   return (
     <div className={adminShell}>
       <AdminSidebar activePage={page} onNavigate={setPage} />
 
-      <div className={mainContent}>
+      <main className={mainContent}>
         <AdminHeader pageTitle={pageTitle} />
+        <div className={pageContent}>
+          <PageHeading
+            pageTitle={pageTitle}
+            showAddProduct={page === 'products'}
+            onAddProduct={startAddProduct}
+          />
 
-        <MainLayout>
-          <div className={pageContent}>
-            <PageHeading
-              pageTitle={pageTitle}
-              showAddProduct={page === 'products'}
+          {(page === 'products' || page === 'catalog') &&
+            (productsLoading || productsError) && (
+              <div
+                className={styles.apiNotice}
+                role={productsError ? 'alert' : 'status'}
+              >
+                <span>
+                  {productsError
+                    ? `Không tải được sản phẩm từ API: ${productsError}`
+                    : 'Đang tải dữ liệu sản phẩm từ API...'}
+                </span>
+
+                {productsError && (
+                  <button
+                    className={styles.secondaryButton}
+                    type='button'
+                    onClick={reloadProducts}
+                  >
+                    Thử lại
+                  </button>
+                )}
+              </div>
+            )}
+
+          {page === 'overview' && (
+            <OverviewDashboard
+              products={products}
+              customers={customers}
               onAddProduct={startAddProduct}
             />
-
-            {(page === 'products' || page === 'catalog') &&
-              (productsLoading || productsError) && (
-                <div
-                  className={apiNotice}
-                  role={productsError ? 'alert' : 'status'}
-                >
-                  <span>
-                    {productsError
-                      ? `Không tải được sản phẩm từ API: ${productsError}`
-                      : 'Đang tải dữ liệu sản phẩm từ API...'}
-                  </span>
-
-                  {productsError && (
-                    <Button
-                      className={retryButton}
-                      isPrimary={false}
-                      type='button'
-                      onClick={reloadProducts}
-                      content='Thử lại'
-                    />
-                  )}
-                </div>
-              )}
-
-            {page === 'overview' && (
-              <OverviewDashboard
-                products={products}
-                customers={customers}
-                onAddProduct={startAddProduct}
-              />
-            )}
-            {page === 'products' && (
-              <ProductsSection
-                products={products}
-                catalog={catalog}
-                productsLoading={productsLoading}
-                productsError={productsError}
-                form={form}
-                formOpen={formOpen}
-                editing={Boolean(editingId)}
-                onChange={handleChange}
-                onToggleSize={handleToggleSize}
-                onSubmit={handleSaveProduct}
-                onCancel={closeProductForm}
-                onEdit={editProduct}
-                onDelete={deleteProduct}
-              />
-            )}
-            {page === 'catalog' && (
-              <CatalogManager
-                catalog={catalog}
-                products={products}
-                productsLoading={productsLoading}
-                productsError={productsError}
-                onAdd={addCatalogItem}
-                onRename={renameCatalogItem}
-                onDelete={deleteCatalogItem}
-                onSaveManufacturerDetails={saveManufacturerDetails}
-              />
-            )}
-            {page === 'customers' && (
-              <CustomerList customers={customers} onToggle={toggleCustomer} />
-            )}
-          </div>
-        </MainLayout>
-      </div>
+          )}
+          {page === 'products' && (
+            <ProductsSection
+              products={products}
+              catalog={catalog}
+              productsLoading={productsLoading}
+              productsError={productsError}
+              form={form}
+              formOpen={formOpen}
+              editing={Boolean(editingId)}
+              onChange={handleChange}
+              onToggleSize={handleToggleSize}
+              onSubmit={handleSaveProduct}
+              onCancel={closeProductForm}
+              onEdit={editProduct}
+              onDelete={deleteProduct}
+            />
+          )}
+          {page === 'variants' && (
+            <ProductVariants
+              products={products}
+              catalog={catalog}
+              productsLoading={productsLoading}
+            />
+          )}
+          {page === 'catalog' && (
+            <CatalogManager
+              catalog={catalog}
+              products={products}
+              productsLoading={productsLoading}
+              productsError={productsError}
+              onAdd={addCatalogItem}
+              onRename={renameCatalogItem}
+              onDelete={deleteCatalogItem}
+              onSaveManufacturerDetails={saveManufacturerDetails}
+            />
+          )}
+          {page === 'customers' && (
+            <CustomerList customers={customers} onToggle={toggleCustomer} />
+          )}
+        </div>
+      </main>
     </div>
   );
 }

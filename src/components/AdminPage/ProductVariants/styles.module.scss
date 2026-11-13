@@ -1,0 +1,137 @@
+@import '@styles/variable.scss';
+@import '@styles/mixin.scss';
+
+.page {
+  min-width: 0;
+}
+.pageHeader {
+  @include flex_box_custom(space-between, flex-end, 20px);
+  margin: 0 0 19px;
+}
+.headingCopy {
+  min-width: 0;
+}
+
+.eyebrow {
+  color: #80927c;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+.pageHeader h1 {
+  margin: 5px 0 4px;
+  color: $ink;
+  font-size: 26px;
+  font-weight: 550;
+}
+.pageHeader p {
+  margin: 0;
+  color: $muted;
+  font-size: 12px;
+}
+.addButton {
+  width: auto !important;
+  min-width: 155px;
+  height: 42px !important;
+  border-radius: 7px !important;
+  padding: 0 15px !important;
+  font-size: 12px !important;
+}
+.addButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+.listToolbar {
+  @include flex_box_custom(space-between, center, 12px);
+  margin: 0 2px 10px;
+}
+.listToolbar > div:first-child {
+  @include flex_box_custom(flex-start, baseline, 9px);
+}
+.listToolbar strong {
+  color: #475449;
+  font-size: 14px;
+  font-weight: 650;
+}
+.listToolbar span {
+  color: #89948a;
+  font-size: 10px;
+}
+.selectedActions {
+  @include flex_box_custom(flex-end, center, 9px);
+}
+.bulkDeleteButton {
+  width: auto !important;
+  min-width: 115px;
+  height: 33px !important;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 6px !important;
+  padding: 0 10px !important;
+  font-size: 10px !important;
+}
+.bulkDeleteButton svg {
+  width: 13px;
+  height: 13px;
+}
+.pagination {
+  @include flex_box_custom(space-between, center, 12px);
+  margin-top: 13px;
+  color: #89948a;
+  font-size: 10px;
+}
+.pagination > div {
+  @include flex_box_custom(flex-end, center, 4px);
+}
+.pagination button {
+  min-width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #e4e9e3;
+  @include radius_common(5px);
+  padding: 0 7px;
+  background: #fff;
+  color: #748075;
+  font-size: 10px;
+}
+.pagination button:hover:not(:disabled),
+.pagination button.currentPage {
+  border-color: #91a58d;
+  background: #eef3ec;
+  color: #526a4f;
+}
+.pagination button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+.pagination button svg {
+  width: 13px;
+  height: 13px;
+}
+
+@media (max-width: 760px) {
+  .pageHeader {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 13px;
+  }
+  .pageHeader h1 {
+    font-size: 22px;
+  }
+  .addButton {
+    width: 100% !important;
+  }
+  .listToolbar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .pagination {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .pagination > div {
+    align-self: flex-end;
+  }
+}

@@ -3,7 +3,7 @@ import styles from './styles.module.scss';
 import CountdownBanner from '@components/CountdownBanner/CountdownBanner';
 import ProductItem from '@components/ProductItem/ProductItem';
 
-function HeadingListProduct({ data, showCountdown }) {
+function HeadingListProduct({ data, variantsByProductId, showCountdown }) {
   const { container, containerItem } = styles;
 
   if (!showCountdown) return null;
@@ -20,6 +20,7 @@ function HeadingListProduct({ data, showCountdown }) {
               prevSrc={item.images?.[1]}
               name={item.name}
               price={item.price}
+              variants={variantsByProductId?.get(String(item.id)) ?? []}
               details={item}
             />
           ))}

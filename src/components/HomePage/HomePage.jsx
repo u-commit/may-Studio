@@ -8,12 +8,13 @@ import { useEffect, useMemo, useState } from 'react';
 import { getProduct } from '@/apis/productsService';
 import PopularProduct from '../PopularProduct/PopularProduct';
 import MyFooter from '@components/Footer/Footer';
-import ProductFilters from '../ProductFilters/ProductFilters';
 import {
   applyProductChanges,
   PRODUCT_CHANGES_EVENT,
   PRODUCT_CHANGES_STORAGE_KEY,
 } from '../../utils/productStore';
+import { normalizeProductList } from '../AdminPage/productAdapter';
+import useStorefrontVariants from '../ProductItem/useStorefrontVariants';
 
 function getCategoryName(product) {
   const category = product.category ?? product.categoryName ?? product.type;
@@ -26,6 +27,7 @@ function HomePage() {
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState('all');
   const [loadError, setLoadError] = useState('');
+  const variantsByProductId = useStorefrontVariants(listProducts);
 
   useEffect(() => {
     let isMounted = true;
@@ -40,13 +42,7 @@ function HomePage() {
 
     getProduct({ sortType: 0 })
       .then((res) => {
-        const products = Array.isArray(res?.contents)
-          ? res.contents
-          : Array.isArray(res?.data?.contents)
-            ? res.data.contents
-            : Array.isArray(res)
-              ? res
-              : [];
+        const products = normalizeProductList(res);
         if (isMounted) setListProducts(applyProductChanges(products));
       })
       .catch(() => {
@@ -107,23 +103,18 @@ function HomePage() {
       {!hasSearch && <Banner />}
       {!hasSearch && <Info />}
       {!hasSearch && <AdvanceHeading />}
-      {!hasSearch && (
-        <ProductFilters
-          category={category}
-          categories={categories}
-          onCategoryChange={setCategory}
-        />
-      )}
       {loadError && <p role='alert'>{loadError}</p>}
       {!loadError &&
         filteredProducts.length === 0 &&
         listProducts.length > 0 && <p>Không tìm thấy sản phẩm phù hợp.</p>}
       <HeadingListProduct
         data={showFeaturedBanner ? filteredProducts.slice(0, 2) : []}
+        variantsByProductId={variantsByProductId}
         showCountdown={showFeaturedBanner}
       />
       <PopularProduct
         data={showFeaturedBanner ? filteredProducts.slice(2) : filteredProducts}
+        variantsByProductId={variantsByProductId}
         searchMode={hasSearch}
       />
       {!hasSearch && <SalesHomePage />}

@@ -21,6 +21,10 @@ function MyHeader({ products = [], categories = [], search = '', category = 'all
     container,
     topheader,
     fixHeader,
+    heroHeader,
+    brandLogo,
+    utilityIcons,
+    rightMenu,
   } = styles;
   const { scrollPosition } = useScrollHandling();
   const [fixedPosition, setFixedPosition] = useState(false);
@@ -43,6 +47,7 @@ function MyHeader({ products = [], categories = [], search = '', category = 'all
     <div
       className={classNames(container, topheader, {
         [fixHeader]: fixedPosition,
+        [heroHeader]: !fixedPosition,
       })}
     >
       <div className={containerHeader}>
@@ -59,19 +64,15 @@ function MyHeader({ products = [], categories = [], search = '', category = 'all
           </div>
         </div>
         <div>
-          <img
-            src={logo}
-            alt='logo'
-            style={{ width: '153px', height: '53px' }}
-          />
+          <img src={logo} alt='Mây Studio' className={brandLogo} />
         </div>
         <div className={containerBox}>
-          <div className={containerMenu}>
+          <div className={`${containerMenu} ${rightMenu}`}>
             {dataMenu.slice(3, dataMenu.length).map((item) => {
               return <Menu content={item.content} href={item.href} onSearchClick={() => setSearchOpen(true)} />;
             })}
           </div>
-          <div className={containerBoxIcon}>
+          <div className={`${containerBoxIcon} ${utilityIcons}`}>
             <TfiReload
               style={{
                 fontSize: '20px',
