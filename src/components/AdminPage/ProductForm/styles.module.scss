@@ -20,12 +20,88 @@
   flex-wrap: wrap;
   margin-top: 12px;
 }
-.imagePreviews img {
+.imagePreview {
+  position: relative;
   width: 62px;
   height: 62px;
+}
+.imagePreview img {
+  width: 100%;
+  height: 100%;
   border: 1px solid #e5eae4;
   border-radius: 6px;
   object-fit: cover;
+}
+.removeImageButton {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  width: 22px;
+  height: 22px;
+  border: 1px solid $line;
+  border-radius: 50%;
+  background: $white_color;
+  color: $variant-danger;
+  cursor: pointer;
+  line-height: 1;
+}
+.imageInput {
+  width: 100%;
+  min-height: 42px;
+  border: 1px solid #e5eae4;
+  border-radius: 6px;
+  padding: 6px;
+  background: #fff;
+  color: #4e5b51;
+  font-size: 14px;
+
+  &::file-selector-button {
+    margin-right: 10px;
+    border: 1px solid $line;
+    border-radius: 5px;
+    padding: 8px 12px;
+    background: $variant-accent-soft;
+    color: $variant-accent;
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    transition:
+      background-color 150ms ease,
+      color 150ms ease,
+      border-color 150ms ease;
+  }
+
+  &:hover::file-selector-button {
+    border-color: $variant-accent;
+    background: $variant-accent;
+    color: $variant-surface;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $variant-accent;
+    outline-offset: 2px;
+  }
+
+  &:disabled {
+    color: $muted;
+    cursor: not-allowed;
+
+    &::file-selector-button {
+      background: $variant-inactive-soft;
+      color: $variant-inactive;
+      cursor: not-allowed;
+    }
+  }
+}
+.imageHelp,
+.imageError {
+  font-size: 12px;
+}
+.imageHelp {
+  color: $muted;
+}
+.imageError {
+  color: $variant-danger;
 }
 .cardHeading {
   @include flex_box_custom(space-between, center);

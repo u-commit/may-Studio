@@ -32,6 +32,22 @@ test('mock service creates, edits, bulk saves, deletes, and orders variant photo
   });
   assert.ok(created.id);
 
+  const otherProduct = {
+    id: 'TEST-MAY002',
+    name: 'Sản phẩm khác',
+    price: 280000,
+  };
+  const otherProductVariant = await createVariant(otherProduct.id, {
+    sku: 'TEST-MAY002-BE-S',
+    color: { name: 'Be' },
+    size: 'S',
+    price: 280000,
+    salePrice: null,
+    stock: 2,
+    isActive: true,
+    images: [],
+  });
+
   await updateVariant(product.id, created.id, { stock: 4 });
   let current = await getProductVariants(product.id, product);
   const edited = current.find((item) => item.id === created.id);
@@ -66,4 +82,12 @@ test('mock service creates, edits, bulk saves, deletes, and orders variant photo
     current.some((item) => item.id === created.id),
     false
   );
+  const otherProductVariants = await getProductVariants(
+    otherProduct.id,
+    otherProduct
+  );
+  assert.ok(
+    otherProductVariants.some((item) => item.id === otherProductVariant.id)
+  );
+  await deleteVariant(otherProduct.id, otherProductVariant.id);
 });

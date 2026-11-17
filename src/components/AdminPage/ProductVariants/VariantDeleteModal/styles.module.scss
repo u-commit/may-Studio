@@ -19,6 +19,11 @@
   line-height: 1.5;
 }
 
+.dialog .error {
+  margin-top: $variant-space-3;
+  color: $variant-danger;
+}
+
 .actions {
   @include flex_box_custom(flex-end, center, $variant-space-2);
   margin-top: $variant-space-5;

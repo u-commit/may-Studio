@@ -90,7 +90,8 @@ export const INITIAL_CATALOG = {
 export const BLANK_PRODUCT = {
   name: '',
   description: '',
-  imagesText: '',
+  images: [],
+  uploadedImages: [],
   category: '',
   manufacturer: '',
   color: '',

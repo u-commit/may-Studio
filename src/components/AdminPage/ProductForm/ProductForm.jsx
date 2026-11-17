@@ -21,15 +21,17 @@ function ProductForm({
   form,
   catalog,
   editing,
+  imageUploading,
+  imageError,
   onChange,
   onToggleSize,
+  onAddProductImages,
+  onRemoveProductImage,
   onSubmit,
   onCancel,
 }) {
-  const imageUrls = form.imagesText
-    .split(',')
-    .map((url) => url.trim())
-    .filter(Boolean);
+  const existingImages = form.images ?? [];
+  const uploadedImages = form.uploadedImages ?? [];
 
   return (
     <form className={formCard} onSubmit={onSubmit}>
@@ -103,16 +105,25 @@ function ProductForm({
           isRequired
         />
 
-        <InputCommon
-          className={`${field} ${wideField}`}
-          inputClassName={inputControl}
-          compact
-          id='imagesText'
-          label='Ảnh sản phẩm (dán một hoặc nhiều đường dẫn, ngăn cách bằng dấu phẩy)'
-          value={form.imagesText}
-          onChange={onChange}
-          placeholder='https://.../san-pham.jpg'
-        />
+        <label className={`${field} ${wideField}`}>
+          <span>Thêm ảnh từ thiết bị</span>
+          <input
+            className={styles.imageInput}
+            type='file'
+            accept='image/*'
+            multiple
+            disabled={imageUploading || uploadedImages.length >= 4}
+            onChange={onAddProductImages}
+          />
+          {imageUploading && (
+            <small className={styles.imageHelp}>Đang tải ảnh…</small>
+          )}
+          {imageError && (
+            <small className={styles.imageError} role='alert'>
+              {imageError}
+            </small>
+          )}
+        </label>
 
         <label className={`${field} ${wideField}`}>
           <span>Thông tin sản phẩm</span>
@@ -126,10 +137,36 @@ function ProductForm({
         </label>
       </div>
 
-      {imageUrls.length > 0 && (
+      {(existingImages.length > 0 || uploadedImages.length > 0) && (
         <div className={imagePreviews}>
-          {imageUrls.map((url) => (
-            <img key={url} src={url} alt='Xem trước sản phẩm' />
+          {existingImages.map((url, index) => (
+            <div className={styles.imagePreview} key={`existing-${index}`}>
+              <img src={url} alt={`Ảnh sản phẩm ${index + 1}`} />
+              <button
+                className={styles.removeImageButton}
+                type='button'
+                aria-label={`Xóa ảnh sản phẩm ${index + 1}`}
+                onClick={() => onRemoveProductImage('existing', index)}
+              >
+                ×
+              </button>
+            </div>
+          ))}
+          {uploadedImages.map((url, index) => (
+            <div className={styles.imagePreview} key={`uploaded-${index}`}>
+              <img
+                src={url}
+                alt={`Ảnh sản phẩm tải lên ${index + 1}`}
+              />
+              <button
+                className={styles.removeImageButton}
+                type='button'
+                aria-label={`Xóa ảnh đã tải lên ${index + 1}`}
+                onClick={() => onRemoveProductImage('uploaded', index)}
+              >
+                ×
+              </button>
+            </div>
           ))}
         </div>
       )}
@@ -162,6 +199,7 @@ function ProductForm({
         <Button
           type='submit'
           className={actionButton}
+          disabled={imageUploading}
           content={editing ? 'Lưu thay đổi' : 'Thêm sản phẩm'}
         />
       </div>
