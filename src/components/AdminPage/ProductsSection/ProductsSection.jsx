@@ -12,6 +12,10 @@ function ProductsSection({
   editing,
   onChange,
   onToggleSize,
+  onAddProductImages,
+  onRemoveProductImage,
+  imageUploading,
+  imageError,
   onSubmit,
   onCancel,
   onEdit,
@@ -26,6 +30,10 @@ function ProductsSection({
         editing={editing}
         onChange={onChange}
         onToggleSize={onToggleSize}
+        onAddProductImages={onAddProductImages}
+        onRemoveProductImage={onRemoveProductImage}
+        imageUploading={imageUploading}
+        imageError={imageError}
         onSubmit={onSubmit}
         onCancel={onCancel}
       />

@@ -22,39 +22,6 @@ function formatNumber(value) {
   return Number.isFinite(amount) ? amount.toLocaleString('vi-VN') : '';
 }
 
-function CurrencyInput({ value, label, error, onChange }) {
-  const [text, setText] = useState(formatNumber(value));
-  const [focused, setFocused] = useState(false);
-
-  return (
-    <>
-      <input
-        className={styles.cellInput}
-        aria-label={label}
-        aria-invalid={Boolean(error)}
-        inputMode='numeric'
-        value={focused ? text : formatNumber(value)}
-        onFocus={() => {
-          setText(String(value ?? ''));
-          setFocused(true);
-        }}
-        onBlur={() => setFocused(false)}
-        onChange={(event) => {
-          const nextText = event.target.value;
-          setText(nextText);
-          const digits = nextText.replace(/[^\d]/g, '');
-          onChange(digits ? Number(digits) : '');
-        }}
-      />
-      {error && (
-        <small className={styles.cellError} role='alert'>
-          {error}
-        </small>
-      )}
-    </>
-  );
-}
-
 function ProductVariants({
   product,
   products,
@@ -74,7 +41,6 @@ function ProductVariants({
   const {
     draftVariants,
     filteredVariants,
-    summary,
     loading,
     saving,
     loadError,
@@ -84,15 +50,17 @@ function ProductVariants({
     statusFilter,
     editingVariant,
     deletingVariant,
+    deleting,
+    deleteError,
     headerImage,
     hasChanges,
     setQuery,
     setStatusFilter,
-    changeVariant,
     addVariants,
     editVariant,
     cancelEditVariant,
     deleteVariant,
+    cancelDelete,
     saveEditedVariant,
     confirmDelete,
     saveChanges,
@@ -108,6 +76,12 @@ function ProductVariants({
       ...(catalog?.sizes ?? []),
       ...draftVariants.map((variant) => variant.size).filter(Boolean),
     ]),
+  ];
+  const validationVariants = [
+    ...allVariants.filter(
+      (variant) => String(variant.productId) !== String(product.id)
+    ),
+    ...draftVariants,
   ];
 
   function cancelAndClose() {
@@ -133,11 +107,6 @@ function ProductVariants({
               </div>
               <div className={styles.headingCopy}>
                 <h2 id='product-variants-title'>{product.name}</h2>
-                <p>
-                  {product.id} · {summary.count} biến thể ·{' '}
-                  {summary.stock.toLocaleString('vi-VN')} tồn kho ·{' '}
-                  {summary.activeCount} đang bán
-                </p>
               </div>
             </div>
             <Button
@@ -188,7 +157,7 @@ function ProductVariants({
               onClick={() => setBatchModalOpen(true)}
               content={
                 <>
-                  <FiPlus aria-hidden='true' /> Thêm biến thể
+                  <FiPlus aria-hidden='true' /> Thêm loại sản phẩm
                 </>
               }
             />
@@ -241,6 +210,9 @@ function ProductVariants({
                     const errors = fieldErrors[variant.id] ?? {};
                     const images =
                       variant.images ?? (variant.image ? [variant.image] : []);
+                    const isActive = Boolean(
+                      variant.isActive ?? variant.status === 'active'
+                    );
                     return (
                       <tr key={variant.id}>
                         <td>
@@ -260,28 +232,17 @@ function ProductVariants({
                           </div>
                         </td>
                         <td>
-                          <select
-                            className={styles.cellInput}
-                            aria-label={`Màu sắc ${variant.sku || 'mới'}`}
-                            aria-invalid={Boolean(
-                              errors.color || errors.combination
-                            )}
-                            value={variant.color?.name ?? ''}
-                            onChange={(event) =>
-                              changeVariant(
-                                variant.id,
-                                'color',
-                                event.target.value
-                              )
-                            }
-                          >
-                            <option value=''>Chọn màu</option>
-                            {colorOptions.map((color) => (
-                              <option key={color} value={color}>
-                                {color}
-                              </option>
-                            ))}
-                          </select>
+                          <span className={styles.colorValue}>
+                            <i
+                              aria-hidden='true'
+                              style={{
+                                '--swatch-color':
+                                  variant.color?.hex ||
+                                  getColorHex(variant.color?.name),
+                              }}
+                            />
+                            {variant.color?.name || '—'}
+                          </span>
                           {(errors.color || errors.combination) && (
                             <small className={styles.cellError} role='alert'>
                               {errors.color || errors.combination}
@@ -289,48 +250,22 @@ function ProductVariants({
                           )}
                         </td>
                         <td>
-                          <select
-                            className={styles.cellInput}
-                            aria-label={`Kích thước ${variant.sku || 'mới'}`}
-                            aria-invalid={Boolean(
-                              errors.size || errors.combination
-                            )}
-                            value={variant.size ?? ''}
-                            onChange={(event) =>
-                              changeVariant(
-                                variant.id,
-                                'size',
-                                event.target.value
-                              )
-                            }
-                          >
-                            <option value=''>Chọn cỡ</option>
-                            {sizeOptions.map((size) => (
-                              <option key={size} value={size}>
-                                {size}
-                              </option>
-                            ))}
-                          </select>
-                          {errors.size && (
+                          <span className={styles.readOnlyValue}>
+                            {variant.size || '—'}
+                          </span>
+                          {(errors.size || errors.combination) && (
                             <small className={styles.cellError} role='alert'>
-                              {errors.size}
+                              {errors.size || errors.combination}
                             </small>
                           )}
                         </td>
                         <td>
-                          <input
-                            className={styles.cellInput}
-                            aria-label={`SKU biến thể ${variant.color?.name || ''} ${variant.size || ''}`}
-                            aria-invalid={Boolean(errors.sku)}
-                            value={variant.sku ?? ''}
-                            onChange={(event) =>
-                              changeVariant(
-                                variant.id,
-                                'sku',
-                                event.target.value
-                              )
-                            }
-                          />
+                          <span
+                            className={`${styles.readOnlyValue} ${styles.skuValue}`}
+                            title={variant.sku || ''}
+                          >
+                            {variant.sku || '—'}
+                          </span>
                           {errors.sku && (
                             <small className={styles.cellError} role='alert'>
                               {errors.sku}
@@ -338,44 +273,29 @@ function ProductVariants({
                           )}
                         </td>
                         <td>
-                          <CurrencyInput
-                            label={`Giá bán ${variant.sku || 'mới'}`}
-                            value={variant.price}
-                            error={errors.price}
-                            onChange={(value) =>
-                              changeVariant(variant.id, 'price', value)
-                            }
-                          />
+                          <span className={styles.readOnlyValue}>
+                            {formatNumber(variant.price) || '—'}
+                          </span>
+                          {errors.price && (
+                            <small className={styles.cellError} role='alert'>
+                              {errors.price}
+                            </small>
+                          )}
                         </td>
                         <td>
-                          <CurrencyInput
-                            label={`Giá khuyến mãi ${variant.sku || 'mới'}`}
-                            value={variant.salePrice}
-                            error={errors.salePrice}
-                            onChange={(value) =>
-                              changeVariant(variant.id, 'salePrice', value)
-                            }
-                          />
+                          <span className={styles.readOnlyValue}>
+                            {formatNumber(variant.salePrice) || '—'}
+                          </span>
+                          {errors.salePrice && (
+                            <small className={styles.cellError} role='alert'>
+                              {errors.salePrice}
+                            </small>
+                          )}
                         </td>
                         <td>
-                          <input
-                            className={styles.cellInput}
-                            type='number'
-                            min='0'
-                            step='1'
-                            aria-label={`Tồn kho ${variant.sku || 'mới'}`}
-                            aria-invalid={Boolean(errors.stock)}
-                            value={variant.stock ?? ''}
-                            onChange={(event) =>
-                              changeVariant(
-                                variant.id,
-                                'stock',
-                                event.target.value === ''
-                                  ? ''
-                                  : Number(event.target.value)
-                              )
-                            }
-                          />
+                          <span className={styles.readOnlyValue}>
+                            {formatNumber(variant.stock) || '0'}
+                          </span>
                           {errors.stock && (
                             <small className={styles.cellError} role='alert'>
                               {errors.stock}
@@ -383,28 +303,11 @@ function ProductVariants({
                           )}
                         </td>
                         <td>
-                          <Button
-                            variant='ghost'
-                            size='compact'
-                            className={styles.switch}
-                            type='button'
-                            role='switch'
-                            aria-checked={
-                              variant.isActive ?? variant.status === 'active'
-                            }
-                            aria-label={`Đang bán ${variant.sku || 'biến thể mới'}`}
-                            onClick={() =>
-                              changeVariant(
-                                variant.id,
-                                'isActive',
-                                !(
-                                  variant.isActive ??
-                                  variant.status === 'active'
-                                )
-                              )
-                            }
-                            content={<i />}
-                          />
+                          <span
+                            className={`${styles.statusBadge} ${isActive ? styles.statusActive : styles.statusInactive}`}
+                          >
+                            {isActive ? 'Đang bán' : 'Ngừng bán'}
+                          </span>
                         </td>
                         <td>
                           <div className={styles.rowActions}>
@@ -418,7 +321,7 @@ function ProductVariants({
                             <Button
                               variant='icon'
                               type='button'
-                              aria-label={`Xóa ${variant.sku || 'biến thể mới'}`}
+                              aria-label={`Xóa loại sản phẩm ${variant.sku || ''}`}
                               onClick={() => deleteVariant(variant)}
                               content={<FiTrash2 aria-hidden='true' />}
                             />
@@ -430,7 +333,7 @@ function ProductVariants({
                 {loading && (
                   <tr>
                     <td className={styles.emptyState} colSpan='9'>
-                      Đang tải biến thể…
+                      Đang tải loại sản pphẩm...
                     </td>
                   </tr>
                 )}
@@ -438,17 +341,8 @@ function ProductVariants({
                   <tr>
                     <td className={styles.emptyState} colSpan='9'>
                       {draftVariants.length
-                        ? 'Không có biến thể phù hợp.'
-                        : 'Sản phẩm chưa có biến thể.'}
-                      {!draftVariants.length && (
-                        <Button
-                          variant='outline'
-                          size='compact'
-                          type='button'
-                          onClick={() => setBatchModalOpen(true)}
-                          content='Thêm biến thể'
-                        />
-                      )}
+                        ? 'Không có loại sản phẩm  phù hợp.'
+                        : 'Sản phẩm chưa có loại sản phẩm.'}
                     </td>
                   </tr>
                 )}
@@ -462,11 +356,6 @@ function ProductVariants({
             </p>
           )}
           <footer className={styles.footer}>
-            <span>
-              {draftVariants.length} biến thể ·{' '}
-              {summary.stock.toLocaleString('vi-VN')} tồn kho ·{' '}
-              {summary.activeCount} đang bán
-            </span>
             <div>
               <Button
                 variant='ghost'
@@ -493,12 +382,7 @@ function ProductVariants({
           product={product}
           colors={colorOptions}
           sizes={sizeOptions}
-          existingVariants={[
-            ...allVariants.filter(
-              (variant) => String(variant.productId) !== String(product.id)
-            ),
-            ...draftVariants,
-          ]}
+          existingVariants={validationVariants}
           onClose={() => setBatchModalOpen(false)}
           onAdd={(variants) => {
             addVariants(variants);
@@ -511,7 +395,7 @@ function ProductVariants({
         <VariantEditModal
           key={editingVariant.id}
           variant={editingVariant}
-          existingVariants={allVariants}
+          existingVariants={validationVariants}
           colors={colorOptions}
           sizes={sizeOptions}
           productId={product.id}
@@ -522,7 +406,9 @@ function ProductVariants({
       {deletingVariant && (
         <VariantDeleteModal
           variant={deletingVariant}
-          onCancel={() => deleteVariant(null)}
+          deleting={deleting}
+          error={deleteError}
+          onCancel={cancelDelete}
           onConfirm={confirmDelete}
         />
       )}

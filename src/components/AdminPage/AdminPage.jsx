@@ -43,6 +43,10 @@ function AdminPage() {
     closeProductForm,
     handleChange,
     handleToggleSize,
+    addProductImages,
+    removeProductImage,
+    imageUploading,
+    imageError,
     saveProduct: handleSaveProduct,
   } = useProductForm({
     catalog,
@@ -116,6 +120,10 @@ function AdminPage() {
               editing={Boolean(editingId)}
               onChange={handleChange}
               onToggleSize={handleToggleSize}
+              onAddProductImages={addProductImages}
+              onRemoveProductImage={removeProductImage}
+              imageUploading={imageUploading}
+              imageError={imageError}
               onSubmit={handleSaveProduct}
               onCancel={closeProductForm}
               onEdit={editProduct}

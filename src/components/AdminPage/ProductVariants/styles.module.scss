@@ -228,32 +228,37 @@
   }
 }
 
-.cellInput {
+.readOnlyValue {
+  display: block;
   width: 100%;
   min-width: 0;
-  height: $variant-icon-button-size;
-  border: $variant-border-width solid transparent;
-  border-radius: $variant-radius-sm;
-  padding: 0 $variant-space-1;
-  background: transparent;
   color: $ink;
   font-size: $variant-font-sm;
+  overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
+}
 
-  &:hover,
-  &:focus-visible {
-    border-color: $line;
-    background: $variant-surface;
-  }
+.skuValue {
+  font-family: 'Roboto Mono', monospace;
+}
 
-  &:focus-visible {
-    @include variant_focus_ring($variant-accent-soft);
-    border-color: $variant-accent;
-    outline: none;
-  }
+.colorValue {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: $variant-space-2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 
-  &[aria-invalid='true'] {
-    border-color: $variant-danger;
+  i {
+    width: $variant-space-4;
+    height: $variant-space-4;
+    flex: 0 0 auto;
+    border: $variant-border-width solid $line;
+    border-radius: $variant-radius-pill;
+    background: var(--swatch-color);
   }
 }
 
@@ -264,32 +269,24 @@
   line-height: 1.25;
 }
 
-.switch {
-  width: $variant-row-switch-width;
-  height: $variant-row-switch-height;
-  display: flex;
+.statusBadge {
+  display: inline-flex;
   align-items: center;
-  border: $variant-border-width solid $line;
   border-radius: $variant-radius-pill;
-  padding: $variant-space-1;
-  background: $muted;
+  padding: $variant-space-1 $variant-space-2;
+  font-size: $variant-font-xs;
+  font-weight: 600;
+  white-space: nowrap;
+}
 
-  &[aria-checked='true'] {
-    justify-content: flex-end;
-    border-color: $variant-accent;
-    background: $variant-accent;
-  }
+.statusActive {
+  background: $variant-accent-soft;
+  color: $variant-accent;
+}
 
-  i {
-    width: $variant-space-4;
-    height: $variant-space-4;
-    border-radius: $variant-radius-pill;
-    background: $variant-surface;
-  }
-
-  &:focus-visible {
-    @include variant_focus_ring($variant-accent-soft);
-  }
+.statusInactive {
+  background: $variant-inactive-soft;
+  color: $variant-inactive;
 }
 
 .rowActions {
@@ -362,8 +359,7 @@
     padding-left: $variant-space-1;
   }
 
-  .cellInput {
-    padding: 0;
+  .readOnlyValue {
     font-size: $variant-font-xs;
   }
 

@@ -2,24 +2,38 @@ import Button from '@components/Button/Button.jsx';
 import Modal from '../Modal/Modal';
 import styles from './styles.module.scss';
 
-function VariantDeleteModal({ variant, onCancel, onConfirm }) {
+function VariantDeleteModal({
+  variant,
+  deleting = false,
+  error = '',
+  onCancel,
+  onConfirm,
+}) {
   return (
     <Modal
       alert
       titleId='variant-delete-title'
-      onClose={onCancel}
+      onClose={deleting ? undefined : onCancel}
+      closeOnBackdrop={!deleting}
       contentClassName={styles.dialog}
     >
-      <h2 id='variant-delete-title'>Xóa biến thể?</h2>
+      <h2 id='variant-delete-title'>Xóa loại sản phẩm</h2>
       <p>
-        {variant.sku} ({variant.color?.name || 'Không màu'} ·{' '}
-        {variant.size || 'Không cỡ'}) sẽ bị xóa khỏi sản phẩm.
+        Loại sản phẩm có SKU {variant.sku || 'chưa có SKU'} (
+        {variant.color?.name || 'Không màu'} · {variant.size || 'Không cỡ'}) sẽ
+        bị xóa ngay khỏi sản phẩm.
       </p>
+      {error && (
+        <p className={styles.error} role='alert'>
+          {error}
+        </p>
+      )}
       <footer className={styles.actions}>
         <Button
           variant='ghost'
           size='compact'
           type='button'
+          disabled={deleting}
           onClick={onCancel}
           content='Hủy bỏ'
         />
@@ -27,8 +41,9 @@ function VariantDeleteModal({ variant, onCancel, onConfirm }) {
           variant='danger'
           size='compact'
           type='button'
+          disabled={deleting}
           onClick={onConfirm}
-          content='Xóa'
+          content={deleting ? 'Đang xóa…' : 'Xóa ngay'}
         />
       </footer>
     </Modal>

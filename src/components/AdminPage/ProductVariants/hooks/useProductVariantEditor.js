@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import {
+  deleteVariant as removeProductVariant,
   getProductVariants,
   saveProductVariants,
 } from '../../../../apis/variantService';
@@ -32,6 +33,8 @@ function useProductVariantEditor({
   const [editingVariant, setEditingVariant] = useState(null);
   const [headerVariantId, setHeaderVariantId] = useState(null);
   const [deletingVariant, setDeletingVariant] = useState(null);
+  const [deleting, setDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState('');
   const [revision, setRevision] = useState(0);
 
   useEffect(() => {
@@ -83,20 +86,6 @@ function useProductVariantEditor({
     product.images?.[0] ??
     '';
 
-  function changeVariant(id, field, value) {
-    const next = draftVariants.map((item) => {
-      if (item.id !== id) return item;
-      const updated =
-        field === 'color'
-          ? { ...item, color: { ...item.color, name: value } }
-          : { ...item, [field]: value };
-      if (field === 'isActive') updated.status = value ? 'active' : 'inactive';
-      return updated;
-    });
-    setDraftVariants(next);
-    setFieldErrors(validateVariants(next, allVariants, product.id));
-  }
-
   function addVariants(variants) {
     const next = [
       ...draftVariants,
@@ -108,7 +97,15 @@ function useProductVariantEditor({
       })),
     ];
     setDraftVariants(next);
-    setFieldErrors(validateVariants(next, allVariants, product.id));
+    setFieldErrors(
+      validateVariants(
+        next,
+        allVariants.filter(
+          (item) => String(item.productId) !== String(product.id)
+        ),
+        product.id
+      )
+    );
   }
 
   function saveEditedVariant(variant) {
@@ -138,22 +135,67 @@ function useProductVariantEditor({
     setEditingVariant(null);
   }
 
-  function confirmDelete() {
-    if (!deletingVariant) return;
-    setDraftVariants((current) =>
-      current.filter((item) => item.id !== deletingVariant.id)
-    );
-    setFieldErrors((current) => {
-      const next = { ...current };
-      delete next[deletingVariant.id];
-      return next;
-    });
-    if (headerVariantId === deletingVariant.id) setHeaderVariantId(null);
+  function requestDelete(variant) {
+    setDeleteError('');
+    setDeletingVariant(variant);
+  }
+
+  function cancelDelete() {
+    if (deleting) return;
+    setDeleteError('');
     setDeletingVariant(null);
   }
 
+  async function confirmDelete() {
+    if (!deletingVariant || deleting) return false;
+    const target = deletingVariant;
+    const isSaved = savedVariants.some(
+      (item) => String(item.id) === String(target.id)
+    );
+    setDeleteError('');
+
+    if (isSaved) {
+      setDeleting(true);
+      try {
+        await removeProductVariant(product.id, target.id, products);
+        setSavedVariants((current) =>
+          current.filter((item) => String(item.id) !== String(target.id))
+        );
+        onSaved?.();
+      } catch (error) {
+        setDeleteError(error.message || 'Không xóa được loại sản phẩm.');
+        return false;
+      } finally {
+        setDeleting(false);
+      }
+    }
+
+    const remainingVariants = draftVariants.filter(
+      (item) => String(item.id) !== String(target.id)
+    );
+    setDraftVariants(remainingVariants);
+    setFieldErrors(
+      validateVariants(
+        remainingVariants,
+        allVariants.filter(
+          (item) => String(item.productId) !== String(product.id)
+        ),
+        product.id
+      )
+    );
+    if (headerVariantId === deletingVariant.id) setHeaderVariantId(null);
+    setDeletingVariant(null);
+    return true;
+  }
+
   async function saveChanges() {
-    const errors = validateVariants(draftVariants, allVariants, product.id);
+    const errors = validateVariants(
+      draftVariants,
+      allVariants.filter(
+        (item) => String(item.productId) !== String(product.id)
+      ),
+      product.id
+    );
     setFieldErrors(errors);
     if (Object.keys(errors).length) return false;
     setSaving(true);
@@ -200,15 +242,17 @@ function useProductVariantEditor({
     editingVariant,
     headerImage,
     deletingVariant,
+    deleting,
+    deleteError,
     hasChanges,
     setQuery,
     setStatusFilter,
-    changeVariant,
     addVariants,
     retry,
     editVariant: openEditVariant,
     cancelEditVariant,
-    deleteVariant: setDeletingVariant,
+    deleteVariant: requestDelete,
+    cancelDelete,
     saveEditedVariant,
     confirmDelete,
     saveChanges,

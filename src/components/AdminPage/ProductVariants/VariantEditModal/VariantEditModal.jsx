@@ -108,7 +108,7 @@ function VariantEditModal({
       contentClassName={styles.dialog}
     >
       <header className={styles.header}>
-        <h2 id='variant-edit-title'>Chỉnh sửa biến thể</h2>
+        <h2 id='variant-edit-title'>Chỉnh sửa loại sản phẩm</h2>
         <Button
           variant='icon'
           type='button'

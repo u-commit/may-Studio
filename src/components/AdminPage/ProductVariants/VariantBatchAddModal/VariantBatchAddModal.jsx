@@ -56,9 +56,7 @@ function VariantBatchAddModal({
   const [formError, setFormError] = useState('');
 
   const colorOptions = colors.map((color) =>
-    typeof color === 'string'
-      ? { name: color, hex: getColorHex(color) }
-      : color
+    typeof color === 'string' ? { name: color, hex: getColorHex(color) } : color
   );
   const isReadingImages = Object.values(readingRows).some(Boolean);
 
@@ -95,8 +93,7 @@ function VariantBatchAddModal({
       if (next[id]) {
         next[id] = { ...next[id] };
         delete next[id][field];
-        if (field === 'color' || field === 'size')
-          delete next[id].combination;
+        if (field === 'color' || field === 'size') delete next[id].combination;
       }
       return next;
     });
@@ -177,7 +174,9 @@ function VariantBatchAddModal({
     setRows((current) =>
       current.map((row) => {
         if (row.id !== id) return row;
-        const images = row.images.filter((_, imageIndex) => imageIndex !== index);
+        const images = row.images.filter(
+          (_, imageIndex) => imageIndex !== index
+        );
         return { ...row, images, image: images[0] ?? '' };
       })
     );
@@ -225,10 +224,7 @@ function VariantBatchAddModal({
     >
       <header className={styles.header}>
         <div>
-          <h2 id='variant-batch-add-title'>Thêm nhiều biến thể</h2>
-          <p>
-            {product.name} · Mỗi biến thể có ảnh, SKU, giá và tồn kho riêng.
-          </p>
+          <h3 id='variant-batch-add-title'>Thêm nhiều loại sản phẩm:</h3>
         </div>
         <Button
           variant='icon'
@@ -246,7 +242,7 @@ function VariantBatchAddModal({
             return (
               <section className={styles.rowCard} key={row.id}>
                 <div className={styles.rowHeading}>
-                  <h3>Biến thể {index + 1}</h3>
+                  <h3> Loại sản phẩm </h3>
                   <Button
                     variant='ghost'
                     size='compact'
@@ -255,7 +251,7 @@ function VariantBatchAddModal({
                     onClick={() => removeRow(row.id)}
                     content={
                       <>
-                        <FiTrash2 aria-hidden='true' /> Xóa dòng
+                        <FiTrash2 aria-hidden='true' /> Xóa loại sản phẩm
                       </>
                     }
                   />
@@ -275,15 +271,17 @@ function VariantBatchAddModal({
                     >
                       <option value=''>Chọn màu sắc</option>
                       {colorOptions.map((color) => (
-                          <option key={color.name} value={color.name}>
-                            {color.name}
-                          </option>
-                        ))}
+                        <option key={color.name} value={color.name}>
+                          {color.name}
+                        </option>
+                      ))}
                       {row.color.name &&
                         !colorOptions.some(
                           (color) => color.name === row.color.name
                         ) && (
-                          <option value={row.color.name}>{row.color.name}</option>
+                          <option value={row.color.name}>
+                            {row.color.name}
+                          </option>
                         )}
                     </select>
                     {(rowErrors.color || rowErrors.combination) && (
@@ -405,7 +403,7 @@ function VariantBatchAddModal({
                 </div>
 
                 <fieldset className={styles.imageSection}>
-                  <legend>Ảnh riêng cho biến thể</legend>
+                  <legend>Ảnh riêng cho loại sản phẩm</legend>
                   <div className={styles.imageGrid}>
                     {row.images.map((image, imageIndex) => (
                       <div className={styles.imageItem} key={imageIndex}>
@@ -461,11 +459,10 @@ function VariantBatchAddModal({
             onClick={addRow}
             content={
               <>
-                <FiPlus aria-hidden='true' /> Thêm dòng biến thể
+                <FiPlus aria-hidden='true' /> Thêm loại sản phẩm
               </>
             }
           />
-          <span>{rows.length} biến thể sẽ được thêm</span>
         </div>
 
         <footer className={styles.actions}>
