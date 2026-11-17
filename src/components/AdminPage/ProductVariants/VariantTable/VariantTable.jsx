@@ -3,15 +3,20 @@ import { getVariantStatus, VARIANT_STATUS_LABELS } from '../variantStatus';
 import { formatVariantCurrency } from '../variantFormatters';
 import styles from './styles.module.scss';
 
+const EMPTY_MAP = new Map();
+const noop = () => {};
+
 function VariantTable({
-  variants,
-  selectedIds,
-  loading,
-  onSelect,
-  onSelectAll,
-  onView,
-  onEdit,
-  onDelete,
+  variants = [],
+  variantCounts = EMPTY_MAP,
+  selectedIds = [],
+  loading = false,
+  emptyMessage = 'Không tìm thấy biến thể phù hợp.',
+  onSelect = noop,
+  onSelectAll = noop,
+  onView = noop,
+  onEdit = noop,
+  onDelete = noop,
 }) {
   const allSelected =
     variants.length > 0 &&
@@ -34,6 +39,7 @@ function VariantTable({
                   type='checkbox'
                   aria-label='Chọn tất cả biến thể đang hiển thị'
                   checked={allSelected}
+                  disabled={loading || variants.length === 0}
                   onChange={(event) => onSelectAll(event.target.checked)}
                 />
               </th>
@@ -75,6 +81,10 @@ function VariantTable({
                       <div className={styles.productInfo}>
                         <strong>{variant.productName}</strong>
                         <small>{variant.productId}</small>
+                        <small>
+                          {variantCounts.get(String(variant.productId)) ?? 0}{' '}
+                          biến thể
+                        </small>
                       </div>
                     </div>
                   </td>
@@ -105,9 +115,9 @@ function VariantTable({
                   </td>
                   <td>
                     <span
-                      className={`${styles.status} ${classByStatus[status]}`}
+                      className={`${styles.status} ${classByStatus[status] ?? ''}`}
                     >
-                      {VARIANT_STATUS_LABELS[status]}
+                      {VARIANT_STATUS_LABELS[status] ?? 'Không xác định'}
                     </span>
                   </td>
                   <td>
@@ -118,7 +128,7 @@ function VariantTable({
                         title='Xem chi tiết'
                         onClick={() => onView(variant)}
                       >
-                        <FiEye />
+                        <FiEye aria-hidden='true' />
                       </button>
                       <button
                         type='button'
@@ -126,7 +136,7 @@ function VariantTable({
                         title='Chỉnh sửa'
                         onClick={() => onEdit(variant)}
                       >
-                        <FiEdit2 />
+                        <FiEdit2 aria-hidden='true' />
                       </button>
                       <button
                         type='button'
@@ -134,7 +144,7 @@ function VariantTable({
                         title='Xóa'
                         onClick={() => onDelete(variant)}
                       >
-                        <FiTrash2 />
+                        <FiTrash2 aria-hidden='true' />
                       </button>
                     </div>
                   </td>
@@ -146,7 +156,7 @@ function VariantTable({
                 <td className={styles.emptyState} colSpan='10'>
                   {loading
                     ? 'Đang tải dữ liệu biến thể...'
-                    : 'Không tìm thấy biến thể phù hợp.'}
+                    : emptyMessage}
                 </td>
               </tr>
             )}

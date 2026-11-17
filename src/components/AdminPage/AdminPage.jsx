@@ -11,9 +11,11 @@ import PageHeading from './PageHeading/PageHeading';
 import OverviewDashboard from './OverviewDashboard/OverviewDashboard';
 import ProductsSection from './ProductsSection/ProductsSection';
 import ProductVariants from './ProductVariants/ProductVariants';
+import useVariantCatalog from './ProductVariants/hooks/useVariantCatalog';
 
 function AdminPage() {
   const [page, setPage] = useState('overview');
+  const [variantProduct, setVariantProduct] = useState(null);
 
   const {
     products,
@@ -30,6 +32,7 @@ function AdminPage() {
   } = useAdminData();
 
   const { customers, toggleCustomer } = useAdminCustomers();
+  const variantCatalog = useVariantCatalog(products, productsLoading);
 
   const {
     form,
@@ -50,7 +53,6 @@ function AdminPage() {
   const pageTitle = {
     overview: 'Tổng quan',
     products: 'Sản phẩm',
-    variants: 'Biến thể',
     catalog: 'Danh mục',
     customers: 'Khách hàng',
   }[page];
@@ -105,6 +107,8 @@ function AdminPage() {
             <ProductsSection
               products={products}
               catalog={catalog}
+              variantSummaries={variantCatalog.summaries}
+              variantsLoading={variantCatalog.loading}
               productsLoading={productsLoading}
               productsError={productsError}
               form={form}
@@ -116,13 +120,18 @@ function AdminPage() {
               onCancel={closeProductForm}
               onEdit={editProduct}
               onDelete={deleteProduct}
+              onManageVariants={setVariantProduct}
             />
           )}
-          {page === 'variants' && (
+          {variantProduct && (
             <ProductVariants
+              key={variantProduct.id}
+              product={variantProduct}
               products={products}
               catalog={catalog}
-              productsLoading={productsLoading}
+              allVariants={variantCatalog.variants}
+              onClose={() => setVariantProduct(null)}
+              onSaved={variantCatalog.retry}
             />
           )}
           {page === 'catalog' && (

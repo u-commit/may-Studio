@@ -1,5 +1,17 @@
 import { useState } from 'react';
 
+function normalizeText(value) {
+  return String(value ?? '').trim().toLocaleLowerCase('vi');
+}
+
+function getCombinationKey(productId, colorName, size) {
+  return JSON.stringify([
+    String(productId ?? ''),
+    normalizeText(colorName),
+    normalizeText(size),
+  ]);
+}
+
 function useVariantForm({ products, variants, variant, onSave }) {
   const editing = Boolean(variant);
   const initialProduct =
@@ -11,7 +23,7 @@ function useVariantForm({ products, variants, variant, onSave }) {
     String(variant?.price ?? initialProduct?.price ?? '')
   );
   const [defaultSalePrice, setDefaultSalePrice] = useState(
-    String(variant?.salePrice || '')
+    String(variant?.salePrice ?? initialProduct?.salePrice ?? '')
   );
   const [defaultStock, setDefaultStock] = useState(String(variant?.stock ?? 0));
   const [rows, setRows] = useState(() =>
@@ -40,6 +52,10 @@ function useVariantForm({ products, variants, variant, onSave }) {
   function buildErrors(nextRows = rows, nextProductId = productId) {
     const nextErrors = {};
     if (!nextProductId) nextErrors.productId = 'Vui lòng chọn sản phẩm.';
+    else if (
+      !products.some((product) => String(product.id) === String(nextProductId))
+    )
+      nextErrors.productId = 'Sản phẩm này không còn tồn tại.';
     if (!nextRows.length)
       nextErrors.combinations = 'Tạo ít nhất một tổ hợp trước khi lưu.';
 
@@ -56,39 +72,48 @@ function useVariantForm({ products, variants, variant, onSave }) {
       else if (
         variants.some(
           (item) =>
-            item.id !== variant?.id && item.sku?.toLocaleLowerCase('vi') === sku
+            item.id !== variant?.id && normalizeText(item.sku) === sku
         )
       )
         rowErrors.sku = 'SKU đã tồn tại.';
       if (sku) skuRows.set(sku, row.id);
 
+      const priceInput = String(row.price ?? '').trim();
       const price = Number(row.price);
+      const hasSalePrice =
+        row.salePrice !== '' && row.salePrice != null;
       const salePrice =
-        row.salePrice === '' || row.salePrice == null
-          ? 0
-          : Number(row.salePrice);
+        hasSalePrice ? Number(row.salePrice) : 0;
+      const stockInput = String(row.stock ?? '').trim();
       const stock = Number(row.stock);
-      if (!Number.isFinite(price) || price <= 0)
+      if (!priceInput || !Number.isFinite(price) || price <= 0)
         rowErrors.price = 'Giá bán phải lớn hơn 0.';
       if (
-        row.salePrice !== '' &&
-        row.salePrice != null &&
+        hasSalePrice &&
         (!Number.isFinite(salePrice) || salePrice < 0 || salePrice > price)
       )
         rowErrors.salePrice = 'Giá ưu đãi phải từ 0 đến giá bán.';
-      if (!Number.isInteger(stock) || stock < 0)
+      if (!stockInput || !Number.isInteger(stock) || stock < 0)
         rowErrors.stock = 'Tồn kho phải là số nguyên không âm.';
 
-      const colorName = row.color?.name?.toLocaleLowerCase('vi');
-      const combo = `${nextProductId}|${colorName}|${String(row.size).toLocaleLowerCase('vi')}`;
+      const colorName = normalizeText(row.color?.name);
+      const size = normalizeText(row.size);
+      if (!colorName) rowErrors.color = 'Màu sắc là bắt buộc.';
+      if (!size) rowErrors.size = 'Kích thước là bắt buộc.';
+      if (!['active', 'inactive'].includes(row.status))
+        rowErrors.status = 'Trạng thái không hợp lệ.';
+      const combo = getCombinationKey(nextProductId, colorName, size);
       if (comboRows.has(combo))
         rowErrors.combination = 'Tổ hợp này đang bị lặp.';
       else if (
         variants.some(
           (item) =>
             item.id !== variant?.id &&
-            `${item.productId}|${item.color?.name?.toLocaleLowerCase('vi')}|${String(item.size).toLocaleLowerCase('vi')}` ===
-              combo
+            getCombinationKey(
+              item.productId,
+              item.color?.name,
+              item.size
+            ) === combo
         )
       )
         rowErrors.combination = 'Sản phẩm đã có tổ hợp màu và size này.';
@@ -108,7 +133,11 @@ function useVariantForm({ products, variants, variant, onSave }) {
     const nextId = event.target.value;
     setProductId(nextId);
     const product = products.find((item) => String(item.id) === nextId);
-    if (!editing && product) setDefaultPrice(String(product.price || ''));
+    if (!editing && product) {
+      setDefaultPrice(String(product.price ?? ''));
+      setDefaultSalePrice(String(product.salePrice ?? ''));
+      setDefaultStock('0');
+    }
     if (attempted) setErrors(buildErrors(rows, nextId));
   }
 

@@ -1,0 +1,200 @@
+@import '@styles/variable.scss';
+@import '@styles/mixin.scss';
+
+.dialog {
+  width: min(100%, $variant-edit-max-width);
+  padding: $variant-space-5;
+}
+
+.header,
+.actions {
+  @include flex_box_custom(space-between, center, $variant-space-3);
+}
+
+.header {
+  margin-bottom: $variant-space-4;
+
+  h2 {
+    margin: 0;
+    color: $ink;
+    font-size: $variant-font-xl;
+  }
+}
+
+.form {
+  display: grid;
+  gap: $variant-space-4;
+}
+
+.fieldGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: $variant-space-3;
+}
+
+.field,
+.switchField {
+  min-width: 0;
+  display: grid;
+  align-content: start;
+  gap: $variant-space-2;
+
+  > span {
+    color: $ink;
+    font-size: $variant-font-sm;
+    font-weight: 600;
+  }
+
+  input,
+  select {
+    width: 100%;
+    min-width: 0;
+    height: $variant-control-height;
+    border: $variant-border-width solid $line;
+    border-radius: $variant-radius-md;
+    padding: 0 $variant-space-3;
+    background: $variant-surface;
+    color: $ink;
+    font-size: $variant-font-md;
+
+    &:focus-visible {
+      @include variant_focus_ring($variant-accent-soft);
+      border-color: $variant-accent;
+    }
+
+    &[aria-invalid='true'] {
+      border-color: $variant-danger;
+    }
+  }
+
+  small {
+    color: $variant-danger;
+    font-size: $variant-font-xs;
+  }
+}
+
+.switchField {
+  justify-items: start;
+}
+
+.switch {
+  width: $variant-switch-width;
+  height: $variant-switch-height;
+  display: flex;
+  align-items: center;
+  border: $variant-border-width solid $line;
+  border-radius: $variant-radius-pill;
+  padding: $variant-space-1;
+  background: $muted;
+
+  &[aria-checked='true'] {
+    justify-content: flex-end;
+    border-color: $variant-accent;
+    background: $variant-accent;
+  }
+
+  i {
+    width: $variant-switch-knob-size;
+    height: $variant-switch-knob-size;
+    border-radius: $variant-radius-pill;
+    background: $variant-surface;
+  }
+
+  &:focus-visible {
+    @include variant_focus_ring($variant-accent-soft);
+  }
+}
+
+.imageSection {
+  min-width: 0;
+  margin: 0;
+  border: 0;
+  padding: 0;
+
+  legend {
+    margin-bottom: $variant-space-2;
+    color: $ink;
+    font-size: $variant-font-sm;
+    font-weight: 600;
+  }
+}
+
+.imageGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $variant-space-3;
+}
+
+.imageItem,
+.addImage {
+  width: $variant-edit-image-size;
+  min-height: $variant-edit-image-size + $variant-space-5;
+  position: relative;
+  display: grid;
+  justify-items: center;
+  align-content: start;
+  gap: $variant-space-1;
+}
+
+.imageItem img {
+  width: $variant-edit-image-size;
+  height: $variant-edit-image-size;
+  border: $variant-border-width solid $line;
+  border-radius: $variant-radius-md;
+  object-fit: cover;
+}
+
+.primaryLabel {
+  color: $variant-accent;
+  font-size: $variant-font-xs;
+}
+
+.removeImage {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: $variant-remove-image-button-size;
+  min-width: $variant-remove-image-button-size;
+  height: $variant-remove-image-button-size;
+  background: $variant-surface;
+}
+
+.addImage {
+  align-content: center;
+  border: $variant-border-width dashed $muted;
+  border-radius: $variant-radius-md;
+  color: $muted;
+  cursor: pointer;
+  font-size: $variant-font-xs;
+
+  input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+  }
+
+  &:focus-within {
+    @include variant_focus_ring($variant-accent-soft);
+  }
+}
+
+.imageError {
+  margin: $variant-space-2 0 0;
+  color: $variant-danger;
+  font-size: $variant-font-xs;
+}
+
+.actions {
+  justify-content: flex-end;
+  border-top: $variant-border-width solid $line;
+  padding-top: $variant-space-4;
+}
+
+@media (max-width: $variant-breakpoint-mobile) {
+  .dialog {
+    padding: $variant-space-4;
+  }
+}

@@ -11,6 +11,7 @@ import {
   deleteProductChange,
   saveProductChange,
 } from '../../../utils/productStore';
+import { removeProductVariants } from '../../../apis/productVariantsService';
 
 function readSaved(key, fallback) {
   try {
@@ -42,9 +43,6 @@ function useAdminData() {
 
   useEffect(() => {
     let isMounted = true;
-
-    setProductsLoading(true);
-    setProductsError('');
 
     getProduct({ sortType: 0 })
       .then((response) => {
@@ -80,6 +78,8 @@ function useAdminData() {
   }, [catalog]);
 
   function reloadProducts() {
+    setProductsLoading(true);
+    setProductsError('');
     setProductsReload((current) => current + 1);
   }
 
@@ -99,6 +99,12 @@ function useAdminData() {
     if (!product) return;
 
     if (window.confirm(`Xóa sản phẩm “${product.name}”?`)) {
+      if (!removeProductVariants(id)) {
+        window.alert(
+          'Không thể xóa biến thể của sản phẩm khỏi bộ nhớ trình duyệt.'
+        );
+        return;
+      }
       deleteProductChange(id);
       setProducts((current) => current.filter((item) => item.id !== id));
     }

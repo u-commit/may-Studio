@@ -1,0 +1,38 @@
+@import '@styles/variable.scss';
+
+.backdrop {
+  position: fixed;
+  z-index: 1000;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: $variant-space-4;
+  background: $variant-overlay;
+}
+
+.dialog {
+  width: min(100%, $variant-dialog-max-width);
+  max-height: $variant-dialog-max-height;
+  overflow: auto;
+  border: $variant-border-width solid $line;
+  border-radius: $variant-radius-xl;
+  background: $variant-surface;
+  box-shadow: $variant-dialog-shadow;
+  color: $ink;
+}
+
+.dialog:focus {
+  outline: none;
+}
+
+@media (max-width: $variant-breakpoint-mobile) {
+  .backdrop {
+    align-items: end;
+    padding: $variant-space-2;
+  }
+
+  .dialog {
+    max-height: $variant-dialog-max-height;
+    border-radius: $variant-radius-lg;
+  }
+}

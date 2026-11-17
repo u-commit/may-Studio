@@ -23,11 +23,33 @@ const EMPTY_FILTERS = {
   stock: 'all',
 };
 
-function useVariantManagement({ products, catalog, productsLoading }) {
-  const { variants, ready, updateVariants } = useProductVariants(
-    products,
-    !productsLoading
+function useVariantManagement({
+  products,
+  catalog,
+  productsLoading,
+  productId,
+}) {
+  const {
+    variants: allVariants,
+    ready,
+    updateVariants: saveAllVariants,
+  } = useProductVariants(products, !productsLoading);
+  const variants = useMemo(
+    () =>
+      productId == null
+        ? allVariants
+        : allVariants.filter(
+            (variant) => String(variant.productId) === String(productId)
+          ),
+    [allVariants, productId]
   );
+  function updateVariants(nextVariants) {
+    if (productId == null) return saveAllVariants(nextVariants);
+    const preservedVariants = allVariants.filter(
+      (variant) => String(variant.productId) !== String(productId)
+    );
+    return saveAllVariants([...preservedVariants, ...nextVariants]);
+  }
   const toastContext = useContext(ToastContext);
   const [filters, setFilters] = useState(EMPTY_FILTERS);
   const [currentPage, setCurrentPage] = useState(1);
@@ -50,12 +72,22 @@ function useVariantManagement({ products, catalog, productsLoading }) {
     () => [...new Set([...APPAREL_SIZES, ...(catalog?.sizes ?? [])])],
     [catalog?.sizes]
   );
+  const variantCounts = useMemo(() => {
+    const counts = new Map();
+    variants.forEach((variant) => {
+      const productId = String(variant.productId);
+      counts.set(productId, (counts.get(productId) ?? 0) + 1);
+    });
+    return counts;
+  }, [variants]);
   const filteredVariants = useMemo(() => {
     const query = filters.query.trim().toLocaleLowerCase('vi');
     return variants.filter((variant) => {
       const searchable =
-        `${variant.productName} ${variant.sku}`.toLocaleLowerCase('vi');
-      const stock = Number(variant.stock) || 0;
+        `${variant.productName ?? ''} ${variant.sku ?? ''}`.toLocaleLowerCase(
+          'vi'
+        );
+      const stock = Math.max(0, Number(variant.stock) || 0);
       return (
         (!query || searchable.includes(query)) &&
         (filters.color === 'all' || variant.color?.name === filters.color) &&
@@ -71,14 +103,15 @@ function useVariantManagement({ products, catalog, productsLoading }) {
   }, [variants, filters]);
 
   const pageCount = Math.max(1, Math.ceil(filteredVariants.length / PAGE_SIZE));
+  const visiblePage = Math.min(currentPage, pageCount);
   const pageVariants = filteredVariants.slice(
-    (currentPage - 1) * PAGE_SIZE,
-    currentPage * PAGE_SIZE
+    (visiblePage - 1) * PAGE_SIZE,
+    visiblePage * PAGE_SIZE
   );
   const rangeStart = filteredVariants.length
-    ? (currentPage - 1) * PAGE_SIZE + 1
+    ? (visiblePage - 1) * PAGE_SIZE + 1
     : 0;
-  const rangeEnd = Math.min(currentPage * PAGE_SIZE, filteredVariants.length);
+  const rangeEnd = Math.min(visiblePage * PAGE_SIZE, filteredVariants.length);
   const stats = useMemo(
     () => [
       { label: 'Tổng biến thể', value: variants.length, icon: FiLayers },
@@ -89,19 +122,22 @@ function useVariantManagement({ products, catalog, productsLoading }) {
       },
       {
         label: 'Hết hàng',
-        value: variants.filter((variant) => Number(variant.stock) === 0).length,
+        value: variants.filter((variant) => getVariantStatus(variant) === 'out')
+          .length,
         icon: FiPackage,
       },
       {
         label: 'Sắp hết hàng',
-        value: variants.filter(
-          (variant) => Number(variant.stock) > 0 && Number(variant.stock) <= 5
-        ).length,
+        value: variants.filter((variant) => getVariantStatus(variant) === 'low')
+          .length,
         icon: FiAlertCircle,
       },
     ],
     [variants]
   );
+  const selectedCount = variants.filter((variant) =>
+    selectedIds.includes(variant.id)
+  ).length;
 
   function changeFilter(name, value) {
     setFilters((current) => ({ ...current, [name]: value }));
@@ -149,15 +185,33 @@ function useVariantManagement({ products, catalog, productsLoading }) {
   }
 
   function saveVariants(rows, product) {
+    if (!rows.length || !product?.id) {
+      toastContext?.toast?.error?.('Thiếu sản phẩm hoặc biến thể để lưu.');
+      return false;
+    }
+    const editingId = editingVariant?.id;
+    if (editingId && !variants.some((variant) => variant.id === editingId)) {
+      toastContext?.toast?.error?.(
+        'Biến thể đã bị xóa ở nơi khác. Hãy tải lại danh sách.'
+      );
+      return false;
+    }
+
     const timestamp = new Date().toISOString();
     const savedRows = rows.map((row) => {
-      const isEditingRow = editingVariant && row.id === editingVariant.id;
+      const original = editingVariant
+        ? variants.find((variant) => variant.id === editingVariant.id)
+        : variants.find((variant) => variant.id === row.id);
       return {
-        id: isEditingRow ? editingVariant.id : createVariantId(),
+        ...original,
+        ...row,
+        id: original?.id ?? row.id ?? createVariantId(),
         productId: String(product.id),
         productName: product.name,
         sku: String(row.sku).trim(),
         color: {
+          ...original?.color,
+          ...row.color,
           name: row.color.name,
           hex: row.color.hex || getColorHex(row.color.name),
         },
@@ -168,19 +222,23 @@ function useVariantManagement({ products, catalog, productsLoading }) {
             ? 0
             : Number(row.salePrice),
         stock: Number(row.stock),
-        image: row.image ?? '',
+        image: row.image || product.images?.[0] || '',
         status: row.status,
-        createdAt: isEditingRow ? editingVariant.createdAt : timestamp,
+        createdAt: original?.createdAt ?? timestamp,
         updatedAt: timestamp,
       };
     });
-    const editingId = editingVariant?.id;
     const next = editingId
       ? variants.map((variant) =>
           variant.id === editingId ? savedRows[0] : variant
         )
       : [...savedRows, ...variants];
-    updateVariants(next);
+    if (!updateVariants(next)) {
+      toastContext?.toast?.error?.(
+        'Không thể lưu biến thể vào bộ nhớ trình duyệt. Hãy kiểm tra dung lượng lưu trữ.'
+      );
+      return false;
+    }
     closeForm();
     setCurrentPage(1);
     setSelectedIds([]);
@@ -189,12 +247,29 @@ function useVariantManagement({ products, catalog, productsLoading }) {
         ? 'Đã cập nhật biến thể.'
         : `Đã thêm ${savedRows.length} biến thể.`
     );
+    return true;
   }
 
   function confirmDelete() {
     if (!deleteTarget) return;
-    const ids = new Set(deleteTarget.map((variant) => variant.id));
-    updateVariants(variants.filter((variant) => !ids.has(variant.id)));
+    const ids = new Set(
+      deleteTarget
+        .filter((target) => variants.some((item) => item.id === target.id))
+        .map((variant) => variant.id)
+    );
+    if (!ids.size) {
+      setDeleteTarget(null);
+      toastContext?.toast?.error?.(
+        'Các biến thể đã bị xóa ở nơi khác. Danh sách đã được cập nhật.'
+      );
+      return false;
+    }
+    if (!updateVariants(variants.filter((variant) => !ids.has(variant.id)))) {
+      toastContext?.toast?.error?.(
+        'Không thể xóa biến thể vì bộ nhớ trình duyệt không khả dụng.'
+      );
+      return false;
+    }
     const removedVisibleCount = filteredVariants.filter((variant) =>
       ids.has(variant.id)
     ).length;
@@ -208,10 +283,13 @@ function useVariantManagement({ products, catalog, productsLoading }) {
     toastContext?.toast?.success(
       ids.size > 1 ? `Đã xóa ${ids.size} biến thể.` : 'Đã xóa biến thể.'
     );
+    return true;
   }
 
   function requestDelete(variant) {
-    setDeleteTarget([variant]);
+    if (variants.some((item) => item.id === variant.id)) {
+      setDeleteTarget([variant]);
+    }
   }
 
   function requestBulkDelete() {
@@ -238,11 +316,11 @@ function useVariantManagement({ products, catalog, productsLoading }) {
   }
 
   function goToPreviousPage() {
-    setCurrentPage((page) => Math.max(1, page - 1));
+    setCurrentPage(Math.max(1, visiblePage - 1));
   }
 
   function goToNextPage() {
-    setCurrentPage((page) => Math.min(pageCount, page + 1));
+    setCurrentPage(Math.min(pageCount, visiblePage + 1));
   }
 
   return {
@@ -252,9 +330,11 @@ function useVariantManagement({ products, catalog, productsLoading }) {
     colors,
     sizes,
     stats,
+    variantCounts,
+    selectedCount,
     filteredVariants,
     pageVariants,
-    currentPage,
+    currentPage: visiblePage,
     pageCount,
     rangeStart,
     rangeEnd,

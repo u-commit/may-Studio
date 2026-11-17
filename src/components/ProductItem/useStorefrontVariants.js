@@ -36,7 +36,9 @@ function useStorefrontVariants(products) {
       }
     };
     const handleStorage = (event) => {
-      if (event.key === PRODUCT_VARIANTS_STORAGE_KEY) refresh();
+      if (event.key === PRODUCT_VARIANTS_STORAGE_KEY || event.key === null) {
+        refresh();
+      }
     };
 
     refresh();
