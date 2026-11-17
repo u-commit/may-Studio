@@ -2,9 +2,14 @@
 @import '@styles/variable.scss';
 
 .btn {
-  @include btn(176px, 42px, 3px, $primary_color);
+  @include btn(
+    $button-default-width,
+    $button-default-height,
+    $button-default-radius,
+    $primary_color
+  );
   color: $white_color;
-  font-size: 15px;
+  font-size: $button-default-font-size;
   font-weight: 300;
   transition:
     background-color 300ms ease,
@@ -42,4 +47,86 @@
     background-color: $primary_color;
     color: $white_color;
   }
+}
+
+.outlineBtn {
+  border-color: $line;
+  background-color: $variant-surface;
+  color: $ink;
+
+  &:hover {
+    border-color: $variant-accent;
+    background-color: $variant-accent-soft;
+    color: $variant-accent;
+  }
+}
+
+.adminPrimaryBtn {
+  border-color: $variant-accent;
+  background-color: $variant-accent;
+  color: $variant-surface;
+
+  &:hover {
+    border-color: $variant-accent-hover;
+    background-color: $variant-accent-hover;
+    color: $variant-surface;
+  }
+}
+
+.ghostBtn {
+  border-color: transparent;
+  background-color: transparent;
+  color: $ink;
+
+  &:hover {
+    border-color: transparent;
+    background-color: $variant-background;
+    color: $ink;
+  }
+}
+
+.dangerBtn {
+  border-color: $variant-danger;
+  background-color: $variant-danger;
+  color: $white_color;
+
+  &:hover {
+    border-color: $variant-danger;
+    background-color: $variant-danger-soft;
+    color: $variant-danger;
+  }
+}
+
+.iconBtn {
+  width: $variant-icon-button-size;
+  min-width: $variant-icon-button-size;
+  height: $variant-icon-button-size;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border-color: $line;
+  background-color: $variant-surface;
+  color: $muted;
+
+  &:hover {
+    border-color: $line;
+    background-color: $variant-background;
+    color: $ink;
+    transform: none;
+    box-shadow: none;
+  }
+}
+
+.compactBtn {
+  width: auto;
+  min-width: 0;
+  padding: 0 $variant-space-4;
+}
+
+.btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+  transform: none;
+  box-shadow: none;
 }

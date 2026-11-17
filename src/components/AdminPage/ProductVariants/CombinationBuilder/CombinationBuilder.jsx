@@ -167,6 +167,11 @@ function CombinationBuilder({
                       <i style={{ '--swatch-color': row.color.hex }} />
                       {row.color.name} / {row.size}
                     </span>
+                    {(errors[row.id]?.color || errors[row.id]?.size) && (
+                      <small className={styles.inlineError}>
+                        {errors[row.id]?.color || errors[row.id]?.size}
+                      </small>
+                    )}
                     {errors[row.id]?.combination && (
                       <small className={styles.inlineError}>
                         {errors[row.id].combination}
@@ -177,6 +182,8 @@ function CombinationBuilder({
                     <label className={styles.rowField}>
                       <input
                         aria-label={`SKU ${row.color.name} ${row.size}`}
+                        required
+                        aria-invalid={Boolean(errors[row.id]?.sku)}
                         value={row.sku}
                         onChange={(event) =>
                           updateRow(row.id, 'sku', event.target.value)
@@ -193,6 +200,8 @@ function CombinationBuilder({
                         aria-label={`Giá bán ${row.color.name} ${row.size}`}
                         type='number'
                         min='1'
+                        required
+                        aria-invalid={Boolean(errors[row.id]?.price)}
                         value={row.price ?? ''}
                         onChange={(event) =>
                           updateRow(row.id, 'price', event.target.value)
@@ -209,6 +218,7 @@ function CombinationBuilder({
                         aria-label={`Giá ưu đãi ${row.color.name} ${row.size}`}
                         type='number'
                         min='0'
+                        aria-invalid={Boolean(errors[row.id]?.salePrice)}
                         value={row.salePrice ?? ''}
                         onChange={(event) =>
                           updateRow(row.id, 'salePrice', event.target.value)
@@ -226,6 +236,8 @@ function CombinationBuilder({
                         type='number'
                         min='0'
                         step='1'
+                        required
+                        aria-invalid={Boolean(errors[row.id]?.stock)}
                         value={row.stock ?? ''}
                         onChange={(event) =>
                           updateRow(row.id, 'stock', event.target.value)
@@ -241,6 +253,7 @@ function CombinationBuilder({
                       className={styles.statusSelect}
                       aria-label={`Trạng thái ${row.color.name} ${row.size}`}
                       value={row.status}
+                      aria-invalid={Boolean(errors[row.id]?.status)}
                       onChange={(event) =>
                         updateRow(row.id, 'status', event.target.value)
                       }
@@ -248,6 +261,11 @@ function CombinationBuilder({
                       <option value='active'>Đang hoạt động</option>
                       <option value='inactive'>Ngừng hoạt động</option>
                     </select>
+                    {errors[row.id]?.status && (
+                      <small className={styles.inlineError}>
+                        {errors[row.id].status}
+                      </small>
+                    )}
                   </td>
                   <td>
                     <label className={styles.imageControl}>
@@ -263,9 +281,10 @@ function CombinationBuilder({
                         type='file'
                         accept='image/*'
                         aria-label={`Tải ảnh màu ${row.color.name}`}
-                        onChange={(event) =>
-                          handleImage(row, event.target.files?.[0])
-                        }
+                        onChange={(event) => {
+                          handleImage(row, event.currentTarget.files?.[0]);
+                          event.currentTarget.value = '';
+                        }}
                       />
                       {row.image && (
                         <button

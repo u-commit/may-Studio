@@ -10,7 +10,6 @@ export const STORAGE_KEYS = {
 export const ADMIN_NAV_ITEMS = [
   { id: 'overview', label: 'Tổng quan', icon: FiGrid },
   { id: 'products', label: 'Sản phẩm', icon: FiBox },
-  { id: 'variants', label: 'Biến thể', icon: FiLayers },
   { id: 'catalog', label: 'Danh mục', icon: FiLayers },
   { id: 'customers', label: 'Khách hàng', icon: FiUsers },
 ];

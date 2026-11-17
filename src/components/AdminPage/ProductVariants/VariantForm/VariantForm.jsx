@@ -62,7 +62,8 @@ function VariantForm({
               <select
                 value={productId}
                 onChange={handleProductChange}
-                disabled={editing}
+                disabled={editing || rows.length > 0}
+                required
                 aria-invalid={Boolean(errors.productId)}
               >
                 <option value=''>Chọn sản phẩm</option>
@@ -73,6 +74,11 @@ function VariantForm({
                 ))}
               </select>
               {errors.productId && <small>{errors.productId}</small>}
+              {!editing && rows.length > 0 && (
+                <small className={styles.fieldHint}>
+                  Xóa các tổ hợp hiện tại để đổi sản phẩm.
+                </small>
+              )}
             </label>
 
             <label className={styles.field}>
@@ -121,6 +127,7 @@ function VariantForm({
           )}
 
           <CombinationBuilder
+            key={productId}
             product={selectedProduct}
             colors={colors}
             sizes={sizes}

@@ -1,0 +1,216 @@
+@import '@styles/variable.scss';
+@import '@styles/mixin.scss';
+
+.dialog {
+  width: min(100%, $variant-dialog-max-width);
+  padding: $variant-space-5;
+}
+
+.header,
+.rowHeading,
+.addRow,
+.actions {
+  @include flex_box_custom(space-between, center, $variant-space-3);
+}
+
+.header {
+  margin-bottom: $variant-space-4;
+
+  h2 {
+    margin: 0;
+    color: $ink;
+    font-size: $variant-font-xl;
+  }
+
+  p {
+    margin: $variant-space-1 0 0;
+    color: $muted;
+    font-size: $variant-font-sm;
+  }
+}
+
+.form {
+  display: grid;
+  gap: $variant-space-4;
+}
+
+.rowList {
+  max-height: 62vh;
+  display: grid;
+  gap: $variant-space-3;
+  overflow: auto;
+  padding: $variant-space-1;
+}
+
+.rowCard {
+  display: grid;
+  gap: $variant-space-4;
+  border: $variant-border-width solid $line;
+  border-radius: $variant-radius-lg;
+  padding: $variant-space-4;
+  background: $variant-surface;
+  box-shadow: $variant-row-shadow;
+}
+
+.rowHeading {
+  h3 {
+    margin: 0;
+    color: $ink;
+    font-size: $variant-font-md;
+  }
+
+  button {
+    gap: $variant-space-1;
+    color: $variant-danger;
+  }
+}
+
+.fieldGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: $variant-space-3;
+}
+
+.field {
+  min-width: 0;
+  display: grid;
+  align-content: start;
+  gap: $variant-space-2;
+
+  > span {
+    color: $ink;
+    font-size: $variant-font-sm;
+    font-weight: 600;
+  }
+
+  input,
+  select {
+    width: 100%;
+    min-width: 0;
+    height: $variant-control-height;
+    border: $variant-border-width solid $line;
+    border-radius: $variant-radius-md;
+    padding: 0 $variant-space-3;
+    background: $variant-surface;
+    color: $ink;
+    font-size: $variant-font-md;
+
+    &:focus-visible {
+      @include variant_focus_ring($variant-accent-soft);
+      border-color: $variant-accent;
+    }
+
+    &[aria-invalid='true'] {
+      border-color: $variant-danger;
+    }
+  }
+
+  small {
+    color: $variant-danger;
+    font-size: $variant-font-xs;
+  }
+}
+
+.imageSection {
+  min-width: 0;
+  margin: 0;
+  border: 0;
+  padding: 0;
+
+  legend {
+    margin-bottom: $variant-space-2;
+    color: $ink;
+    font-size: $variant-font-sm;
+    font-weight: 600;
+  }
+}
+
+.imageGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $variant-space-3;
+}
+
+.imageItem,
+.addImage {
+  width: $variant-edit-image-size;
+  min-height: $variant-edit-image-size + $variant-space-5;
+  position: relative;
+  display: grid;
+  justify-items: center;
+  align-content: start;
+  gap: $variant-space-1;
+}
+
+.imageItem img {
+  width: $variant-edit-image-size;
+  height: $variant-edit-image-size;
+  border: $variant-border-width solid $line;
+  border-radius: $variant-radius-md;
+  object-fit: cover;
+}
+
+.imageItem button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: $variant-remove-image-button-size;
+  min-width: $variant-remove-image-button-size;
+  height: $variant-remove-image-button-size;
+  background: $variant-surface;
+}
+
+.addImage {
+  align-content: center;
+  border: $variant-border-width dashed $muted;
+  border-radius: $variant-radius-md;
+  color: $muted;
+  cursor: pointer;
+  font-size: $variant-font-xs;
+
+  input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+  }
+
+  &:focus-within {
+    @include variant_focus_ring($variant-accent-soft);
+  }
+}
+
+.imageError,
+.formError {
+  margin: $variant-space-2 0 0;
+  color: $variant-danger;
+  font-size: $variant-font-xs;
+}
+
+.addRow {
+  flex-wrap: wrap;
+  justify-content: flex-start;
+
+  > span {
+    color: $muted;
+    font-size: $variant-font-sm;
+  }
+}
+
+.actions {
+  justify-content: flex-end;
+  border-top: $variant-border-width solid $line;
+  padding-top: $variant-space-4;
+}
+
+@media (max-width: $variant-breakpoint-mobile) {
+  .dialog {
+    padding: $variant-space-4;
+  }
+
+  .fieldGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

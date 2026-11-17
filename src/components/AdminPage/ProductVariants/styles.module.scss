@@ -1,137 +1,373 @@
 @import '@styles/variable.scss';
 @import '@styles/mixin.scss';
 
+.dialog {
+  width: min(calc(100% - $variant-space-4), $variant-dialog-max-width);
+}
+
 .page {
+  display: grid;
+  gap: $variant-space-4;
+  padding: $variant-space-5;
+  background: $variant-surface;
+}
+
+.header,
+.productHeading,
+.toolbar,
+.filters,
+.rowActions,
+.footer,
+.footer > div {
+  @include flex_box_custom(space-between, center, $variant-space-2);
+}
+
+.header {
   min-width: 0;
 }
-.pageHeader {
-  @include flex_box_custom(space-between, flex-end, 20px);
-  margin: 0 0 19px;
+
+.productHeading {
+  min-width: 0;
+  justify-content: flex-start;
+  gap: $variant-space-3;
 }
+
+.productImage,
+.variantImage {
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+  overflow: hidden;
+  border: $variant-border-width solid $line;
+  border-radius: $variant-radius-md;
+  background: $variant-background;
+  color: $muted;
+}
+
+.productImage {
+  width: 52px;
+  height: 56px;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
 .headingCopy {
   min-width: 0;
+
+  h2 {
+    @include variant_ellipsis;
+    margin: 0;
+    color: $ink;
+    font-size: $variant-font-xl;
+    font-weight: 650;
+  }
+
+  p {
+    margin: $variant-space-1 0 0;
+    color: $muted;
+    font-size: $variant-font-sm;
+  }
 }
 
-.eyebrow {
-  color: #80927c;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 1px;
+.toolbar {
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  border-top: $variant-border-width solid $line;
+  padding-top: $variant-space-4;
 }
-.pageHeader h1 {
-  margin: 5px 0 4px;
-  color: $ink;
-  font-size: 26px;
-  font-weight: 550;
-}
-.pageHeader p {
-  margin: 0;
+
+.searchBox {
+  min-width: $variant-search-min-width;
+  height: $variant-control-height;
+  display: flex;
+  flex: 1 1 $variant-search-flex-basis;
+  align-items: center;
+  gap: $variant-space-2;
+  border: $variant-border-width solid $line;
+  border-radius: $variant-radius-md;
+  padding: 0 $variant-space-3;
   color: $muted;
-  font-size: 12px;
+
+  &:focus-within {
+    @include variant_focus_ring($variant-accent-soft);
+    border-color: $variant-accent;
+  }
+
+  svg {
+    flex: 0 0 auto;
+  }
+
+  input {
+    width: 100%;
+    min-width: 0;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: $ink;
+    font-size: $variant-font-sm;
+  }
 }
+
+.filters {
+  flex-wrap: wrap;
+  justify-content: flex-start;
+
+  button {
+    min-width: 0;
+    height: $variant-filter-button-height;
+    border-radius: $variant-radius-pill;
+    padding: 0 $variant-space-3;
+    font-size: $variant-font-xs;
+  }
+}
+
 .addButton {
-  width: auto !important;
-  min-width: 155px;
-  height: 42px !important;
-  border-radius: 7px !important;
-  padding: 0 15px !important;
-  font-size: 12px !important;
-}
-.addButton:disabled {
-  cursor: not-allowed;
-  opacity: 0.5;
-}
-.listToolbar {
-  @include flex_box_custom(space-between, center, 12px);
-  margin: 0 2px 10px;
-}
-.listToolbar > div:first-child {
-  @include flex_box_custom(flex-start, baseline, 9px);
-}
-.listToolbar strong {
-  color: #475449;
-  font-size: 14px;
-  font-weight: 650;
-}
-.listToolbar span {
-  color: #89948a;
-  font-size: 10px;
-}
-.selectedActions {
-  @include flex_box_custom(flex-end, center, 9px);
-}
-.bulkDeleteButton {
-  width: auto !important;
-  min-width: 115px;
-  height: 33px !important;
+  min-width: $variant-add-button-min-width;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  border-radius: 6px !important;
-  padding: 0 10px !important;
-  font-size: 10px !important;
-}
-.bulkDeleteButton svg {
-  width: 13px;
-  height: 13px;
-}
-.pagination {
-  @include flex_box_custom(space-between, center, 12px);
-  margin-top: 13px;
-  color: #89948a;
-  font-size: 10px;
-}
-.pagination > div {
-  @include flex_box_custom(flex-end, center, 4px);
-}
-.pagination button {
-  min-width: 30px;
-  height: 30px;
-  display: grid;
-  place-items: center;
-  border: 1px solid #e4e9e3;
-  @include radius_common(5px);
-  padding: 0 7px;
-  background: #fff;
-  color: #748075;
-  font-size: 10px;
-}
-.pagination button:hover:not(:disabled),
-.pagination button.currentPage {
-  border-color: #91a58d;
-  background: #eef3ec;
-  color: #526a4f;
-}
-.pagination button:disabled {
-  cursor: not-allowed;
-  opacity: 0.45;
-}
-.pagination button svg {
-  width: 13px;
-  height: 13px;
+  justify-content: center;
+  gap: $variant-space-1;
 }
 
-@media (max-width: 760px) {
-  .pageHeader {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 13px;
+.notice {
+  @include flex_box_custom(space-between, center, $variant-space-3);
+  border: $variant-border-width solid $variant-danger-soft;
+  border-radius: $variant-radius-md;
+  padding: $variant-space-3;
+  background: $variant-background;
+  color: $variant-danger;
+  font-size: $variant-font-sm;
+}
+
+.tableViewport {
+  max-height: 58vh;
+  overflow: auto;
+  border-top: $variant-border-width solid $line;
+  border-bottom: $variant-border-width solid $line;
+}
+
+.table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  text-align: left;
+
+  thead {
+    position: sticky;
+    z-index: 1;
+    top: 0;
+    background: $variant-background;
   }
-  .pageHeader h1 {
-    font-size: 22px;
+
+  th {
+    height: $variant-table-head-height;
+    padding: 0 $variant-space-2;
+    color: $muted;
+    font-size: $variant-font-xs;
+    font-weight: 650;
+    white-space: nowrap;
   }
+
+  td {
+    min-width: 0;
+    height: $variant-product-row-height;
+    border-top: $variant-border-width solid $line;
+    padding: $variant-space-2;
+    color: $ink;
+    font-size: $variant-font-sm;
+    vertical-align: middle;
+  }
+}
+
+.imageCol {
+  width: 7%;
+}
+.colorCol {
+  width: 11%;
+}
+.sizeCol {
+  width: 7%;
+}
+.skuCol {
+  width: 18%;
+}
+.priceCol {
+  width: 12%;
+}
+.saleCol {
+  width: 12%;
+}
+.stockCol {
+  width: 9%;
+}
+.activeCol {
+  width: 7%;
+}
+.actionsCol {
+  width: 17%;
+}
+
+.variantImage {
+  width: $variant-icon-button-size;
+  height: $variant-table-image-height;
+  background: var(--swatch-color, $variant-background);
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  span {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.cellInput {
+  width: 100%;
+  min-width: 0;
+  height: $variant-icon-button-size;
+  border: $variant-border-width solid transparent;
+  border-radius: $variant-radius-sm;
+  padding: 0 $variant-space-1;
+  background: transparent;
+  color: $ink;
+  font-size: $variant-font-sm;
+  text-overflow: ellipsis;
+
+  &:hover,
+  &:focus-visible {
+    border-color: $line;
+    background: $variant-surface;
+  }
+
+  &:focus-visible {
+    @include variant_focus_ring($variant-accent-soft);
+    border-color: $variant-accent;
+    outline: none;
+  }
+
+  &[aria-invalid='true'] {
+    border-color: $variant-danger;
+  }
+}
+
+.cellError {
+  display: block;
+  color: $variant-danger;
+  font-size: $variant-font-xs;
+  line-height: 1.25;
+}
+
+.switch {
+  width: $variant-row-switch-width;
+  height: $variant-row-switch-height;
+  display: flex;
+  align-items: center;
+  border: $variant-border-width solid $line;
+  border-radius: $variant-radius-pill;
+  padding: $variant-space-1;
+  background: $muted;
+
+  &[aria-checked='true'] {
+    justify-content: flex-end;
+    border-color: $variant-accent;
+    background: $variant-accent;
+  }
+
+  i {
+    width: $variant-space-4;
+    height: $variant-space-4;
+    border-radius: $variant-radius-pill;
+    background: $variant-surface;
+  }
+
+  &:focus-visible {
+    @include variant_focus_ring($variant-accent-soft);
+  }
+}
+
+.rowActions {
+  justify-content: flex-end;
+}
+
+.emptyState {
+  height: $variant-empty-state-height;
+  color: $muted !important;
+  text-align: center;
+
+  button {
+    margin-left: $variant-space-2;
+  }
+}
+
+.footer {
+  flex-wrap: wrap;
+  gap: $variant-space-3;
+  color: $muted;
+  font-size: $variant-font-sm;
+
+  > div {
+    justify-content: flex-end;
+  }
+}
+
+.saveError {
+  margin: 0;
+  color: $variant-danger;
+  font-size: $variant-font-sm;
+}
+
+.visuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
+@media (max-width: $variant-breakpoint-mobile) {
+  .page {
+    gap: $variant-space-3;
+    padding: $variant-space-3;
+  }
+
+  .headingCopy h2 {
+    font-size: $variant-font-lg;
+  }
+
+  .toolbar {
+    align-items: stretch;
+  }
+
+  .searchBox,
+  .filters,
   .addButton {
-    width: 100% !important;
+    flex: 1 1 100%;
   }
-  .listToolbar {
-    align-items: flex-start;
-    flex-direction: column;
+
+  .filters > button {
+    flex: 1 1 auto;
   }
-  .pagination {
-    align-items: flex-start;
-    flex-direction: column;
+
+  .table th,
+  .table td {
+    padding-right: $variant-space-1;
+    padding-left: $variant-space-1;
   }
-  .pagination > div {
-    align-self: flex-end;
+
+  .cellInput {
+    padding: 0;
+    font-size: $variant-font-xs;
+  }
+
+  .rowActions {
+    gap: 0;
   }
 }

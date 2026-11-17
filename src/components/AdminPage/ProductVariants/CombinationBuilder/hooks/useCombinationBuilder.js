@@ -143,7 +143,14 @@ function useCombinationBuilder({
         )
       );
     };
-    reader.readAsDataURL(file);
+    reader.onerror = () => {
+      setImageError('Không đọc được hình ảnh đã chọn.');
+    };
+    try {
+      reader.readAsDataURL(file);
+    } catch {
+      setImageError('Không đọc được hình ảnh đã chọn.');
+    }
   }
 
   function removeColorImage(colorName) {

@@ -15,3 +15,14 @@
   background-color: $color;
   @include radius_common($radius);
 }
+
+@mixin variant_focus_ring($color) {
+  outline: none;
+  box-shadow: 0 0 0 $variant-focus-width $color;
+}
+
+@mixin variant_ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

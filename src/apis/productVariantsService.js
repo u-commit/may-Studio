@@ -15,6 +15,7 @@ export function getColorHex(colorName) {
 }
 function slug(value) {
   return String(value ?? '')
+    .replace(/[đĐ]/g, (letter) => (letter === 'Đ' ? 'D' : 'd'))
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '')
     .toLowerCase()
@@ -33,91 +34,113 @@ export function createVariantSKU(product, color, size) {
 }
 export const createVarianSKU = createVariantSKU;
 export function createVariantId() {
-  return globalThis?.crypto?.randomUUID?.() ?? String(Date.now());
-}
-function makeSeedVariants(products) {
-  const variants = [];
-  const createdAt = new Date().toISOString();
-
-  products.forEach((product) => {
-    const productId = String(product.id ?? product._id ?? product.productId ?? '');
-    const sizes = product.sizes?.length ? product.sizes : ['Freesize'];
-    const colorName = product.color || 'Mặc định';
-    const totalStock = Math.max(0, Math.floor(Number(product.stock) || 0));
-    const baseStock = Math.floor(totalStock / sizes.length);
-    let remainder = totalStock % sizes.length;
-
-    sizes.forEach((size, index) => {
-      variants.push({
-        id: `${productId}-variant-${index + 1}`,
-        productId,
-        productName: product.name,
-        sku: createVariantSKU(product, colorName, size),
-        color: { name: colorName, hex: getColorHex(colorName) },
-        size,
-        price: Number(product.price) || 0,
-        salePrice: Number(product.salePrice) || 0,
-        stock: baseStock + (remainder-- > 0 ? 1 : 0),
-        image: product.images?.[0] ?? '',
-        status: 'active',
-        createdAt,
-        updatedAt: createdAt,
-      });
-    });
-  });
-
-  return variants;
-}
-export function getProductVariants(products = []) {
-  let stored;
-  try {
-    stored = window.localStorage.getItem(PRODUCT_VARIANTS_STORAGE_KEY);
-  } catch {
-    return makeSeedVariants(products);
-  }
-
-  let variants;
-  if (stored === null) {
-    variants = makeSeedVariants(products);
-  } else {
-    try {
-      const parsed = JSON.parse(stored);
-      variants = Array.isArray(parsed) ? parsed : makeSeedVariants(products);
-    } catch {
-      variants = makeSeedVariants(products);
-    }
-  }
-
-  const productsById = new Map(
-    products.map((product) => [
-      String(product.id ?? product._id ?? product.productId ?? ''),
-      product,
-    ])
+  return (
+    globalThis?.crypto?.randomUUID?.() ??
+    `${Date.now()}-${Math.random().toString(36).slice(2)}`
   );
-  return variants.map((variant) => {
-    const product = productsById.get(String(variant.productId));
-    return product
-      ? {
-          ...variant,
-          productName: product.name,
-          image: variant.image || product.images?.[0] || '',
-        }
-      : variant;
-  });
+}
+
+function readStoredVariants() {
+  if (typeof window === 'undefined') return [];
+  try {
+    const stored = window.localStorage.getItem(PRODUCT_VARIANTS_STORAGE_KEY);
+    if (!stored) return [];
+    const parsed = JSON.parse(stored);
+    return Array.isArray(parsed)
+      ? parsed.filter(
+          (variant) =>
+            variant &&
+            typeof variant === 'object' &&
+            !Array.isArray(variant) &&
+            !isUneditedGeneratedSeed(variant)
+        )
+      : [];
+  } catch {
+    return [];
+  }
+}
+
+function isUneditedGeneratedSeed(variant) {
+  const productId = String(variant.productId ?? '');
+  const id = String(variant.id ?? '');
+  const seedSuffix = id.startsWith(`${productId}-variant-`)
+    ? id.slice(`${productId}-variant-`.length)
+    : '';
+  return Boolean(
+    productId &&
+    /^\d+$/.test(seedSuffix) &&
+    variant.createdAt &&
+    variant.createdAt === variant.updatedAt
+  );
+}
+
+export function getProductVariants(products = []) {
+  const productsById = new Map(
+    products
+      .map((product) => [
+        String(product.id ?? product._id ?? product.productId ?? ''),
+        product,
+      ])
+      .filter(([productId]) => productId)
+  );
+  return readStoredVariants()
+    .map((variant) => {
+      const productId = String(variant.productId ?? '');
+      const product = productsById.get(productId);
+      if (!product || !String(variant.id ?? '').trim()) return null;
+
+      const rawColor =
+        typeof variant.color === 'string'
+          ? { name: variant.color }
+          : (variant.color ?? {});
+      const colorName = String(rawColor.name ?? '').trim();
+      const price = Number(variant.price);
+      const salePrice = Number(variant.salePrice);
+      const stock = Number(variant.stock);
+
+      return {
+        ...variant,
+        id: String(variant.id),
+        productId,
+        productName: product.name ?? variant.productName ?? '',
+        sku: String(variant.sku ?? ''),
+        color: {
+          ...rawColor,
+          name: colorName,
+          hex: rawColor.hex || getColorHex(colorName),
+        },
+        size: String(variant.size ?? ''),
+        price: Number.isFinite(price) ? price : 0,
+        salePrice: Number.isFinite(salePrice) ? salePrice : 0,
+        stock: Number.isFinite(stock) ? Math.max(0, stock) : 0,
+        image: variant.image || product.images?.[0] || '',
+        status: variant.status === 'active' ? 'active' : 'inactive',
+      };
+    })
+    .filter(Boolean);
 }
 
 export function saveProductVariants(variants) {
+  if (!Array.isArray(variants) || typeof window === 'undefined') return false;
   try {
     window.localStorage.setItem(
       PRODUCT_VARIANTS_STORAGE_KEY,
       JSON.stringify(variants)
     );
   } catch {
-    // Keep the current session usable when browser storage is unavailable.
+    return false;
   }
-  if (typeof window !== 'undefined') {
-    window.dispatchEvent(
-      new CustomEvent(PRODUCT_VARIANTS_EVENT, { detail: variants })
-    );
-  }
+  window.dispatchEvent(
+    new CustomEvent(PRODUCT_VARIANTS_EVENT, { detail: variants })
+  );
+  return true;
+}
+
+export function removeProductVariants(productId) {
+  const normalizedId = String(productId ?? '');
+  const current = readStoredVariants();
+  const next = current.filter(
+    (variant) => String(variant.productId ?? '') !== normalizedId
+  );
+  return next.length === current.length || saveProductVariants(next);
 }

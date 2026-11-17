@@ -1,14 +1,18 @@
 import { useMemo, useState } from 'react';
-import { FiSearch, FiEdit2, FiTrash2 } from 'react-icons/fi';
+import { FiSearch, FiEdit2, FiTrash2, FiLayers } from 'react-icons/fi';
+import Button from '@components/Button/Button.jsx';
 import styles from './styles.module.scss';
 
 function ProductList({
   products,
   categories,
+  variantSummaries,
+  variantsLoading,
   loading,
   loadError,
   onEdit,
   onDelete,
+  onManageVariants,
 }) {
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState('all');
@@ -36,14 +40,13 @@ function ProductList({
     filterSelect,
     tableScroll,
     table,
-    status,
     statusActive,
-    statusWarning,
     statusInactive,
     productCell,
     productThumb,
     rowActions,
     rowButton,
+    variantButton,
     emptyState,
   } = styles;
 
@@ -83,7 +86,7 @@ function ProductList({
             <tr>
               <th>SẢN PHẨM</th>
               <th>LOẠI</th>
-              <th>MÀU / SIZE</th>
+              <th>MÀU · CỠ</th>
               <th>GIÁ BÁN</th>
               <th>TỒN KHO</th>
               <th>TRẠNG THÁI</th>
@@ -92,20 +95,21 @@ function ProductList({
           </thead>
           <tbody>
             {visibleProducts.map((product) => {
-              const stock = Number(product.stock);
-              const status =
-                stock === 0 ? 'Hết hàng' : stock < 5 ? 'Sắp hết' : 'Đang bán';
-              const statusClass =
-                stock === 0
-                  ? statusInactive
-                  : stock < 5
-                    ? statusWarning
-                    : statusActive;
+              const summary = variantSummaries?.get(String(product.id)) ?? {
+                count: 0,
+                stock: 0,
+                activeCount: 0,
+                status: 'Hết hàng',
+                colorSize: '— · —',
+              };
+              const stock = summary.stock;
+              const status = summary.status;
+              const statusClass = stock > 0 ? statusActive : statusInactive;
               return (
                 <tr key={product.id}>
                   <td>
-                      <div className={productCell}>
-                        <div className={productThumb}>
+                    <div className={productCell}>
+                      <div className={productThumb}>
                         {product.images?.[0] ? (
                           <img src={product.images[0]} alt={product.name} />
                         ) : (
@@ -124,35 +128,45 @@ function ProductList({
                     </div>
                   </td>
                   <td>{product.category}</td>
-                  <td>
-                    {product.color}
-                    <small>{(product.sizes ?? []).join(', ') || '—'}</small>
-                  </td>
+                  <td>{summary.colorSize}</td>
                   <td>{Number(product.price).toLocaleString('vi-VN')} ₫</td>
                   <td>{stock}</td>
                   <td>
-                    <span className={`${status} ${statusClass}`}>
-                      {status}
-                    </span>
+                    <span className={`${status} ${statusClass}`}>{status}</span>
                   </td>
                   <td>
                     <div className={rowActions}>
-                      <button
+                      <Button
+                        variant='outline'
+                        size='compact'
+                        className={`${rowButton} ${variantButton}`}
+                        type='button'
+                        aria-label={`Biến thể ${product.name}`}
+                        title='Biến thể'
+                        onClick={() => onManageVariants(product)}
+                        content={
+                          <>
+                            <FiLayers aria-hidden='true' />
+                            Biến thể ({variantsLoading ? '…' : summary.count})
+                          </>
+                        }
+                      />
+                      <Button
+                        variant='icon'
                         className={rowButton}
                         type='button'
                         aria-label={`Sửa ${product.name}`}
                         onClick={() => onEdit(product)}
-                      >
-                        <FiEdit2 />
-                      </button>
-                      <button
+                        content={<FiEdit2 aria-hidden='true' />}
+                      />
+                      <Button
+                        variant='icon'
                         className={rowButton}
                         type='button'
                         aria-label={`Xóa ${product.name}`}
                         onClick={() => onDelete(product.id)}
-                      >
-                        <FiTrash2 />
-                      </button>
+                        content={<FiTrash2 aria-hidden='true' />}
+                      />
                     </div>
                   </td>
                 </tr>

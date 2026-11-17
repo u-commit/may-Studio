@@ -3,6 +3,8 @@ import ProductList from '../ProductList/ProductList';
 function ProductsSection({
   products,
   catalog,
+  variantSummaries,
+  variantsLoading,
   productsLoading,
   productsError,
   form,
@@ -14,6 +16,7 @@ function ProductsSection({
   onCancel,
   onEdit,
   onDelete,
+  onManageVariants,
 }) {
   if (formOpen) {
     return (
@@ -33,10 +36,13 @@ function ProductsSection({
     <ProductList
       products={products}
       categories={catalog.categories}
+      variantSummaries={variantSummaries}
+      variantsLoading={variantsLoading}
       loading={productsLoading}
       loadError={productsError}
       onEdit={onEdit}
       onDelete={onDelete}
+      onManageVariants={onManageVariants}
     />
   );
 }
