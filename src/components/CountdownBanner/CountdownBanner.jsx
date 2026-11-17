@@ -1,4 +1,5 @@
 import styles from './styles.module.scss';
+const { module } = styles;
 import CountdownTimer from '@components/CountdownTimer/CountdownTimer';
 import Button from '@components/Button/Button.jsx';
 function CountdownBanner() {

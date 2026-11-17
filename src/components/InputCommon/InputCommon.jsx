@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import styles from './styles.module.scss';
+const { module } = styles;
 import classnames from 'classnames';
 import { IoEyeSharp } from 'react-icons/io5';
 import { IoEyeOffSharp } from 'react-icons/io5';

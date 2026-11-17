@@ -1,4 +1,5 @@
 import styles from './styles.module.scss';
+const { module } = styles;
 function OverviewDashboard({ products, customers, onAddProduct }) {
   const productCount = products.length;
   const activeCustomers = customers.filter(

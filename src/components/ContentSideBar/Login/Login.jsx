@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Button from '../../Button/Button';
 import InputCommon from '../../InputCommon/InputCommon';
 import styles from './styles.module.scss';
+const { module } = styles;
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { login, register } from '../../../apis/authService';

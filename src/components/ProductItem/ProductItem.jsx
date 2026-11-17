@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import styles from './styles.module.scss';
+const { module, priceBlock } = styles;
 import reloadIcon from '@icons/svgs/reloadIcon.svg';
 import { LiaShoppingBagSolid, LiaEyeSolid } from 'react-icons/lia';
 import { CiHeart } from 'react-icons/ci';
@@ -95,7 +96,7 @@ function ProductItem({ src, PrevSrc, prevSrc, name, price, variants = [] }) {
         </div>
       </div>
       <div className={title}>{name}</div>
-      <div className={styles.priceBlock}>
+      <div className={priceBlock}>
         <span className={Price}>{formatPrice(displayPrice)}</span>
       </div>
     </article>

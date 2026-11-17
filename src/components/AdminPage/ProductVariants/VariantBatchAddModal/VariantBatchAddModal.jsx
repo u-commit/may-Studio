@@ -9,6 +9,7 @@ import {
 import { validateVariants } from '../../../../utils/variantValidation';
 import Modal from '../Modal/Modal';
 import styles from './styles.module.scss';
+const { actions, addImage, addRow, dialog, field, fieldGrid, form, formError, header, imageError, imageGrid, imageItem, imageSection, module, rowCard, rowHeading, rowList } = styles;
 
 const MAX_IMAGE_COUNT = 4;
 const MAX_IMAGE_BYTES = 512 * 1024;
@@ -220,9 +221,9 @@ function VariantBatchAddModal({
     <Modal
       titleId='variant-batch-add-title'
       onClose={onClose}
-      contentClassName={styles.dialog}
+      contentClassName={dialog}
     >
-      <header className={styles.header}>
+      <header className={header}>
         <div>
           <h3 id='variant-batch-add-title'>Thêm nhiều loại sản phẩm:</h3>
         </div>
@@ -235,13 +236,13 @@ function VariantBatchAddModal({
         />
       </header>
 
-      <form className={styles.form} onSubmit={submit} noValidate>
-        <div className={styles.rowList}>
+      <form className={form} onSubmit={submit} noValidate>
+        <div className={rowList}>
           {rows.map((row, index) => {
             const rowErrors = errors[row.id] ?? {};
             return (
-              <section className={styles.rowCard} key={row.id}>
-                <div className={styles.rowHeading}>
+              <section className={rowCard} key={row.id}>
+                <div className={rowHeading}>
                   <h3> Loại sản phẩm </h3>
                   <Button
                     variant='ghost'
@@ -257,8 +258,8 @@ function VariantBatchAddModal({
                   />
                 </div>
 
-                <div className={styles.fieldGrid}>
-                  <label className={styles.field}>
+                <div className={fieldGrid}>
+                  <label className={field}>
                     <span>Màu sắc</span>
                     <select
                       value={row.color.name}
@@ -291,7 +292,7 @@ function VariantBatchAddModal({
                     )}
                   </label>
 
-                  <label className={styles.field}>
+                  <label className={field}>
                     <span>Kích thước</span>
                     <select
                       value={row.size}
@@ -317,7 +318,7 @@ function VariantBatchAddModal({
                     )}
                   </label>
 
-                  <label className={styles.field}>
+                  <label className={field}>
                     <span>SKU</span>
                     <input
                       value={row.sku}
@@ -332,7 +333,7 @@ function VariantBatchAddModal({
                     )}
                   </label>
 
-                  <label className={styles.field}>
+                  <label className={field}>
                     <span>Giá bán (₫)</span>
                     <input
                       type='number'
@@ -355,7 +356,7 @@ function VariantBatchAddModal({
                     )}
                   </label>
 
-                  <label className={styles.field}>
+                  <label className={field}>
                     <span>Giá khuyến mãi (₫)</span>
                     <input
                       type='number'
@@ -378,7 +379,7 @@ function VariantBatchAddModal({
                     )}
                   </label>
 
-                  <label className={styles.field}>
+                  <label className={field}>
                     <span>Tồn kho</span>
                     <input
                       type='number'
@@ -402,11 +403,11 @@ function VariantBatchAddModal({
                   </label>
                 </div>
 
-                <fieldset className={styles.imageSection}>
+                <fieldset className={imageSection}>
                   <legend>Ảnh riêng cho loại sản phẩm</legend>
-                  <div className={styles.imageGrid}>
+                  <div className={imageGrid}>
                     {row.images.map((image, imageIndex) => (
-                      <div className={styles.imageItem} key={imageIndex}>
+                      <div className={imageItem} key={imageIndex}>
                         <img src={image} alt={'Ảnh ' + (imageIndex + 1)} />
                         <Button
                           variant='icon'
@@ -418,7 +419,7 @@ function VariantBatchAddModal({
                       </div>
                     ))}
                     {row.images.length < MAX_IMAGE_COUNT && (
-                      <label className={styles.addImage}>
+                      <label className={addImage}>
                         <input
                           type='file'
                           accept='image/*'
@@ -435,7 +436,7 @@ function VariantBatchAddModal({
                     )}
                   </div>
                   {imageErrors[row.id] && (
-                    <small className={styles.imageError} role='alert'>
+                    <small className={imageError} role='alert'>
                       {imageErrors[row.id]}
                     </small>
                   )}
@@ -446,12 +447,12 @@ function VariantBatchAddModal({
         </div>
 
         {formError && (
-          <p className={styles.formError} role='alert'>
+          <p className={formError} role='alert'>
             {formError}
           </p>
         )}
 
-        <div className={styles.addRow}>
+        <div className={addRow}>
           <Button
             variant='outline'
             size='compact'
@@ -465,7 +466,7 @@ function VariantBatchAddModal({
           />
         </div>
 
-        <footer className={styles.actions}>
+        <footer className={actions}>
           <Button
             variant='ghost'
             size='compact'

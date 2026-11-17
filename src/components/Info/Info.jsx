@@ -2,6 +2,7 @@ import MainLayout from '@components/Layout/Layout';
 import { dataInfo } from './constants';
 import InfoCart from './infoCart/infoCart';
 import styles from './styles.module.scss';
+const { module } = styles;
 function Info() {
   const { container } = styles;
   return (

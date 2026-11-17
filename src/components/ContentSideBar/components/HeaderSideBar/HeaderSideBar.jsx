@@ -1,4 +1,5 @@
 import styles from './styles.module.scss';
+const { module } = styles;
 function HeaderSideBar({ icon, title }) {
   const { container } = styles;
   return (

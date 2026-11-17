@@ -1,5 +1,6 @@
 import MainLayout from '@components/Layout/Layout';
 import styles from './styles.module.scss';
+const { module } = styles;
 import CountdownBanner from '@components/CountdownBanner/CountdownBanner';
 import ProductItem from '@components/ProductItem/ProductItem';
 

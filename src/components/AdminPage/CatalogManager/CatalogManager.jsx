@@ -3,6 +3,7 @@ import { FiEdit2, FiPlus, FiTrash2 } from 'react-icons/fi';
 import Button from '@components/Button/Button.jsx';
 import InputCommon from '@components/InputCommon/InputCommon';
 import styles from './styles.module.scss';
+const { module } = styles;
 import { CATALOG_LABELS } from '../constants';
 import submitManufacturerDetails from './hooks/submitManufacturerDetails';
 import useSubmitNew from './hooks/submitNew';

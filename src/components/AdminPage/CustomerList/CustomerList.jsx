@@ -3,6 +3,7 @@ import { FiSearch, FiSlash, FiUnlock } from 'react-icons/fi';
 import Button from '@components/Button/Button.jsx';
 import InputCommon from '@components/InputCommon/InputCommon';
 import styles from './styles.module.scss';
+const { module } = styles;
 
 function CustomerList({ customers, onToggle }) {
   const [search, setSearch] = useState('');

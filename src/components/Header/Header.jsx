@@ -2,6 +2,7 @@ import BoxIcon from './Boxicon/Boxicon';
 import { dataBoxicon, dataMenu } from './constants';
 import Menu from './Menu/Menu';
 import styles from './styles.module.scss';
+const { module } = styles;
 import logo from '@icons/images/logo.png';
 import { TfiReload } from 'react-icons/tfi';
 import { CiHeart } from 'react-icons/ci';

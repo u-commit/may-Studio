@@ -1,4 +1,5 @@
 import styles from './styles.module.scss';
+const { module } = styles;
 import Button from '@components/Button/Button.jsx';
 function ProductFilters({ category, categories, onCategoryChange }) {
   const { filters, categoryBrowser, categoryChip, categoryActive } = styles;

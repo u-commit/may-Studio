@@ -1,4 +1,5 @@
 import styles from './styles.module.scss';
+const { imageError, imageHelp, imageInput, imagePreview, module, removeImageButton } = styles;
 import Button from '@components/Button/Button.jsx';
 import InputCommon from '@components/InputCommon/InputCommon';
 
@@ -108,7 +109,7 @@ function ProductForm({
         <label className={`${field} ${wideField}`}>
           <span>Thêm ảnh từ thiết bị</span>
           <input
-            className={styles.imageInput}
+            className={imageInput}
             type='file'
             accept='image/*'
             multiple
@@ -116,10 +117,10 @@ function ProductForm({
             onChange={onAddProductImages}
           />
           {imageUploading && (
-            <small className={styles.imageHelp}>Đang tải ảnh…</small>
+            <small className={imageHelp}>Đang tải ảnh…</small>
           )}
           {imageError && (
-            <small className={styles.imageError} role='alert'>
+            <small className={imageError} role='alert'>
               {imageError}
             </small>
           )}
@@ -140,10 +141,10 @@ function ProductForm({
       {(existingImages.length > 0 || uploadedImages.length > 0) && (
         <div className={imagePreviews}>
           {existingImages.map((url, index) => (
-            <div className={styles.imagePreview} key={`existing-${index}`}>
+            <div className={imagePreview} key={`existing-${index}`}>
               <img src={url} alt={`Ảnh sản phẩm ${index + 1}`} />
               <button
-                className={styles.removeImageButton}
+                className={removeImageButton}
                 type='button'
                 aria-label={`Xóa ảnh sản phẩm ${index + 1}`}
                 onClick={() => onRemoveProductImage('existing', index)}
@@ -153,13 +154,13 @@ function ProductForm({
             </div>
           ))}
           {uploadedImages.map((url, index) => (
-            <div className={styles.imagePreview} key={`uploaded-${index}`}>
+            <div className={imagePreview} key={`uploaded-${index}`}>
               <img
                 src={url}
                 alt={`Ảnh sản phẩm tải lên ${index + 1}`}
               />
               <button
-                className={styles.removeImageButton}
+                className={removeImageButton}
                 type='button'
                 aria-label={`Xóa ảnh đã tải lên ${index + 1}`}
                 onClick={() => onRemoveProductImage('uploaded', index)}

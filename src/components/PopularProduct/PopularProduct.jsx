@@ -1,11 +1,12 @@
 import styles from './styles.module.scss';
+const { container, module, searchResults, searchResultsFew } = styles;
 import MainLayout from '@components/Layout/Layout';
 import ProductItem from '@components/ProductItem/ProductItem';
 function PopularProduct({ data, variantsByProductId, searchMode = false }) {
   const containerClass = [
-    styles.container,
-    searchMode && styles.searchResults,
-    searchMode && data.length > 0 && data.length < 4 && styles.searchResultsFew,
+    container,
+    searchMode && searchResults,
+    searchMode && data.length > 0 && data.length < 4 && searchResultsFew,
   ]
     .filter(Boolean)
     .join(' ');

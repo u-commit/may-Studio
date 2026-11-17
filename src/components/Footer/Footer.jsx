@@ -1,4 +1,5 @@
 import styles from './styles.module.scss';
+const { module } = styles;
 import logo from '@/assets/icons/images/logo.png';
 import { dataMenu } from './constain';
 import checkout from '@/assets/icons/images/check.png';

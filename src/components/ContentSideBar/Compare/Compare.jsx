@@ -1,6 +1,7 @@
 import HeaderSideBar from '../components/HeaderSideBar/HeaderSideBar';
 import { TbShirt } from 'react-icons/tb';
 import styles from './styles.module.scss';
+const { module } = styles;
 import ItemProduct from '../components/itemProduct/itemProduct';
 import Button from '../../Button/Button';
 function Compare() {

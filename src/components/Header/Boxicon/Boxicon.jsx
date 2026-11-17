@@ -1,4 +1,5 @@
 import styles from '../styles.module.scss';
+const { module } = styles;
 import fbIcon from '@icons/svgs/fbIcon.svg';
 import igIcon from '@icons/svgs/insIcon.svg';
 import ttIcon from '@icons/svgs/ttIcon.svg';

@@ -7,6 +7,7 @@ import useAdminCustomers from './hooks/useAdminCustomers';
 import useProductForm from './hooks/useProductForm';
 import AdminHeader from './AdminHeader/AdminHeader';
 import styles from './styles.module.scss';
+const { apiNotice, module, secondaryButton } = styles;
 import PageHeading from './PageHeading/PageHeading';
 import OverviewDashboard from './OverviewDashboard/OverviewDashboard';
 import ProductsSection from './ProductsSection/ProductsSection';
@@ -79,7 +80,7 @@ function AdminPage() {
           {(page === 'products' || page === 'catalog') &&
             (productsLoading || productsError) && (
               <div
-                className={styles.apiNotice}
+                className={apiNotice}
                 role={productsError ? 'alert' : 'status'}
               >
                 <span>
@@ -90,7 +91,7 @@ function AdminPage() {
 
                 {productsError && (
                   <button
-                    className={styles.secondaryButton}
+                    className={secondaryButton}
                     type='button'
                     onClick={reloadProducts}
                   >

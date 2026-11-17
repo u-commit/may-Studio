@@ -4,6 +4,7 @@ import { FiLogOut, FiUser } from 'react-icons/fi';
 import { useAuth } from '../../../contexts/useAuth';
 import { SideBarContext } from '../../../contexts/SideBarProvide';
 import styles from './styles.module.scss';
+const { module } = styles;
 
 function Account() {
   const { user, signOut } = useAuth();

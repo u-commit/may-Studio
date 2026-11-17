@@ -196,6 +196,38 @@
   &:hover img { transform: scale(1.035); }
 }
 
+.imageActions {
+  position: absolute;
+  right: 12px;
+  bottom: 18px;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  opacity: 0;
+  transform: translateX(8px);
+  transition: opacity .2s ease, transform .2s ease;
+
+  button {
+    display: grid;
+    width: 40px;
+    height: 40px;
+    place-items: center;
+    border: 0;
+    background: #fff;
+    color: #252925;
+    cursor: pointer;
+    font-size: 20px;
+  }
+  button:hover { background: #f2f3f1; }
+}
+
+.productImage:hover .imageActions,
+.productImage:focus-within .imageActions {
+  opacity: 1;
+  transform: translateX(0);
+}
+
 .imagePlaceholder {
   display: grid;
   width: 100%;
@@ -258,7 +290,51 @@
 .priceLine { display: flex; align-items: baseline; justify-content: center; gap: 8px; }
 .price { color: #606960; font-size: 13px; }
 .oldPrice { color: #9ba19b; font-size: 12px; text-decoration: line-through; }
+.variantDetails { padding-top: 4px; }
+.addToCartButton {
+  min-width: 142px;
+  min-height: 36px;
+  margin-top: 12px;
+  padding: 0 14px;
+  border: 1px solid #282b28;
+  background: #282b28;
+  color: #fff;
+  font: inherit;
+  font-size: 10px;
+  cursor: pointer;
+  transition: none;
+
+  &:hover:not(:disabled) {
+    border-color: #282b28 !important;
+    background: #282b28 !important;
+    color: #fff !important;
+    transform: none !important;
+    box-shadow: none !important;
+  }
+  &:disabled { border-color: #d9ddd8; background: #eceeeb; color: #8a928a; cursor: not-allowed; }
+}
 .message { padding: 34px 0; color: #707870; text-align: center; }
+.loadMoreWrap { display: flex; justify-content: center; padding: 34px 0 0; }
+.loadMoreButton {
+  width: auto;
+  min-width: 180px;
+  min-height: 38px;
+  padding: 0 22px;
+  border: 1px solid #252925;
+  border-radius: 5px;
+  background: #fff;
+  color: #252925;
+  font-size: 11px;
+  transition: none;
+
+  &:hover {
+    border-color: #252925 !important;
+    background: #fff !important;
+    color: #252925 !important;
+    transform: none !important;
+    box-shadow: none !important;
+  }
+}
 
 .listLayout { grid-template-columns: 1fr; gap: 16px; }
 .listCard {
@@ -295,6 +371,7 @@
   .productGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px 12px; }
   .listCard { grid-template-columns: minmax(110px, 38%) minmax(0, 1fr); gap: 12px; }
   .listCard .productName { font-size: 13px; }
+  .addToCartButton { min-width: 120px; }
 }
 
 @media (max-width: 420px) {

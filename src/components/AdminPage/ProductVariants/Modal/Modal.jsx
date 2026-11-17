@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import styles from './styles.module.scss';
+const { backdrop, dialog, module } = styles;
 
 const modalStack = [];
 
@@ -69,7 +70,7 @@ function Modal({
 
   return (
     <div
-      className={`${styles.backdrop} ${className ?? ''}`}
+      className={`${backdrop} ${className ?? ''}`}
       onMouseDown={(event) => {
         if (closeOnBackdrop && event.target === event.currentTarget)
           onClose?.();
@@ -77,7 +78,7 @@ function Modal({
     >
       <section
         ref={dialogRef}
-        className={`${styles.dialog} ${contentClassName ?? ''}`}
+        className={`${dialog} ${contentClassName ?? ''}`}
         role={alert ? 'alertdialog' : 'dialog'}
         aria-modal='true'
         aria-labelledby={titleId}

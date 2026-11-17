@@ -1,6 +1,7 @@
 import Button from '@components/Button/Button.jsx';
 import Modal from '../Modal/Modal';
 import styles from './styles.module.scss';
+const { actions, dialog, error, module } = styles;
 
 function VariantDeleteModal({
   variant,
@@ -15,7 +16,7 @@ function VariantDeleteModal({
       titleId='variant-delete-title'
       onClose={deleting ? undefined : onCancel}
       closeOnBackdrop={!deleting}
-      contentClassName={styles.dialog}
+      contentClassName={dialog}
     >
       <h2 id='variant-delete-title'>Xóa loại sản phẩm</h2>
       <p>
@@ -24,11 +25,11 @@ function VariantDeleteModal({
         bị xóa ngay khỏi sản phẩm.
       </p>
       {error && (
-        <p className={styles.error} role='alert'>
+        <p className={error} role='alert'>
           {error}
         </p>
       )}
-      <footer className={styles.actions}>
+      <footer className={actions}>
         <Button
           variant='ghost'
           size='compact'

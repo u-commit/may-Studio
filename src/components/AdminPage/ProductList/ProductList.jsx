@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import { FiSearch, FiEdit2, FiTrash2, FiLayers } from 'react-icons/fi';
 import Button from '@components/Button/Button.jsx';
 import styles from './styles.module.scss';
+const { module } = styles;
 
 function ProductList({
   products,

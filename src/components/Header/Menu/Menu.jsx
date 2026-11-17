@@ -1,5 +1,6 @@
 import { useContext } from 'react';
 import styles from '../styles.module.scss';
+const { module } = styles;
 import { SideBarContext } from '../../../contexts/SideBarProvide';
 import { useAuth } from '../../../contexts/useAuth';
 import { FiUser } from 'react-icons/fi';

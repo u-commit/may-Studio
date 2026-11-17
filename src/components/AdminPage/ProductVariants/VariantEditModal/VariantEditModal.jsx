@@ -4,6 +4,7 @@ import Button from '@components/Button/Button.jsx';
 import { validateVariants } from '../../../../utils/variantValidation';
 import Modal from '../Modal/Modal';
 import styles from './styles.module.scss';
+const { actions, addImage, dialog, field, fieldGrid, form, header, imageError, imageGrid, imageItem, imageSection, primaryLabel, removeImage, switch: switchClass, switchField } = styles;
 
 const MAX_IMAGE_COUNT = 4;
 const MAX_IMAGE_BYTES = 512 * 1024;
@@ -105,9 +106,9 @@ function VariantEditModal({
     <Modal
       titleId='variant-edit-title'
       onClose={onClose}
-      contentClassName={styles.dialog}
+      contentClassName={dialog}
     >
-      <header className={styles.header}>
+      <header className={header}>
         <h2 id='variant-edit-title'>Chỉnh sửa loại sản phẩm</h2>
         <Button
           variant='icon'
@@ -117,8 +118,8 @@ function VariantEditModal({
           content={<FiX aria-hidden='true' />}
         />
       </header>
-      <form className={styles.form} onSubmit={save} noValidate>
-        <label className={styles.field}>
+      <form className={form} onSubmit={save} noValidate>
+        <label className={field}>
           <span>SKU</span>
           <input
             value={draft.sku ?? ''}
@@ -127,8 +128,8 @@ function VariantEditModal({
           />
           {errors.sku && <small role='alert'>{errors.sku}</small>}
         </label>
-        <div className={styles.fieldGrid}>
-          <label className={styles.field}>
+        <div className={fieldGrid}>
+          <label className={field}>
             <span>Màu sắc</span>
             <select
               value={draft.color.name ?? ''}
@@ -144,7 +145,7 @@ function VariantEditModal({
             </select>
             {errors.color && <small role='alert'>{errors.color}</small>}
           </label>
-          <label className={styles.field}>
+          <label className={field}>
             <span>Kích thước</span>
             <select
               value={draft.size ?? ''}
@@ -160,7 +161,7 @@ function VariantEditModal({
             </select>
             {errors.size && <small role='alert'>{errors.size}</small>}
           </label>
-          <label className={styles.field}>
+          <label className={field}>
             <span>Giá bán (₫)</span>
             <input
               type='number'
@@ -172,7 +173,7 @@ function VariantEditModal({
             />
             {errors.price && <small role='alert'>{errors.price}</small>}
           </label>
-          <label className={styles.field}>
+          <label className={field}>
             <span>Giá khuyến mãi (₫)</span>
             <input
               type='number'
@@ -184,7 +185,7 @@ function VariantEditModal({
             />
             {errors.salePrice && <small role='alert'>{errors.salePrice}</small>}
           </label>
-          <label className={styles.field}>
+          <label className={field}>
             <span>Tồn kho</span>
             <input
               type='number'
@@ -196,12 +197,12 @@ function VariantEditModal({
             />
             {errors.stock && <small role='alert'>{errors.stock}</small>}
           </label>
-          <div className={styles.switchField}>
+          <div className={switchField}>
             <span>Đang bán</span>
             <Button
               variant='ghost'
               size='compact'
-              className={styles.switch}
+              className={switchClass}
               type='button'
               role='switch'
               aria-checked={Boolean(draft.isActive)}
@@ -212,17 +213,17 @@ function VariantEditModal({
           </div>
         </div>
 
-        <fieldset className={styles.imageSection}>
+        <fieldset className={imageSection}>
           <legend>Hình ảnh biến thể</legend>
-          <div className={styles.imageGrid}>
+          <div className={imageGrid}>
             {draft.images.map((image, index) => (
               <div
-                className={styles.imageItem}
+                className={imageItem}
                 key={`${index}-${image.slice(0, 24)}`}
               >
                 <img src={image} alt={`Ảnh biến thể ${index + 1}`} />
                 {index === 0 ? (
-                  <span className={styles.primaryLabel}>Ảnh chính</span>
+                  <span className={primaryLabel}>Ảnh chính</span>
                 ) : (
                   <Button
                     variant='ghost'
@@ -241,7 +242,7 @@ function VariantEditModal({
                 <Button
                   variant='icon'
                   type='button'
-                  className={styles.removeImage}
+                  className={removeImage}
                   aria-label={`Xóa ảnh ${index + 1}`}
                   onClick={() =>
                     setDraft((current) => ({
@@ -255,7 +256,7 @@ function VariantEditModal({
                 />
               </div>
             ))}
-            <label className={styles.addImage}>
+            <label className={addImage}>
               <input
                 type='file'
                 accept='image/*'
@@ -268,13 +269,13 @@ function VariantEditModal({
             </label>
           </div>
           {imageError && (
-            <p className={styles.imageError} role='alert'>
+            <p className={imageError} role='alert'>
               {imageError}
             </p>
           )}
         </fieldset>
 
-        <footer className={styles.actions}>
+        <footer className={actions}>
           <Button
             variant='ghost'
             size='compact'

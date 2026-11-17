@@ -1,5 +1,6 @@
 import { ADMIN_NAV_ITEMS } from '../constants';
 import styles from './styles.module.scss';
+const { module } = styles;
 
 function AdminSidebar({ activePage, onNavigate }) {
   const {

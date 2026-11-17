@@ -1,4 +1,5 @@
 import styles from './styles.module.scss';
+const { module } = styles;
 
 function AdminHeader({ pageTitle }) {
   const { topbar } = styles;

@@ -1,6 +1,7 @@
 import HeaderSideBar from '../components/HeaderSideBar/HeaderSideBar';
 import { CiHeart } from 'react-icons/ci';
 import styles from './styles.module.scss';
+const { module } = styles;
 import Button from '../../Button/Button';
 function WhisList() {
   const { container, boxContent, boxIcon } = styles;

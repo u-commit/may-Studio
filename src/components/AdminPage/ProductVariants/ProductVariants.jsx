@@ -15,6 +15,7 @@ import VariantBatchAddModal from './VariantBatchAddModal/VariantBatchAddModal';
 import VariantDeleteModal from './VariantDeleteModal/VariantDeleteModal';
 import useProductVariantEditor from './hooks/useProductVariantEditor';
 import styles from './styles.module.scss';
+const { actionsCol, activeCol, addButton, cellError, colorCol, colorValue, dialog, emptyState, filters, footer, header, headingCopy, imageCol, module, notice, page, priceCol, productHeading, productImage, readOnlyValue, rowActions, saleCol, saveError, searchBox, sizeCol, skuCol, skuValue, statusActive, statusBadge, statusInactive, stockCol, table, tableViewport, toolbar, variantImage, visuallyHidden } = styles;
 
 function formatNumber(value) {
   if (value === '' || value == null) return '';
@@ -93,19 +94,19 @@ function ProductVariants({
       <Modal
         titleId='product-variants-title'
         onClose={cancelAndClose}
-        contentClassName={styles.dialog}
+        contentClassName={dialog}
       >
-        <div className={styles.page}>
-          <header className={styles.header}>
-            <div className={styles.productHeading}>
-              <div className={styles.productImage}>
+        <div className={page}>
+          <header className={header}>
+            <div className={productHeading}>
+              <div className={productImage}>
                 {headerImage ? (
                   <img src={headerImage} alt='' />
                 ) : (
                   <FiLayers aria-hidden='true' />
                 )}
               </div>
-              <div className={styles.headingCopy}>
+              <div className={headingCopy}>
                 <h2 id='product-variants-title'>{product.name}</h2>
               </div>
             </div>
@@ -118,8 +119,8 @@ function ProductVariants({
             />
           </header>
 
-          <div className={styles.toolbar}>
-            <label className={styles.searchBox}>
+          <div className={toolbar}>
+            <label className={searchBox}>
               <FiSearch aria-hidden='true' />
               <input
                 aria-label='Tìm theo SKU, màu, cỡ'
@@ -129,7 +130,7 @@ function ProductVariants({
               />
             </label>
             <div
-              className={styles.filters}
+              className={filters}
               aria-label='Lọc trạng thái biến thể'
             >
               {[
@@ -151,7 +152,7 @@ function ProductVariants({
             <Button
               variant='admin-primary'
               size='compact'
-              className={styles.addButton}
+              className={addButton}
               type='button'
               disabled={loading}
               onClick={() => setBatchModalOpen(true)}
@@ -164,7 +165,7 @@ function ProductVariants({
           </div>
 
           {loadError && (
-            <div className={styles.notice} role='alert'>
+            <div className={notice} role='alert'>
               <span>{loadError}</span>
               <Button
                 variant='outline'
@@ -176,18 +177,18 @@ function ProductVariants({
             </div>
           )}
 
-          <div className={styles.tableViewport}>
-            <table className={styles.table}>
+          <div className={tableViewport}>
+            <table className={table}>
               <colgroup>
-                <col className={styles.imageCol} />
-                <col className={styles.colorCol} />
-                <col className={styles.sizeCol} />
-                <col className={styles.skuCol} />
-                <col className={styles.priceCol} />
-                <col className={styles.saleCol} />
-                <col className={styles.stockCol} />
-                <col className={styles.activeCol} />
-                <col className={styles.actionsCol} />
+                <col className={imageCol} />
+                <col className={colorCol} />
+                <col className={sizeCol} />
+                <col className={skuCol} />
+                <col className={priceCol} />
+                <col className={saleCol} />
+                <col className={stockCol} />
+                <col className={activeCol} />
+                <col className={actionsCol} />
               </colgroup>
               <thead>
                 <tr>
@@ -200,7 +201,7 @@ function ProductVariants({
                   <th>Tồn kho</th>
                   <th>Bán</th>
                   <th>
-                    <span className={styles.visuallyHidden}>Thao tác</span>
+                    <span className={visuallyHidden}>Thao tác</span>
                   </th>
                 </tr>
               </thead>
@@ -217,7 +218,7 @@ function ProductVariants({
                       <tr key={variant.id}>
                         <td>
                           <div
-                            className={styles.variantImage}
+                            className={variantImage}
                             style={{
                               '--swatch-color': getColorHex(
                                 variant.color?.name
@@ -232,7 +233,7 @@ function ProductVariants({
                           </div>
                         </td>
                         <td>
-                          <span className={styles.colorValue}>
+                          <span className={colorValue}>
                             <i
                               aria-hidden='true'
                               style={{
@@ -244,73 +245,73 @@ function ProductVariants({
                             {variant.color?.name || '—'}
                           </span>
                           {(errors.color || errors.combination) && (
-                            <small className={styles.cellError} role='alert'>
+                            <small className={cellError} role='alert'>
                               {errors.color || errors.combination}
                             </small>
                           )}
                         </td>
                         <td>
-                          <span className={styles.readOnlyValue}>
+                          <span className={readOnlyValue}>
                             {variant.size || '—'}
                           </span>
                           {(errors.size || errors.combination) && (
-                            <small className={styles.cellError} role='alert'>
+                            <small className={cellError} role='alert'>
                               {errors.size || errors.combination}
                             </small>
                           )}
                         </td>
                         <td>
                           <span
-                            className={`${styles.readOnlyValue} ${styles.skuValue}`}
+                            className={`${readOnlyValue} ${skuValue}`}
                             title={variant.sku || ''}
                           >
                             {variant.sku || '—'}
                           </span>
                           {errors.sku && (
-                            <small className={styles.cellError} role='alert'>
+                            <small className={cellError} role='alert'>
                               {errors.sku}
                             </small>
                           )}
                         </td>
                         <td>
-                          <span className={styles.readOnlyValue}>
+                          <span className={readOnlyValue}>
                             {formatNumber(variant.price) || '—'}
                           </span>
                           {errors.price && (
-                            <small className={styles.cellError} role='alert'>
+                            <small className={cellError} role='alert'>
                               {errors.price}
                             </small>
                           )}
                         </td>
                         <td>
-                          <span className={styles.readOnlyValue}>
+                          <span className={readOnlyValue}>
                             {formatNumber(variant.salePrice) || '—'}
                           </span>
                           {errors.salePrice && (
-                            <small className={styles.cellError} role='alert'>
+                            <small className={cellError} role='alert'>
                               {errors.salePrice}
                             </small>
                           )}
                         </td>
                         <td>
-                          <span className={styles.readOnlyValue}>
+                          <span className={readOnlyValue}>
                             {formatNumber(variant.stock) || '0'}
                           </span>
                           {errors.stock && (
-                            <small className={styles.cellError} role='alert'>
+                            <small className={cellError} role='alert'>
                               {errors.stock}
                             </small>
                           )}
                         </td>
                         <td>
                           <span
-                            className={`${styles.statusBadge} ${isActive ? styles.statusActive : styles.statusInactive}`}
+                            className={`${statusBadge} ${isActive ? statusActive : statusInactive}`}
                           >
                             {isActive ? 'Đang bán' : 'Ngừng bán'}
                           </span>
                         </td>
                         <td>
-                          <div className={styles.rowActions}>
+                          <div className={rowActions}>
                             <Button
                               variant='icon'
                               type='button'
@@ -332,14 +333,14 @@ function ProductVariants({
                   })}
                 {loading && (
                   <tr>
-                    <td className={styles.emptyState} colSpan='9'>
+                    <td className={emptyState} colSpan='9'>
                       Đang tải loại sản pphẩm...
                     </td>
                   </tr>
                 )}
                 {!loading && filteredVariants.length === 0 && (
                   <tr>
-                    <td className={styles.emptyState} colSpan='9'>
+                    <td className={emptyState} colSpan='9'>
                       {draftVariants.length
                         ? 'Không có loại sản phẩm  phù hợp.'
                         : 'Sản phẩm chưa có loại sản phẩm.'}
@@ -351,11 +352,11 @@ function ProductVariants({
           </div>
 
           {saveError && (
-            <p className={styles.saveError} role='alert'>
+            <p className={saveError} role='alert'>
               {saveError}
             </p>
           )}
-          <footer className={styles.footer}>
+          <footer className={footer}>
             <div>
               <Button
                 variant='ghost'

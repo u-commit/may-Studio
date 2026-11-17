@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { FiSearch, FiX } from 'react-icons/fi';
 import styles from './styles.module.scss';
+const { module } = styles;
 
 function getCategoryName(product) {
   const value = product.category ?? product.categoryName ?? product.type;

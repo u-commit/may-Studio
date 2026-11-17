@@ -5,6 +5,8 @@
   flex-direction: column;
   padding: 30px 20px 0 20px;
   height: 95%;
+  min-height: 0;
+  overflow: hidden;
   .title {
     @include flex_box_custom(space-between, center, 0px);
     padding: 20px;
@@ -15,3 +17,14 @@
     flex-direction: column;
   }
 }
+.emptyCart {
+  padding: 30px 12px;
+  color: #7c837c;
+  text-align: center;
+  font-size: 13px;
+}
+.cartItems {
+  max-height: calc(100vh - 250px);
+  overflow-y: auto;
+}
+.subtotal { font-weight: 600; }

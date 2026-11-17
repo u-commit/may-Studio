@@ -1,4 +1,5 @@
 import styles from './styles.module.scss';
+const { module } = styles;
 import Button from '@components/Button/Button.jsx';
 function PageHeading({ pageTitle, showAddProduct, onAddProduct }) {
   const { pageHeading, eyebrow, primaryButton } = styles;

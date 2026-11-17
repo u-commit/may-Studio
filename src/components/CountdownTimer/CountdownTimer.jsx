@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import styles from './styles.module.scss';
+const { module } = styles;
 
 const CountdownTimer = ({ targetDate }) => {
   const { box, title } = styles;

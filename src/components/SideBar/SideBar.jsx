@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 import { SideBarContext } from '@/contexts/SideBarProvide';
 import styles from './styles.module.scss';
+const { module } = styles;
 import classNames from 'classnames';
 import { IoClose } from 'react-icons/io5';
 import LogIn from '../ContentSideBar/Login/Login';

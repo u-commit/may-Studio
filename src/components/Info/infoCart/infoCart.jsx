@@ -1,4 +1,5 @@
 import styles from '../styles.module.scss';
+const { module } = styles;
 
 function InfoCart({ content, description, src }) {
   const { containerCart, containerContent, title, des } = styles;

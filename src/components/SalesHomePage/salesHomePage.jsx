@@ -1,4 +1,5 @@
 import styles from './styles.module.css';
+const { module } = styles;
 import item1 from '../../assets/images/Item.png';
 import item3 from '../../assets/images/image3.png';
 import Button from '@components/Button/Button';
