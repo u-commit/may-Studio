@@ -5,8 +5,8 @@ const dataBoxicon = [
 ];
 
 const dataMenu = [
-  { content: 'Home', href: '#' },
-  { content: 'Our Shop', href: '#' },
+  { content: 'Home', href: '/' },
+  { content: 'Our Shop', href: '/shop' },
   { content: 'About Us', href: '#' },
   { content: 'Contact', href: '#' },
   { content: 'Search', href: '#' },

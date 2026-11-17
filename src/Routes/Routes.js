@@ -6,6 +6,10 @@ const routes = [
     component: lazy(() => import('@components/HomePage/HomePage')),
   },
   {
+    path: '/shop',
+    component: lazy(() => import('@components/ShopPage/ShopPage')),
+  },
+  {
     path: '/user',
     component: lazy(() => import('@components/HomePage/HomePage')),
     role: 'user',

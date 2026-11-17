@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import styles from './styles.module.scss';
 import reloadIcon from '@icons/svgs/reloadIcon.svg';
-import cartIcon from '@icons/svgs/cartIcon.svg';
-import heartIcon from '@icons/svgs/heartIcon.svg';
+import { LiaShoppingBagSolid, LiaEyeSolid } from 'react-icons/lia';
+import { CiHeart } from 'react-icons/ci';
+import { TfiReload } from 'react-icons/tfi';
 function formatPrice(value) {
   const amount = Number(value);
   return Number.isFinite(amount) ? `${amount.toLocaleString('vi-VN')} ₫` : '—';
@@ -17,8 +18,18 @@ function normalizeColorHex(value) {
 
 function ProductItem({ src, PrevSrc, prevSrc, name, price, variants = [] }) {
   const previewSrc = PrevSrc ?? prevSrc;
-  const { productCard, boxImg, showImgWhenHover, showFncWhenHover, boxIcon, title, Price } = styles;
-  const activeVariants = variants.filter((variant) => variant.status === 'active');
+  const {
+    productCard,
+    boxImg,
+    showImgWhenHover,
+    showFncWhenHover,
+    boxIcon,
+    title,
+    Price,
+  } = styles;
+  const activeVariants = variants.filter(
+    (variant) => variant.status === 'active'
+  );
   const firstAvailableVariant =
     activeVariants.find((variant) => Number(variant.stock) > 0) ??
     activeVariants[0];
@@ -70,79 +81,23 @@ function ProductItem({ src, PrevSrc, prevSrc, name, price, variants = [] }) {
         )}
         <div className={showFncWhenHover}>
           <div className={boxIcon}>
-            <img src={cartIcon} alt='' />
+            <LiaShoppingBagSolid />
           </div>
           <div className={boxIcon}>
-            <img src={heartIcon} alt='' />
+            <CiHeart />
           </div>
           <div className={boxIcon}>
-            <img src={reloadIcon} alt='' />
+            <TfiReload />
           </div>
           <div className={boxIcon}>
-            <img src={reloadIcon} alt='' />
+            <LiaEyeSolid />
           </div>
         </div>
       </div>
       <div className={title}>{name}</div>
       <div className={styles.priceBlock}>
         <span className={Price}>{formatPrice(displayPrice)}</span>
-        {salePrice > 0 && (
-          <del className={styles.originalPrice}>
-            {formatPrice(selectedVariant.price)}
-          </del>
-        )}
       </div>
-      {activeVariants.length > 0 ? (
-        <div className={styles.variantOptions}>
-          {colorOptions.length > 0 && (
-            <div className={styles.optionGroup}>
-              <span className={styles.optionLabel}>Màu: {selectedColor}</span>
-              <div className={styles.colorOptions}>
-                {colorOptions.map((variant) => (
-                  <button
-                    className={`${styles.colorOption} ${variant.color.name === selectedColor ? styles.optionSelected : ''}`}
-                    key={variant.color.name}
-                    type='button'
-                    aria-label={`Chọn màu ${variant.color.name}`}
-                    aria-pressed={variant.color.name === selectedColor}
-                    title={variant.color.name}
-                    style={{
-                      '--swatch-color': normalizeColorHex(variant.color.hex),
-                    }}
-                    onClick={() => selectColor(variant.color.name)}
-                  />
-                ))}
-              </div>
-            </div>
-          )}
-          {sizeOptions.length > 0 && (
-            <div className={styles.optionGroup}>
-              <span className={styles.optionLabel}>Kích thước</span>
-              <div className={styles.sizeOptions}>
-                {sizeOptions.map((variant) => (
-                  <button
-                    className={`${styles.sizeOption} ${variant.id === selectedVariant?.id ? styles.optionSelected : ''}`}
-                    key={variant.id}
-                    type='button'
-                    aria-pressed={variant.id === selectedVariant?.id}
-                    onClick={() => selectSize(variant.size)}
-                  >
-                    {variant.size}
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
-          <div className={styles.variantMeta}>
-            {selectedVariant?.sku && <span>SKU: {selectedVariant.sku}</span>}
-            <span className={stock > 0 ? styles.inStock : styles.outOfStock}>
-              {stock > 0 ? `Còn ${stock} sản phẩm` : 'Hết hàng'}
-            </span>
-          </div>
-        </div>
-      ) : variants.length > 0 ? (
-        <p className={styles.outOfStock}>Sản phẩm tạm ngừng kinh doanh</p>
-      ) : null}
     </article>
   );
 }

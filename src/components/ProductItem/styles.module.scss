@@ -51,17 +51,16 @@
     @include flex_box_custom(center, center, 0px);
     cursor: pointer;
     transition: background-color 300ms ease;
-
-    img {
-      width: 17px;
-      height: 17px;
-    }
+    font-size: 20px;
     &:hover {
       background-color: rgb(222, 222, 222);
     }
   }
 }
-.productCard { width: 100%; min-width: 0; }
+.productCard {
+  width: 100%;
+  min-width: 0;
+}
 .title {
   font-size: 16px;
   color: $four_color;
@@ -82,7 +81,6 @@
   display: flex;
   align-items: baseline;
   flex-wrap: wrap;
-  gap: 7px;
 }
 .originalPrice {
   color: #8b938b;
@@ -149,5 +147,9 @@
   justify-content: space-between;
   gap: 5px 10px;
 }
-.inStock { color: #526e54; }
-.outOfStock { color: #a45951; }
+.inStock {
+  color: #526e54;
+}
+.outOfStock {
+  color: #a45951;
+}

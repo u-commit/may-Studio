@@ -6,7 +6,9 @@ function PopularProduct({ data, variantsByProductId, searchMode = false }) {
     styles.container,
     searchMode && styles.searchResults,
     searchMode && data.length > 0 && data.length < 4 && styles.searchResultsFew,
-  ].filter(Boolean).join(' ');
+  ]
+    .filter(Boolean)
+    .join(' ');
   return (
     <MainLayout>
       <div id='product-list' className={containerClass}>

@@ -12,7 +12,7 @@ import classNames from 'classnames';
 import { SideBarContext } from '../../contexts/SideBarProvide';
 import SearchOverlay from './SearchOverlay/SearchOverlay';
 
-function MyHeader({ products = [], categories = [], search = '', category = 'all', onSearch }) {
+function MyHeader({ products = [], categories = [], search = '', category = 'all', onSearch, transparent = true }) {
   const {
     containerBoxIcon,
     containerMenu,
@@ -22,6 +22,7 @@ function MyHeader({ products = [], categories = [], search = '', category = 'all
     topheader,
     fixHeader,
     heroHeader,
+    solidHeader,
     brandLogo,
     utilityIcons,
     rightMenu,
@@ -45,9 +46,11 @@ function MyHeader({ products = [], categories = [], search = '', category = 'all
   return (
     <>
     <div
-      className={classNames(container, topheader, {
+      className={classNames(container, {
+        [topheader]: transparent,
         [fixHeader]: fixedPosition,
-        [heroHeader]: !fixedPosition,
+        [heroHeader]: transparent && !fixedPosition,
+        [solidHeader]: !transparent && !fixedPosition,
       })}
     >
       <div className={containerHeader}>
