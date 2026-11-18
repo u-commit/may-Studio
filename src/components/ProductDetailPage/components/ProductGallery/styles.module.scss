@@ -1,0 +1,100 @@
+@import '@styles/mixin.scss';
+@import '@styles/variable.scss';
+
+.container { min-width: 0; }
+
+.mainImage {
+  position: relative;
+  display: grid;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  place-items: center;
+  overflow: hidden;
+  background: #f4f4f4;
+
+  img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform-origin: var(--zoom-x, 50%) var(--zoom-y, 50%);
+    transition: transform .18s ease;
+  }
+
+  img:hover { transform: scale(1.8); cursor: zoom-in; }
+}
+
+.zoomButton {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 1;
+  width: 40px;
+  min-width: 40px;
+  height: 40px;
+  background: $white_color;
+  color: $four_color;
+}
+
+.zoomOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(0, 0, 0, .82);
+}
+
+.zoomDialog {
+  position: relative;
+  display: grid;
+  max-width: min(100%, 1000px);
+  max-height: 100%;
+  place-items: center;
+  padding: 16px;
+  background: $white_color;
+}
+
+.zoomedImage {
+  display: block;
+  max-width: 100%;
+  max-height: calc(100vh - 80px);
+  object-fit: contain;
+}
+
+.closeZoomButton {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 1;
+  width: 38px;
+  min-width: 38px;
+  height: 38px;
+  background: $white_color;
+  color: $four_color;
+}
+
+.placeholder { color: #777; font-size: 13px; letter-spacing: .16em; }
+
+.thumbnails {
+  @include flex_box_custom(flex-start, center, 10px);
+
+  padding-top: 12px;
+  overflow-x: auto;
+}
+
+.thumbnail {
+  flex: 0 0 72px;
+  width: 72px;
+  height: 88px;
+  overflow: hidden;
+  border: 1px solid #ddd;
+  padding: 0;
+  background: $white_color;
+  cursor: pointer;
+
+  &[aria-pressed='true'] { border-color: $primary_color; }
+
+  img { display: block; width: 100%; height: 100%; object-fit: cover; }
+}

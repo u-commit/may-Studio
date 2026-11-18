@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { FiZoomIn, FiX } from 'react-icons/fi';
 import Button from '@components/Button/Button';
-import styles from '../styles.module.scss';
+import styles from './styles.module.scss';
 const {
-  gallery,
+  container,
   mainImage,
   thumbnails,
   thumbnail,
@@ -41,7 +41,7 @@ function ProductGallery({ images, name, featuredImage }) {
   }, [zoomOpen]);
 
   return (
-    <div className={gallery}>
+    <div className={container}>
       <div className={mainImage}>
         {activeImage ? (
           <img src={activeImage} alt={name} onMouseMove={moveZoomOrigin} />

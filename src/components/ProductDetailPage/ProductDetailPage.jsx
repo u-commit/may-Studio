@@ -5,17 +5,17 @@ import MainLayout from '@components/Layout/Layout';
 import useShopProductCard from '@components/ShopPage/hooks/useShopProductCard';
 import useStorefrontVariants from '@components/ProductItem/useStorefrontVariants';
 import useProductDetail from './hooks/useProductDetail';
-import ProductGallery from './components/ProductGallery';
-import ProductPurchasePanel from './components/ProductPurchasePanel';
-import ProductReviews from './components/ProductReviews';
-import RelatedProducts from './components/RelatedProducts';
+import ProductGallery from './components/ProductGallery/ProductGallery';
+import ProductPurchasePanel from './components/ProductPurchasePanel/ProductPurchasePanel';
+import ProductReviews from './components/ProductReviews/ProductReviews';
+import RelatedProducts from './components/RelatedProducts/RelatedProducts';
 import styles from './styles.module.scss';
 const {
   breadcrumb,
+  container,
   detailLayout,
   information,
   informationItem,
-  page,
   valueList,
 } = styles;
 
@@ -157,7 +157,7 @@ function ProductDetailPage() {
     <>
       <MyHeader products={products} transparent={false} />
       <MainLayout>
-        <div className={page}>
+        <div className={container}>
           {loading ? (
             <p>Đang tải thông tin sản phẩm...</p>
           ) : error ? (

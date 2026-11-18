@@ -63,9 +63,15 @@ function InputCommon({
             : { defaultValue })}
         />
         {isPassword && (
-          <div className={boxIcon} onClick={handleShowPassWord}>
+          <button
+            type='button'
+            className={boxIcon}
+            onClick={handleShowPassWord}
+            aria-label={showPassword ? 'Ẩn mật khẩu' : 'Hiện mật khẩu'}
+            aria-pressed={showPassword}
+          >
             {showPassword ? <IoEyeOffSharp /> : <IoEyeSharp />}
-          </div>
+          </button>
         )}
 
         {isErr && <div className={errors}>{messErr}</div>}

@@ -17,12 +17,21 @@
       height: 37px;
       border: 1px solid #e1e1e1;
       outline: none;
-      padding: 10px 0 10px 10px;
+      padding: 10px 40px 10px 10px;
     }
     .boxIcon {
+      display: grid;
+      width: 28px;
+      height: 28px;
+      place-items: center;
       position: absolute;
       top: 50%;
-      right: 0;
+      right: 7px;
+      transform: translateY(-50%);
+      border: 0;
+      padding: 0;
+      background: transparent;
+      color: $four_color;
       cursor: pointer;
     }
     .errors {
@@ -40,4 +49,6 @@
     padding: 10px 12px;
     border-radius: 6px;
   }
+
+  .boxInput:has(.boxIcon) input { padding-right: 44px; }
 }

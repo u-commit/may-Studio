@@ -156,9 +156,7 @@
 .menu:hover::after {
   transform: scaleX(1);
 }
-.activeMenu::after {
-  transform: scaleX(1);
-}
+.activeMenu::after { transform: scaleX(1); }
 .accountMenu { padding: 0; }
 .accountMenu::after { display: none; }
 .accountAvatar {

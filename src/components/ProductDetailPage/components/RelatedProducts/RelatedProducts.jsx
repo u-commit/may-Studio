@@ -2,8 +2,8 @@ import { useMemo, useRef } from 'react';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import ShopProductCard from '@components/ShopPage/components/ShopProductCard';
 import { getShopCategoryName, getShopProductId } from '@components/ShopPage/hooks/shopHelpers';
-import styles from '../styles.module.scss';
-const { relatedSection, relatedHeading, relatedViewport, relatedTrack, relatedCard, relatedArrow, relatedPrevious, relatedNext } = styles;
+import styles from './styles.module.scss';
+const { container, relatedHeading, relatedViewport, relatedTrack, relatedCard, relatedArrow, relatedPrevious, relatedNext } = styles;
 
 function RelatedProducts({ product, products, variantsByProductId }) {
   const trackRef = useRef(null);
@@ -32,7 +32,7 @@ function RelatedProducts({ product, products, variantsByProductId }) {
   }
 
   return (
-    <section className={relatedSection} aria-labelledby='related-products-title'>
+    <section className={container} aria-labelledby='related-products-title'>
       <h2 id='related-products-title' className={relatedHeading}>
         SẢN PHẨM LIÊN QUAN
       </h2>

@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { FiStar } from 'react-icons/fi';
 import Button from '@components/Button/Button';
-import styles from '../styles.module.scss';
+import styles from './styles.module.scss';
 const {
-  reviewSection,
+  container,
   reviewHeading,
   reviewList,
   reviewItem,
@@ -64,7 +64,7 @@ function ProductReviews({ productId, productName }) {
   }
 
   return (
-    <section className={reviewSection} aria-labelledby='product-reviews-title'>
+    <section className={container} aria-labelledby='product-reviews-title'>
       <h2 id='product-reviews-title' className={reviewHeading}>
         ĐÁNH GIÁ ({reviews.length})
       </h2>

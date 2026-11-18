@@ -1,0 +1,50 @@
+@import '@styles/mixin.scss';
+@import '@styles/variable.scss';
+
+.container { margin-top: 56px; padding-bottom: 56px; }
+.relatedHeading { margin: 0 0 24px; color: $four_color; font-size: 19px; font-weight: 400; text-align: center; }
+.relatedViewport { position: relative; }
+
+.relatedTrack {
+  @include flex_box_custom(flex-start, stretch, 16px);
+
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  scroll-snap-type: x mandatory;
+
+  &::-webkit-scrollbar { display: none; }
+}
+
+.relatedCard {
+  min-width: 0;
+  flex: 0 0 calc((100% - 48px) / 4);
+  scroll-snap-align: start;
+}
+
+.relatedArrow {
+  position: absolute;
+  top: 32%;
+  z-index: 2;
+  display: grid;
+  width: 36px;
+  height: 36px;
+  place-items: center;
+  border: 1px solid #d5d5d5;
+  border-radius: 50%;
+  padding: 0;
+  background: $white_color;
+  color: $four_color;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.relatedPrevious { left: -18px; }
+.relatedNext { right: -18px; }
+
+@media (max-width: 760px) {
+  .container { margin-top: 38px; }
+  .relatedCard { flex-basis: calc((100% - 14px) / 2); }
+  .relatedPrevious { left: -9px; }
+  .relatedNext { right: -9px; }
+}

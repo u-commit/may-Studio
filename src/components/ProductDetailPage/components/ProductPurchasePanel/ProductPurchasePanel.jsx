@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import Button from '@components/Button/Button';
 import { getColorHex } from '@/apis/productVariantsService';
-import styles from '../styles.module.scss';
+import styles from './styles.module.scss';
 const {
   cartActions,
   cartButton,
+  container,
   colorOption,
   colorOptions,
   inStock,
@@ -14,7 +15,6 @@ const {
   productName,
   productPrice,
   purchaseDivider,
-  purchasePanel,
   purchaseAction,
   quantityControl,
   quantityValue,
@@ -47,7 +47,7 @@ function ProductPurchasePanel({ product, details }) {
   const categoryName =
     typeof product.category === 'string'
       ? product.category
-      : product.category?.name ?? '';
+      : (product.category?.name ?? '');
   const prices = activeVariants
     .map((variant) =>
       Number(variant.salePrice) > 0
@@ -64,14 +64,15 @@ function ProductPurchasePanel({ product, details }) {
       ? `${formatPrice(lowestPrice)} – ${formatPrice(highestPrice)}`
       : formatPrice(displayPrice);
   const requiresVariant = activeVariants.length > 0;
-  const canAddToCart = stock > 0 && (!requiresVariant || Boolean(selectedVariant));
+  const canAddToCart =
+    stock > 0 && (!requiresVariant || Boolean(selectedVariant));
 
   function addSelectedQuantity() {
     if (canAddToCart) addToCart(Math.min(quantity, stock));
   }
 
   return (
-    <section className={purchasePanel}>
+    <section className={container}>
       <h1 className={productName}>{product.name}</h1>
       <p className={productPrice}>{priceText}</p>
       <div className={summary}>
@@ -79,8 +80,8 @@ function ProductPurchasePanel({ product, details }) {
           <p>{description}</p>
         ) : (
           <p>
-            Thiết kế chỉn chu, dễ kết hợp trong nhiều dịp. Chất liệu và phom dáng
-            được chọn để mang lại cảm giác thoải mái khi sử dụng hằng ngày.
+            Thiết kế chỉn chu, dễ kết hợp trong nhiều dịp. Chất liệu và phom
+            dáng được chọn để mang lại cảm giác thoải mái khi sử dụng hằng ngày.
           </p>
         )}
       </div>
@@ -99,7 +100,8 @@ function ProductPurchasePanel({ product, details }) {
                   type='button'
                   className={`${colorOption} ${currentColor === colorName ? selectedOption : ''}`}
                   style={{
-                    '--product-color': variant.color.hex || getColorHex(colorName),
+                    '--product-color':
+                      variant.color.hex || getColorHex(colorName),
                   }}
                   onClick={() => chooseColor(colorName)}
                   aria-label={colorName}
@@ -115,7 +117,9 @@ function ProductPurchasePanel({ product, details }) {
       {sizes.length > 0 && (
         <div className={optionGroup}>
           <div className={variantLabel}>
-            <span>Kích cỡ{selectedVariant?.size ? `: ${selectedVariant.size}` : ''}</span>
+            <span>
+              Kích cỡ{selectedVariant?.size ? `: ${selectedVariant.size}` : ''}
+            </span>
           </div>
           <div className={sizeOptions} aria-label='Chọn kích cỡ'>
             {sizes.map((size) => (
@@ -180,23 +184,6 @@ function ProductPurchasePanel({ product, details }) {
         onClick={addSelectedQuantity}
         disabled={!canAddToCart}
       />
-
-      <dl className={metaList}>
-        {manufacturer && (
-          <>
-            <dt>Thương hiệu</dt>
-            <dd>{manufacturer}</dd>
-          </>
-        )}
-        <dt>Mã sản phẩm</dt>
-        <dd>{currentSku || product.id}</dd>
-        {categoryName && (
-          <>
-            <dt>Danh mục</dt>
-            <dd>{categoryName}</dd>
-          </>
-        )}
-      </dl>
     </section>
   );
 }
