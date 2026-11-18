@@ -1,10 +1,12 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
+import { Link } from 'react-router-dom';
 import styles from './styles.module.scss';
-const { module, priceBlock } = styles;
-import reloadIcon from '@icons/svgs/reloadIcon.svg';
+const { imageLink, priceBlock, titleLink } = styles;
 import { LiaShoppingBagSolid, LiaEyeSolid } from 'react-icons/lia';
 import { CiHeart } from 'react-icons/ci';
 import { TfiReload } from 'react-icons/tfi';
+import { SideBarContext } from '@/contexts/SideBarProvide';
+import { addCartItem } from '@/utils/cartStore';
 function formatPrice(value) {
   const amount = Number(value);
   return Number.isFinite(amount) ? `${amount.toLocaleString('vi-VN')} ₫` : '—';
@@ -17,7 +19,15 @@ function normalizeColorHex(value) {
   return '#d9dfd8';
 }
 
-function ProductItem({ src, PrevSrc, prevSrc, name, price, variants = [] }) {
+function ProductItem({
+  src,
+  PrevSrc,
+  prevSrc,
+  name,
+  price,
+  variants = [],
+  details = {},
+}) {
   const previewSrc = PrevSrc ?? prevSrc;
   const {
     productCard,
@@ -28,6 +38,7 @@ function ProductItem({ src, PrevSrc, prevSrc, name, price, variants = [] }) {
     title,
     Price,
   } = styles;
+  const { setIsOpen, setType } = useContext(SideBarContext);
   const activeVariants = variants.filter(
     (variant) => variant.status === 'active'
   );
@@ -52,10 +63,38 @@ function ProductItem({ src, PrevSrc, prevSrc, name, price, variants = [] }) {
     (variant) => variant.color?.name === selectedColor
   );
   const image = selectedVariant?.image || src;
+  const productHref = `/product/${encodeURIComponent(
+    details.id ?? details._id ?? details.productId ?? ''
+  )}`;
   const salePrice = Number(selectedVariant?.salePrice) || 0;
   const displayPrice =
     salePrice > 0 ? salePrice : (selectedVariant?.price ?? price);
-  const stock = Math.max(0, Number(selectedVariant?.stock) || 0);
+  const stock = Math.max(
+    0,
+    Number(selectedVariant?.stock ?? details.stock) || 0
+  );
+
+  function addToCart() {
+    const productId = String(
+      details?.id ?? details?._id ?? details?.productId ?? ''
+    );
+    const saved = addCartItem({
+      id: String(selectedVariant?.id ?? productId),
+      productId,
+      variantId: selectedVariant?.id ?? '',
+      name,
+      image,
+      price: displayPrice,
+      color: selectedVariant?.color?.name ?? details.color ?? '',
+      size: selectedVariant?.size ?? '',
+      sku: selectedVariant?.sku ?? details.sku ?? '',
+    });
+
+    if (saved) {
+      setType('cart');
+      setIsOpen(true);
+    }
+  }
 
   function selectColor(colorName) {
     const candidates = activeVariants.filter(
@@ -76,14 +115,26 @@ function ProductItem({ src, PrevSrc, prevSrc, name, price, variants = [] }) {
   return (
     <article className={productCard}>
       <div className={boxImg}>
-        <img src={image} alt={name} />
-        {previewSrc && (
-          <img src={previewSrc} alt={name} className={showImgWhenHover} />
-        )}
+        <Link
+          to={productHref}
+          className={imageLink}
+          aria-label={`Xem chi tiết ${name}`}
+        >
+          <img src={image} alt={name} />
+          {previewSrc && (
+            <img src={previewSrc} alt='' className={showImgWhenHover} />
+          )}
+        </Link>
         <div className={showFncWhenHover}>
-          <div className={boxIcon}>
+          <button
+            type='button'
+            className={boxIcon}
+            onClick={addToCart}
+            aria-label='Thêm vào giỏ'
+            disabled={stock <= 0}
+          >
             <LiaShoppingBagSolid />
-          </div>
+          </button>
           <div className={boxIcon}>
             <CiHeart />
           </div>
@@ -95,7 +146,11 @@ function ProductItem({ src, PrevSrc, prevSrc, name, price, variants = [] }) {
           </div>
         </div>
       </div>
-      <div className={title}>{name}</div>
+      <div className={title}>
+        <Link to={productHref} className={titleLink}>
+          {name}
+        </Link>
+      </div>
       <div className={priceBlock}>
         <span className={Price}>{formatPrice(displayPrice)}</span>
       </div>

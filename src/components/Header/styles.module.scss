@@ -85,6 +85,33 @@
     cursor: pointer;
   }
 }
+.cartIconButton {
+  position: relative;
+  display: grid;
+  place-items: center;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: inherit;
+  line-height: 1;
+  cursor: pointer;
+}
+.cartBadge {
+  position: absolute;
+  top: -6px;
+  right: -8px;
+  display: grid;
+  min-width: 16px;
+  height: 16px;
+  place-items: center;
+  padding: 0 3px;
+  border-radius: 999px;
+  background: #282b28;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1;
+}
 
 .containerBox {
   @include flex_box_custom(center, center, 20px);

@@ -12,6 +12,11 @@ import { useContext, useEffect, useState } from 'react';
 import classNames from 'classnames';
 import { SideBarContext } from '../../contexts/SideBarProvide';
 import SearchOverlay from './SearchOverlay/SearchOverlay';
+import { CART_EVENT, CART_STORAGE_KEY, getCartItems } from '@/utils/cartStore';
+
+function getCartCount(items) {
+  return items.reduce((sum, item) => sum + (Number(item.quantity) || 0), 0);
+}
 
 function MyHeader({ products = [], categories = [], search = '', category = 'all', onSearch, transparent = true }) {
   const {
@@ -31,6 +36,7 @@ function MyHeader({ products = [], categories = [], search = '', category = 'all
   const { scrollPosition } = useScrollHandling();
   const [fixedPosition, setFixedPosition] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [cartCount, setCartCount] = useState(() => getCartCount(getCartItems()));
   const { setIsOpen, setType } = useContext(SideBarContext);
   const handleOpenSideBar = (type) => {
     setIsOpen(true);
@@ -44,6 +50,25 @@ function MyHeader({ products = [], categories = [], search = '', category = 'all
     // }
     setFixedPosition(scrollPosition > 100);
   }, [scrollPosition]);
+  useEffect(() => {
+    const handleCartChange = (event) => {
+      setCartCount(
+        getCartCount(Array.isArray(event.detail) ? event.detail : getCartItems())
+      );
+    };
+    const handleStorage = (event) => {
+      if (event.key === CART_STORAGE_KEY || event.key === null) {
+        setCartCount(getCartCount(getCartItems()));
+      }
+    };
+
+    window.addEventListener(CART_EVENT, handleCartChange);
+    window.addEventListener('storage', handleStorage);
+    return () => {
+      window.removeEventListener(CART_EVENT, handleCartChange);
+      window.removeEventListener('storage', handleStorage);
+    };
+  }, []);
   return (
     <>
     <div
@@ -89,12 +114,19 @@ function MyHeader({ products = [], categories = [], search = '', category = 'all
               }}
               onClick={() => handleOpenSideBar('wishlist')}
             />
-            <PiShoppingCartThin
-              style={{
-                fontSize: '25px',
-              }}
+            <button
+              type='button'
+              className={styles.cartIconButton}
+              aria-label={`Giỏ hàng (${cartCount} sản phẩm)`}
               onClick={() => handleOpenSideBar('cart')}
-            />
+            >
+              <PiShoppingCartThin style={{ fontSize: '25px' }} />
+              {cartCount > 0 && (
+                <span className={styles.cartBadge} aria-hidden='true'>
+                  {cartCount > 99 ? '99+' : cartCount}
+                </span>
+              )}
+            </button>
           </div>
         </div>
       </div>

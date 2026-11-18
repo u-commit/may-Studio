@@ -7,6 +7,13 @@
   overflow: hidden;
   position: relative;
 
+  .imageLink {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    display: block;
+  }
+
   img {
     display: block;
     width: 100%;
@@ -49,9 +56,20 @@
     width: 40px;
     height: 40px;
     @include flex_box_custom(center, center, 0px);
+    border: 0;
+    padding: 0;
+    background: #fff;
+    color: inherit;
+    font: inherit;
     cursor: pointer;
     transition: background-color 300ms ease;
     font-size: 20px;
+
+    &:disabled {
+      cursor: not-allowed;
+      opacity: .45;
+    }
+
     &:hover {
       background-color: rgb(222, 222, 222);
     }
@@ -72,6 +90,7 @@
   -webkit-line-clamp: 2;
   overflow: hidden;
 }
+.titleLink { color: inherit; text-decoration: none; }
 .Price {
   font-size: 14px;
   color: $thr_color;

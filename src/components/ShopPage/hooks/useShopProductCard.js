@@ -58,7 +58,7 @@ export default function useShopProductCard(product, variants = []) {
     if (next) setSelectedVariantId(next.id);
   }
 
-  function addToCart() {
+  function addToCart(quantity = 1) {
     const saved = addCartItem({
       id: String(selectedVariant?.id ?? product.id),
       productId: getShopProductId(product),
@@ -69,7 +69,7 @@ export default function useShopProductCard(product, variants = []) {
       color: selectedVariant?.color?.name ?? product.color ?? '',
       size: selectedVariant?.size ?? '',
       sku: selectedVariant?.sku ?? product.sku ?? '',
-    });
+    }, quantity);
     if (saved) {
       setType('cart');
       setIsOpen(true);

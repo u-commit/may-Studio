@@ -21,16 +21,17 @@ function saveCartItems(items) {
   }
 }
 
-export function addCartItem(item) {
+export function addCartItem(item, quantity = 1) {
+  const addedQuantity = Math.max(1, Number(quantity) || 1);
   const current = getCartItems();
   const existing = current.find((cartItem) => cartItem.id === item.id);
   const next = existing
     ? current.map((cartItem) =>
         cartItem.id === item.id
-          ? { ...cartItem, quantity: cartItem.quantity + 1 }
+          ? { ...cartItem, quantity: cartItem.quantity + addedQuantity }
           : cartItem
       )
-    : [...current, { ...item, quantity: 1 }];
+    : [...current, { ...item, quantity: addedQuantity }];
   return saveCartItems(next);
 }
 

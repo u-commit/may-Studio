@@ -1,0 +1,165 @@
+@import '@styles/mixin.scss';
+
+.productCard { min-width: 0; text-align: center; }
+
+.productImage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  background: #f1f2f0;
+
+  .productImageLink {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    display: block;
+  }
+
+  img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform .45s ease;
+  }
+
+  &:hover img { transform: scale(1.035); }
+
+  &:hover .imageActions,
+  &:focus-within .imageActions {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.imageActions {
+  @include flex_box_custom(flex-start, stretch, 0px);
+
+  position: absolute;
+  right: 12px;
+  bottom: 18px;
+  z-index: 1;
+  flex-direction: column;
+  background: #fff;
+  opacity: 0;
+  transform: translateX(8px);
+  transition: opacity .2s ease, transform .2s ease;
+
+  button {
+    display: grid;
+    width: 40px;
+    height: 40px;
+    place-items: center;
+    border: 0;
+    background: #fff;
+    color: #252925;
+    cursor: pointer;
+    font-size: 20px;
+  }
+
+  button:hover { background: #f2f3f1; }
+}
+
+.imagePlaceholder {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  place-items: center;
+  color: #9ba29b;
+  font-size: 13px;
+  letter-spacing: .16em;
+}
+
+.productInfo { padding: 8px 4px 0; }
+
+.sizeOptions {
+  @include flex_box_custom(center, center, 6px);
+
+  min-height: 25px;
+}
+
+.sizeChip {
+  min-width: 23px;
+  height: 22px;
+  padding: 0 5px;
+  border: 1px solid #dfe3dd;
+  background: #fff;
+  color: #505950;
+  font-size: 10px;
+  cursor: pointer;
+}
+
+.selectedSize { border-color: #627b63; color: #435d45; }
+
+.productName {
+  display: -webkit-box;
+  min-height: 2.6em;
+  margin: 8px 0 3px;
+  overflow: hidden;
+  color: #20231f;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.3;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.productNameLink { color: inherit; text-decoration: none; }
+
+.manufacturer { margin: 0 0 3px; color: #8a928a; font-size: 12px; }
+.priceLine { @include flex_box_custom(center, baseline, 8px); }
+.price { color: #606960; font-size: 13px; }
+
+.addToCartButton {
+  min-width: 142px;
+  min-height: 36px;
+  margin-top: 12px;
+  padding: 0 14px;
+  border: 1px solid #282b28;
+  background: #282b28;
+  color: #fff;
+  font: inherit;
+  font-size: 10px;
+  cursor: pointer;
+  transition: none;
+
+  &:hover:not(:disabled) {
+    border-color: #282b28 !important;
+    background: #282b28 !important;
+    color: #fff !important;
+    transform: none !important;
+    box-shadow: none !important;
+  }
+
+  &:disabled { border-color: #d9ddd8; background: #eceeeb; color: #8a928a; cursor: not-allowed; }
+}
+
+.listCard {
+  display: grid;
+  grid-template-columns: minmax(150px, 220px) minmax(0, 1fr);
+  align-items: center;
+  gap: 20px;
+  text-align: left;
+
+  .productImage { aspect-ratio: 4 / 3; }
+  .productInfo { padding: 8px 0; }
+  .sizeOptions { justify-content: flex-start; }
+  .productName { min-height: 0; margin-top: 12px; }
+  .priceLine { justify-content: flex-start; }
+}
+
+@media (max-width: 680px) {
+  .listCard {
+    grid-template-columns: minmax(110px, 38%) minmax(0, 1fr);
+    gap: 12px;
+
+    .productName { font-size: 13px; }
+  }
+
+  .addToCartButton { min-width: 120px; }
+}
+
+@media (max-width: 420px) {
+  .listCard { grid-template-columns: 105px minmax(0, 1fr); }
+}

@@ -5,9 +5,27 @@ import MyFooter from '@components/Footer/Footer';
 import MyHeader from '@components/Header/Header';
 import ShopProductCard from './components/ShopProductCard';
 import useShopPage from './hooks/useShopPage';
-import heroImage from '@/assets/images/Banner.webp';
 import styles from './styles.module.scss';
-const { breadcrumb, catalog, eyebrow, hero, heroButton, heroCopy, listLayout, loadMoreButton, loadMoreWrap, message, productGrid, searchBox, select, shopHeading, shopPage, showCount, toolbar, toolbarLeft } = styles;
+const {
+  breadcrumb,
+  catalog,
+  eyebrow,
+  hero,
+  heroButton,
+  heroCopy,
+  listLayout,
+  loadMoreButton,
+  loadMoreWrap,
+  message,
+  productGrid,
+  searchBox,
+  select,
+  shopHeading,
+  shopPage,
+  showCount,
+  toolbar,
+  toolbarLeft,
+} = styles;
 
 function ShopPage() {
   const {
@@ -30,6 +48,12 @@ function ShopPage() {
     onHeaderSearch,
   } = useShopPage();
 
+  const scrollToProducts = () => {
+    document.getElementById('shop-products')?.scrollIntoView({
+      behavior: 'smooth',
+    });
+  };
+
   return (
     <>
       <MyHeader
@@ -47,16 +71,16 @@ function ShopPage() {
           <span>Our Shop</span>
         </div>
 
-        <section
-          className={hero}
-          style={{ '--shop-hero': `url(${heroImage})` }}
-        >
+        <section className={hero}>
           <div className={heroCopy}>
-            <p className={eyebrow}>MÂY STUDIO — BỘ SƯU TẬP MỚI</p>
-            <h1>The classics make a comeback</h1>
-            <a href='#shop-products' className={heroButton}>
-              Khám phá ngay
-            </a>
+            <h1>Phong cách mới,cảm hứng mới</h1>
+            <Button
+              content='Khám phá ngay'
+              variant='primary'
+              className={heroButton}
+              onClick={scrollToProducts}
+              isPrimary
+            />
           </div>
         </section>
 
@@ -105,23 +129,6 @@ function ShopPage() {
                 <option value='name'>Tên sản phẩm</option>
               </select>
             </div>
-            <label className={showCount}>
-              <span>Hiển thị</span>
-              <select
-                className={select}
-                value={itemsPerPage}
-                onChange={(event) =>
-                  setItemsPerPage(Number(event.target.value))
-                }
-                aria-label='Số sản phẩm hiển thị'
-              >
-                {[...new Set([8, 12, 16, ...(itemsPerPage > 16 ? [itemsPerPage] : [])])].map((count) => (
-                  <option key={count} value={count}>
-                    {count}
-                  </option>
-                ))}
-              </select>
-            </label>
           </div>
 
           {loadError ? (

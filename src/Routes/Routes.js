@@ -10,6 +10,10 @@ const routes = [
     component: lazy(() => import('@components/ShopPage/ShopPage')),
   },
   {
+    path: '/product/:productId',
+    component: lazy(() => import('@components/ProductDetailPage/ProductDetailPage')),
+  },
+  {
     path: '/user',
     component: lazy(() => import('@components/HomePage/HomePage')),
     role: 'user',
